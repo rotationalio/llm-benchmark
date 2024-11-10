@@ -44,7 +44,6 @@ CLASSIFIERS = [
     "Topic :: System :: Benchmark",
     "Topic :: System :: Hardware",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
-    "",
 ]
 
 
