@@ -128,7 +128,11 @@ if __name__ == "__main__":
         "packages": find_packages(where=PROJECT, exclude=EXCLUDES),
         "package_data": {},
         "zip_safe": True,
-        "entry_points": {},
+        "entry_points": {
+            "console_scripts": [
+                "construe = construe.__main__:main",
+            ]
+        },
         "install_requires": list(get_requires()),
         "python_requires": ">=3.10, <4",
     }
