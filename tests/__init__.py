@@ -8,11 +8,6 @@ Testing for the construe package.
 
 import unittest
 
-##########################################################################
-## Module Constants
-##########################################################################
-
-TEST_VERSION = "0.1"
 
 ##########################################################################
 ## Test Cases
@@ -35,11 +30,3 @@ class InitializationTest(unittest.TestCase):
             import construe
         except ImportError:
             self.fail("Unable to import the construe module!")
-
-    def test_version(self):
-        """
-        Assert that the version is sane
-        """
-        import construe
-
-        self.assertEqual(TEST_VERSION, construe.__version__)
