@@ -39,6 +39,25 @@ Options:
   -h, --help                 Show this message and exit.
 ```
 
+## Moondream Benchmarks
+
+The [moondream](https://huggingface.co/vikhyatk/moondream2) package contains small image-to-text computer vision models that can be used in the first step of a [content moderation](https://www.cloudraft.io/blog/content-moderation-using-llamaindex-and-llm) workflow (e.g. image to text, moderate text). This benchmark executes the model for _encoding_ and _inferencing_ on a small number of images and reports the average time for both operations and the line-by-line memory usage of the model.
+
+It can be run as follows:
+
+```
+$ construe moondream
+```
+
+Command usage is as follows:
+
+```
+Usage: construe moondream [OPTIONS]
+
+Options:
+  -h, --help  Show this message and exit.
+```
+
 ## Releases
 
 To release the construe library and deploy to PyPI run the following commands:
