@@ -5,6 +5,7 @@ cases where the image is captioned and then the caption is moderated.
 """
 
 import time
+import tqdm
 import numpy as np
 
 from PIL import Image
@@ -21,12 +22,12 @@ class MoonDreamBenchmark(object):
 
     def __init__(self):
         self.moondream = MoonDreamProfiler()
-        self.dataset = load_content_moderation()
+        self.dataset = list(load_content_moderation())
 
     @profile
     def run(self):
         results = []
-        for path in self.dataset:
+        for path in tqdm.tqdm(self.dataset):
             encoded, encode_time = self.moondream.encode_image(path)
             inference_time = self.moondream.inference(encoded)
             results.append((encode_time, inference_time))
