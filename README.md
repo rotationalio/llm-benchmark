@@ -12,12 +12,35 @@ $ which construe
 $ construe --help
 ```
 
+There are several top-level configurations that you can specify either as an environment variable or a command line option before the command. The environment variables are as follows:
+
+- `$CONSTRUE_ENV` or `$ENV`: specify the name of the experimental environment for comparison purposes.
+- `$CONSTRUE_DEVICE` or `$TORCH_DEVICE`: specify the name of the default device to use with PyTorch e.g. cpu, mps, or cuda.
+
+The command line utility help is as follows:
+
+```
+Usage: construe [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --version          Show the version and exit.
+  -d, --device TEXT  specify the pytorch device to run on e.g. cpu, mps or
+                     cuda
+  -e, --env TEXT     name of the experimental environment for comparison
+                     (default is hostname)
+  -h, --help         Show this message and exit.
+
+Commands:
+  basic
+  moondream
+```
+
 ## Basic Benchmarks
 
 The basic benchmarks implement dot product benchmarks from the [PyTorch documentation](https://pytorch.org/tutorials/recipes/recipes/benchmark.html). These benchmarks can be run using `construe basic`; for example by running:
 
 ```
-$ construe basic -e "MacBook Pro 2022 M1" -o results-macbook.pickle
+$ construe -e "MacBook Pro 2022 M1" basic -o results-macbook.pickle
 ```
 
 The `-e` flag specifies the environment for comparison purposes and the `-o` flag saves the measurements out to disk as a Pickle file that can be loaded for comparison to other environments later.

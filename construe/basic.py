@@ -4,9 +4,9 @@ Benchmarks basic dot product torch operators.
 See: https://pytorch.org/tutorials/recipes/recipes/benchmark.html
 """
 
+import tqdm
 import torch
 import pickle
-import platform
 import torch.utils.benchmark as benchmark
 
 from itertools import product
@@ -35,9 +35,6 @@ class BasicBenchmark(object):
         if num_threads is None:
             num_threads = torch.get_num_threads()
 
-        if env is None:
-            env = platform.node()
-
         self.env = env
         self.saveto = saveto
         self.num_threads = num_threads
@@ -46,7 +43,7 @@ class BasicBenchmark(object):
 
     def run(self):
         results = []
-        dataset = self.fuzzer().take(10) if self.fuzz else self.static()
+        dataset = self.fuzzer().take(10) if self.fuzz else list(self.static())
 
         kwargs = {
             "label": "Batched Dot",
@@ -54,7 +51,7 @@ class BasicBenchmark(object):
             "env": self.env,
         }
 
-        for tensors, tensor_params, params in dataset:
+        for tensors, tensor_params, params in tqdm.tqdm(dataset, leave=False):
             sub_label = f"{params['k0']:<6} x {params['k1']:<4} {'' if tensor_params['x']['is_contiguous'] else '(discontiguous)'}"  # noqa
             results.append(
                 benchmark.Timer(

@@ -27,7 +27,7 @@ class MoonDreamBenchmark(object):
     @profile
     def run(self):
         results = []
-        for path in tqdm.tqdm(self.dataset):
+        for path in tqdm.tqdm(self.dataset, leave=False):
             encoded, encode_time = self.moondream.encode_image(path)
             inference_time = self.moondream.inference(encoded)
             results.append((encode_time, inference_time))
