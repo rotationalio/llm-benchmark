@@ -6,6 +6,7 @@ import click
 
 from .version import get_version
 from .basic import BasicBenchmark
+from .moondream import MoonDreamBenchmark
 
 
 CONTEXT_SETTINGS = {
@@ -54,6 +55,12 @@ def main():
 )
 def basic(**kwargs):
     benchmark = BasicBenchmark(**kwargs)
+    benchmark.run()
+
+
+@main.command()
+def moondream(**kwargs):
+    benchmark = MoonDreamBenchmark(**kwargs)
     benchmark.run()
 
 
