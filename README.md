@@ -14,7 +14,7 @@ $ construe --help
 
 ## Basic Benchmarks
 
-The basic benchmarks implement dot product benchmarks from the [PyTorch documentation](). These benchmarks can be run using `construe basic`; for example by running:
+The basic benchmarks implement dot product benchmarks from the [PyTorch documentation](https://pytorch.org/tutorials/recipes/recipes/benchmark.html). These benchmarks can be run using `construe basic`; for example by running:
 
 ```
 $ construe basic -e "MacBook Pro 2022 M1" -o results-macbook.pickle
