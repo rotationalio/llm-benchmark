@@ -6,12 +6,13 @@ cases where the image is captioned and then the caption is moderated.
 
 import time
 import tqdm
+import click
 import numpy as np
 
 from PIL import Image
 from memory_profiler import profile
-from construe.datasets import load_content_moderation
 from transformers import AutoModelForCausalLM, AutoTokenizer
+from construe.datasets import load_content_moderation, cleanup_content_moderation
 
 
 MODEL_ID = "vikhyatk/moondream2"
@@ -20,23 +21,33 @@ REVISION = "2024-08-26"
 
 class MoonDreamBenchmark(object):
 
-    def __init__(self):
+    def __init__(self, env=None):
         self.moondream = MoonDreamProfiler()
+        self.env = None
+
+    def run(self):
         self.dataset = list(load_content_moderation())
 
+        try:
+            results = self.benchmark()
+        finally:
+            cleanup_content_moderation()
+
+        encode_mean = np.array([result[0] for result in results]).mean()
+        inference_mean = np.array([result[1] for result in results]).mean()
+
+        click.echo(f"Encode Average: {encode_mean:0.2f}")
+        click.echo(f"Inference Average: {inference_mean:0.2f}")
+
     @profile
-    def run(self):
+    def benchmark(self):
         results = []
         for path in tqdm.tqdm(self.dataset, leave=False):
             encoded, encode_time = self.moondream.encode_image(path)
             inference_time = self.moondream.inference(encoded)
             results.append((encode_time, inference_time))
 
-        encode_mean = np.array([result[0] for result in results]).mean()
-        inference_mean = np.array([result[1] for result in results]).mean()
-
-        print(f"Encode Average: {encode_mean:0.2f}")
-        print(f"Inference Average: {inference_mean:0.2f}")
+        return results
 
 
 class MoonDreamProfiler(object):

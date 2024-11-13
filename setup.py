@@ -126,8 +126,8 @@ if __name__ == "__main__":
         },
         "download_url": "{}/tarball/v{}".format(REPOSITORY, get_version()),
         "packages": find_packages(where=PROJECT, exclude=EXCLUDES),
-        "package_data": {},
-        "zip_safe": True,
+        "package_data": {"construe": ["datasets/manifest.json"]},
+        "zip_safe": False,
         "entry_points": {
             "console_scripts": [
                 "construe = construe.__main__:main",
