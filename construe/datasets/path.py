@@ -5,12 +5,16 @@ Path handling for downloads
 import os
 import shutil
 
+from pathlib import Path
 from .signature import sha256sum
 from construe.exceptions import DatasetsError
 
 
-# TODO: replace with home directory path
+# Fixtures is where data being prepared is stored
 FIXTURES = os.path.join(os.path.dirname(__file__), "fixtures")
+
+# Data dir is the location of downloaded datasets
+DATADIR = Path.home() / ".construe" / "data"
 
 
 def get_data_home(path=None):
@@ -26,7 +30,7 @@ def get_data_home(path=None):
     expanded when resolving the path.
     """
     if path is None:
-        path = os.environ.get("CONSTRUE_DATA", FIXTURES)
+        path = os.environ.get("CONSTRUE_DATA", DATADIR)
 
     path = os.path.expanduser(path)
     path = os.path.expandvars(path)
