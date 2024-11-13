@@ -6,9 +6,9 @@ import click
 import torch
 import platform
 
-from click import ClickException
 from .version import get_version
 from .basic import BasicBenchmark
+from .exceptions import DeviceError
 from .moondream import MoonDreamBenchmark
 
 
@@ -40,7 +40,7 @@ def main(ctx, env=None, device=None):
         try:
             torch.set_default_device(device)
         except RuntimeError as e:
-            raise ClickException(str(e))
+            raise DeviceError(e)
 
         click.echo(f"using torch.device(\"{device}\")")
 

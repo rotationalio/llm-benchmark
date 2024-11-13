@@ -3,8 +3,8 @@ include *.rst
 include *.txt
 include *.yml
 include *.cfg
-include MANIFEST.in
 
+include MANIFEST.in
 include LICENSE
 
 graft docs
@@ -14,6 +14,7 @@ graft tests
 prune tests/fixtures
 
 graft construe
+prune construe/datasets/fixtures
 
 global-exclude __pycache__
 global-exclude *.py[co]
