@@ -12,6 +12,7 @@ from construe.exceptions import DatasetsError
 
 # Fixtures is where data being prepared is stored
 FIXTURES = os.path.join(os.path.dirname(__file__), "fixtures")
+MANIFEST = os.path.join(os.path.dirname(__file__), "manifest.json")
 
 # Data dir is the location of downloaded datasets
 DATADIR = Path.home() / ".construe" / "data"

@@ -8,13 +8,17 @@ import glob
 
 from urllib.parse import urljoin
 
-from .path import FIXTURES
 from .signature import sha256sum
 from ..version import get_version
+from .path import FIXTURES, MANIFEST
 
 
-BASE_URL = "https://rotational.dev/"
-MANIFEST = os.path.abspath(os.path.join(FIXTURES, "..", "manifest.json"))
+BASE_URL = "https://storage.googleapis.com/"
+
+
+def load_manifest(path=MANIFEST):
+    with open(MANIFEST, "r") as f:
+        return json.load(f)
 
 
 def generate_manifest(fixtures=FIXTURES, out=MANIFEST):
