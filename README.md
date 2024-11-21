@@ -81,6 +81,28 @@ Options:
   -h, --help  Show this message and exit.
 ```
 
+## Model References
+
+1. Image to Text: [Moondream (vikhyatk/moondream2)](https://huggingface.co/vikhyatk/moondream2)
+2. Speech to Text: [Whisper (openai/whisper-tiny.en)](https://huggingface.co/docs/transformers/en/model_doc/whisper)
+3. Image Classification: [MobileNet (google/mobilenet_v2_1.0_224)](https://huggingface.co/docs/transformers/en/model_doc/mobilenet_v2)
+4. Object Detection: [MobileViT (apple/mobilevit-xx-small)](https://huggingface.co/docs/transformers/en/model_doc/mobilevit)
+5. NSFW Image Classification [Fine-Tuned Vision Transformer (ViT) for NSFW Image Classification (Falconsai/nsfw_image_detection)](https://huggingface.co/Falconsai/nsfw_image_detection)
+6. Image Enhancement [LoL MIRNet (keras-io/lowlight-enhance-mirnet)](https://huggingface.co/keras-io/lowlight-enhance-mirnet)
+7. Text Classification: [Offensive Speech Detector (KoalaAI/OffensiveSpeechDetector)](https://huggingface.co/KoalaAI/OffensiveSpeechDetector)
+8. Token Classification: [GLiNER (knowledgator/gliner-bi-small-v1.0)](https://huggingface.co/knowledgator/gliner-bi-small-v1.0)
+
+## Dataset References
+
+1. [AEGIS AI Content Safety v1.0](https://huggingface.co/datasets/nvidia/Aegis-AI-Content-Safety-Dataset-1.0): Text data that is used to show examples of content safety (e.g. harmful text) described by Nvidia's content safety taxonomy.
+2. [LoL (Low-Light) Dataset](https://paperswithcode.com/dataset/lol): Contains 500 low-light and normal-light image pairs for image enhancement.
+3. [English Dialects](https://huggingface.co/datasets/ylacombe/english_dialects): Contains 31 hours of audo from 120 individuals speaking with different accents of the British Isles and is used for speech to text.
+4. [Reddit Posts Comments](https://huggingface.co/datasets/ummagumm-a/reddit_posts_comments): A text dataset of comments on Reddit posts that can be used for NER and content moderation tasks on short form text.
+5. [Student and LLM Essays](https://huggingface.co/datasets/knarasi1/student_and_llm_essays?row=5): A text dataset of essays written by students (and LLMs) that can be used for NER and content moderation tasks on longer form text.
+6. [NSFW Detection](https://huggingface.co/datasets/zanderlewis/nsfw_detection_large): An image dataset that contains NSFW and SFW images used for content moderation.
+7. [Movie Scenes](https://huggingface.co/datasets/unography/movie-scenes?row=61): An image dataset that contains stills from commercial movies and can be used for image classification and content-moderation tasks.
+
+
 ## Releases
 
 To release the construe library and deploy to PyPI run the following commands:

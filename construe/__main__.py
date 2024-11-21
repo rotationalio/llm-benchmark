@@ -7,11 +7,11 @@ import torch
 import platform
 
 from .version import get_version
-from .basic import BasicBenchmark
 from .exceptions import DeviceError
+from .datasets.path import get_data_home
+
+from .basic import BasicBenchmark
 from .moondream import MoonDreamBenchmark
-from .datasets.manifest import generate_manifest
-from .datasets.path import get_data_home, FIXTURES
 
 
 CONTEXT_SETTINGS = {
@@ -51,6 +51,9 @@ CONTEXT_SETTINGS = {
 )
 @click.pass_context
 def main(ctx, env=None, device=None, datadir=None, cleanup=True):
+    """
+    A utility for executing inferencing benchmarks.
+    """
     if device is not None:
         try:
             torch.set_default_device(device)
@@ -98,6 +101,9 @@ def main(ctx, env=None, device=None, datadir=None, cleanup=True):
 )
 @click.pass_context
 def basic(ctx, **kwargs):
+    """
+    Runs basic dot product performance benchmarks.
+    """
     kwargs["env"] = ctx.obj["env"]
     benchmark = BasicBenchmark(**kwargs)
     benchmark.run()
@@ -106,28 +112,12 @@ def basic(ctx, **kwargs):
 @main.command()
 @click.pass_context
 def moondream(ctx, **kwargs):
+    """
+    Executes image-to-text inferencing benchmarks.
+    """
     kwargs["env"] = ctx.obj["env"]
     benchmark = MoonDreamBenchmark(**kwargs)
     benchmark.run()
-
-
-@main.command()
-@click.option(
-    "-f",
-    "--fixtures",
-    type=str,
-    default=FIXTURES,
-    help="path to fixtures directory to generate manifest from",
-)
-@click.option(
-    "-o",
-    "--out",
-    type=str,
-    default=None,
-    help="path to write the manifest to",
-)
-def manifest(fixtures=FIXTURES, out=None):
-    generate_manifest(fixtures, out)
 
 
 if __name__ == "__main__":

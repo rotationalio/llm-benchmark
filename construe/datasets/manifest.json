@@ -1,6 +1,18 @@
 {
+  "dialects": {
+    "url": "https://storage.googleapis.com/construe/v0.2.0/dialects.zip",
+    "signature": "bbae4f64f057487ff399bb36a0d0a5882c34b319d8ed3eea833df36353e8a84a"
+  },
+  "lowlight": {
+    "url": "https://storage.googleapis.com/construe/v0.2.0/lowlight.zip",
+    "signature": "ddc36eb7f0443efa5e71939e503d0834fd48451281d9658d5cb7ead30143b98f"
+  },
   "content-moderation": {
     "url": "https://storage.googleapis.com/construe/v0.2.0/content-moderation.zip",
     "signature": "4925f2733bf3b1596e4d950e49d12bf4fff2379f08cbf0a105807ff03d4c2b4e"
+  },
+  "aegis": {
+    "url": "https://storage.googleapis.com/construe/v0.2.0/aegis.zip",
+    "signature": "c846f20d893461525839cd2f61f85faf0dcbff03e1998fd8f747506ff65bec69"
   }
 }
