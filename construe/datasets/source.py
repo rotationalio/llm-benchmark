@@ -13,8 +13,11 @@ from .path import FIXTURES
 from .download import CHUNK
 
 from datasets import Audio
+from functools import partial
 from datasets import load_dataset
 from urllib.request import urlopen
+from click.exceptions import UsageError
+
 
 AEGIS = "aegis"
 AEGIS_BASENAME = "aegis.zip"
@@ -53,6 +56,10 @@ SOURCE_DATASETS = [
     AEGIS, LOWLIGHT, DIALECTS, REDDIT, ESSAYS, NSFW, MOVIES
 ]
 
+
+##########################################################################
+## Downloaders
+##########################################################################
 
 def download_source_datasets(out=FIXTURES, exclude=None):
     """
@@ -213,3 +220,53 @@ def download_movies(out=FIXTURES):
                     if image.mode != "RGB":
                         image = image.convert("RGB")
                     image.save(d, format="jpeg")
+
+
+##########################################################################
+## Sampling
+##########################################################################
+
+
+def sample_source_datasets(
+    datasets, fixtures=FIXTURES, out=FIXTURES, size=0.25, suffix="-sample"
+):
+    """
+    Sample the specified datasets creating a smaller dataset for benchmarking.
+    """
+    samplers = {
+        AEGIS: sample_aegis,
+        LOWLIGHT: sample_lowlight,
+        DIALECTS: sample_dialects,
+        REDDIT: sample_reddit,
+        ESSAYS: sample_essays,
+        NSFW: sample_nsfw,
+        MOVIES: sample_movies,
+    }
+
+    # Check that the samplers are available
+    for dataset in datasets:
+        dataset = dataset.strip().lower()
+        if dataset not in samplers:
+            raise UsageError(f"unknown dataset '{dataset}': cannot run sampler")
+
+    # Execute samplers
+    for dataset in datasets:
+        dataset = dataset.strip().lower()
+        samplers[dataset](fixtures, out, size, suffix)
+
+
+def _sample_files(name, fixtures=FIXTURES, out=FIXTURES, size=0.25, suffix="-sample"):
+    print(name)
+
+
+def _sample_jsonl(name, fixtures=FIXTURES, out=FIXTURES, size=0.25, suffix="-sample"):
+    print(name)
+
+
+sample_aegis = partial(_sample_jsonl, AEGIS_BASENAME)
+sample_lowlight = partial(_sample_files, LOWLIGHT_BASENAME)
+sample_dialects = partial(_sample_files, DIALECTS_BASENAME)
+sample_reddit = partial(_sample_jsonl, REDDIT_BASENAME)
+sample_essays = partial(_sample_jsonl, ESSAYS_BASENAME)
+sample_nsfw = partial(_sample_files, NSFW_BASENAME)
+sample_movies = partial(_sample_files, MOVIES_BASENAME)

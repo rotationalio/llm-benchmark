@@ -51,7 +51,9 @@ def download_data(url, signature, data_home=None, replace=False, extract=True):
     content_length = int(response.headers["Content-Length"])
 
     with open(archive, "wb") as f:
-        pbar = tqdm(unit="B", total=content_length, desc=f"Downloading {basename}")
+        pbar = tqdm(
+            unit="B", total=content_length, desc=f"Downloading {basename}", leave=False
+        )
         while True:
             chunk = response.read(CHUNK)
             if not chunk:
