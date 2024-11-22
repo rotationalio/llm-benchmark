@@ -5,6 +5,7 @@ Handle downloading datasets from our content URL
 import os
 import zipfile
 
+from tqdm import tqdm
 from urllib.request import urlopen
 
 from .signature import sha256sum
@@ -37,11 +38,8 @@ def download_data(url, signature, data_home=None, replace=False, extract=True):
     if os.path.exists(archive):
         if not replace:
             raise DatasetsError(
-                ("dataset already exists at {}, set replace=False to overwrite").format(
-                    archive
-                )
+                f"dataset already exists at {archive}, set replace=False to overwrite"
             )
-
         cleanup_dataset(name, data_home=data_home)
 
     # Create the output directory if it does not exist
@@ -50,13 +48,16 @@ def download_data(url, signature, data_home=None, replace=False, extract=True):
 
     # Fetch the response in a streaming fashion and write it to disk.
     response = urlopen(url)
+    content_length = int(response.headers["Content-Length"])
 
     with open(archive, "wb") as f:
+        pbar = tqdm(unit="B", total=content_length, desc=f"Downloading {basename}")
         while True:
             chunk = response.read(CHUNK)
             if not chunk:
                 break
             f.write(chunk)
+            pbar.update(len(chunk))
 
     # Compare the signature of the archive to the expected one
     if sha256sum(archive) != signature:

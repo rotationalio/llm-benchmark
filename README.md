@@ -98,9 +98,9 @@ Options:
 2. [LoL (Low-Light) Dataset](https://paperswithcode.com/dataset/lol): Contains 500 low-light and normal-light image pairs for image enhancement.
 3. [English Dialects](https://huggingface.co/datasets/ylacombe/english_dialects): Contains 31 hours of audo from 120 individuals speaking with different accents of the British Isles and is used for speech to text.
 4. [Reddit Posts Comments](https://huggingface.co/datasets/ummagumm-a/reddit_posts_comments): A text dataset of comments on Reddit posts that can be used for NER and content moderation tasks on short form text.
-5. [Student and LLM Essays](https://huggingface.co/datasets/knarasi1/student_and_llm_essays?row=5): A text dataset of essays written by students (and LLMs) that can be used for NER and content moderation tasks on longer form text.
+5. [Student and LLM Essays](https://huggingface.co/datasets/knarasi1/student_and_llm_essays): A text dataset of essays written by students (and LLMs) that can be used for NER and content moderation tasks on longer form text.
 6. [NSFW Detection](https://huggingface.co/datasets/zanderlewis/nsfw_detection_large): An image dataset that contains NSFW and SFW images used for content moderation.
-7. [Movie Scenes](https://huggingface.co/datasets/unography/movie-scenes?row=61): An image dataset that contains stills from commercial movies and can be used for image classification and content-moderation tasks.
+7. [Movie Scenes](https://huggingface.co/datasets/unography/movie-scenes): An image dataset that contains stills from commercial movies and can be used for image classification and content-moderation tasks.
 
 
 ## Releases

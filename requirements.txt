@@ -17,7 +17,6 @@ transformers==4.46.2
 # datasets==3.1.0
 # packaging==24.2
 # pip==24.3.1
-# simpleaudio==1.0.4
 # setuptools==75.3.0
 # twine==5.1.1
 # wheel==0.45.0

@@ -6,7 +6,7 @@ import click
 
 from construe.version import get_version
 
-from .source import download_source_datasets
+from .source import download_source_datasets, SOURCE_DATASETS
 from .manifest import generate_manifest
 from .path import FIXTURES
 
@@ -57,7 +57,7 @@ def manifest(fixtures=FIXTURES, out=None):
 @click.option(
     "-e",
     "--exclude",
-    type=click.Choice(["aegis", "lowlight", "dialect"], case_sensitive=False),
+    type=click.Choice(SOURCE_DATASETS, case_sensitive=False),
     default=None,
     multiple=True,
     help="specify datasets to exclude from source download",

@@ -16,18 +16,42 @@ from datasets import Audio
 from datasets import load_dataset
 from urllib.request import urlopen
 
-
+AEGIS = "aegis"
 AEGIS_BASENAME = "aegis.zip"
 AEGIS_ZIPNAME = "aegis.jsonl"
 AEGIS_DATASET_URL = "nvidia/Aegis-AI-Content-Safety-Dataset-1.0"
 
+LOWLIGHT = "lowlight"
 LOWLIGHT_BASENAME = "lowlight.zip"
 LOWLIGHT_DATASET_URL = (
     "https://drive.google.com/uc?id=1DdGIJ4PZPlF2ikl8mNM9V-PdVxVLbQi6"
 )
 
+DIALECTS = "dialects"
 DIALECTS_BASENAME = "dialects.zip"
 DIALECTS_DATASET_URL = "ylacombe/english_dialects"
+
+REDDIT = "reddit"
+REDDIT_BASENAME = "reddit.zip"
+REDDIT_ZIPNAME = "reddit.jsonl"
+REDDIT_DATASETS_URL = "ummagumm-a/reddit_posts_comments"
+
+ESSAYS = "essays"
+ESSAYS_BASENAME = "essays.zip"
+ESSAYS_ZIPNAME = "essays.jsonl"
+ESSAYS_DATASETS_URL = "knarasi1/student_and_llm_essays"
+
+NSFW = "nsfw"
+NSFW_BASENAME = "nsfw.zip"
+NSFW_DATASETS_URL = "zanderlewis/nsfw_detection_large"
+
+MOVIES = "movies"
+MOVIES_BASENAME = "movies.zip"
+MOVIES_DATASETS_URL = "unography/movie-scenes"
+
+SOURCE_DATASETS = [
+    AEGIS, LOWLIGHT, DIALECTS, REDDIT, ESSAYS, NSFW, MOVIES
+]
 
 
 def download_source_datasets(out=FIXTURES, exclude=None):
@@ -36,9 +60,13 @@ def download_source_datasets(out=FIXTURES, exclude=None):
     excluding any by name in the downloaders dictionary.
     """
     downloaders = {
-        "aegis": download_aegis,
-        "lowlight": download_lowlight,
-        "dialect": download_dialects,
+        AEGIS: download_aegis,
+        LOWLIGHT: download_lowlight,
+        DIALECTS: download_dialects,
+        REDDIT: download_reddit,
+        ESSAYS: download_essays,
+        NSFW: download_nsfw,
+        MOVIES: download_movies,
     }
 
     exclude = exclude or []
@@ -126,3 +154,62 @@ def download_dialects(out=FIXTURES):
                 sf.write(path, audio, 16000)
 
     shutil.make_archive(dir, "zip", dir)
+
+
+def download_reddit(out=FIXTURES):
+    path = os.path.join(out, REDDIT_BASENAME)
+    ds = load_dataset(REDDIT_DATASETS_URL, split=None)
+    with zipfile.ZipFile(path, "x", compression=zipfile.ZIP_DEFLATED) as z:
+        with z.open(REDDIT_ZIPNAME, "w") as d:
+            for split in ds.values():
+                for row in split:
+                    d.write(json.dumps(row).encode("utf-8"))
+                    d.write("\n".encode("utf-8"))
+
+
+def download_essays(out=FIXTURES):
+    path = os.path.join(out, ESSAYS_BASENAME)
+    ds = load_dataset(ESSAYS_DATASETS_URL, split=None)
+    with zipfile.ZipFile(path, "x", compression=zipfile.ZIP_DEFLATED) as z:
+        with z.open(ESSAYS_ZIPNAME, "w") as d:
+            for split in ds.values():
+                for row in split:
+                    d.write(json.dumps(row).encode("utf-8"))
+                    d.write("\n".encode("utf-8"))
+
+
+def download_nsfw(out=FIXTURES):
+    img = 0
+    path = os.path.join(out, NSFW_BASENAME)
+    fname, _ = os.path.splitext(NSFW_BASENAME)
+    ds = load_dataset(NSFW_DATASETS_URL, split=None)
+
+    with zipfile.ZipFile(path, "x", compression=zipfile.ZIP_DEFLATED) as z:
+        for split in ds.values():
+            for row in split:
+                img += 1
+                folder = "nsfw" if row["label"] == 0 else "safe"
+                imgpath = os.path.join(fname, folder, f"img{img:0>3}.jpg")
+                with z.open(imgpath, "w") as d:
+                    image = row["image"]
+                    if image.mode != "RGB":
+                        image = image.convert("RGB")
+                    image.save(d, format="jpeg")
+
+
+def download_movies(out=FIXTURES):
+    img = 0
+    path = os.path.join(out, MOVIES_BASENAME)
+    fname, _ = os.path.splitext(MOVIES_BASENAME)
+    ds = load_dataset(MOVIES_DATASETS_URL, split=None)
+
+    with zipfile.ZipFile(path, "x", compression=zipfile.ZIP_DEFLATED) as z:
+        for split in ds.values():
+            for row in split:
+                img += 1
+                imgpath = os.path.join(fname, f"img{img:0>6}.jpg")
+                with z.open(imgpath, "w") as d:
+                    image = row["image"]
+                    if image.mode != "RGB":
+                        image = image.convert("RGB")
+                    image.save(d, format="jpeg")
