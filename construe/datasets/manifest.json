@@ -1,6 +1,34 @@
 {
+  "dialects": {
+    "url": "https://storage.googleapis.com/construe/v0.3.0/dialects.zip",
+    "signature": "0e6767047e05f618560d097dfa0587530636c52fc19507c087bdff556b389489"
+  },
+  "lowlight": {
+    "url": "https://storage.googleapis.com/construe/v0.3.0/lowlight.zip",
+    "signature": "ddc36eb7f0443efa5e71939e503d0834fd48451281d9658d5cb7ead30143b98f"
+  },
+  "reddit": {
+    "url": "https://storage.googleapis.com/construe/v0.3.0/reddit.zip",
+    "signature": "d97419403f0d940970b2542d5b188570dacedae3c2a68ada3520cfa95c52f75c"
+  },
   "content-moderation": {
-    "url": "https://storage.googleapis.com/construe/v0.2.0/content-moderation.zip",
+    "url": "https://storage.googleapis.com/construe/v0.3.0/content-moderation.zip",
     "signature": "4925f2733bf3b1596e4d950e49d12bf4fff2379f08cbf0a105807ff03d4c2b4e"
+  },
+  "aegis": {
+    "url": "https://storage.googleapis.com/construe/v0.3.0/aegis.zip",
+    "signature": "c846f20d893461525839cd2f61f85faf0dcbff03e1998fd8f747506ff65bec69"
+  },
+  "essays": {
+    "url": "https://storage.googleapis.com/construe/v0.3.0/essays.zip",
+    "signature": "3a7b260dd5baec9134c7398ac7b9b297d7b1a387bce1a9f99cd8d3e0a7ceb9cc"
+  },
+  "movies": {
+    "url": "https://storage.googleapis.com/construe/v0.3.0/movies.zip",
+    "signature": "618f7aa8aa103192ee8b76fc701ff182b2a41e5e78675a4d6af707e490d36f45"
+  },
+  "nsfw": {
+    "url": "https://storage.googleapis.com/construe/v0.3.0/nsfw.zip",
+    "signature": "df06a2651ab6a49c7dd41b8083ea0dffd147c03c91822b9a2a09bd50796f145e"
   }
 }
