@@ -5,6 +5,7 @@ into the source format expected by the construe library.
 
 import os
 import json
+import random
 import shutil
 import zipfile
 import soundfile as sf
@@ -13,8 +14,11 @@ from .path import FIXTURES
 from .download import CHUNK
 
 from datasets import Audio
+from functools import partial
 from datasets import load_dataset
 from urllib.request import urlopen
+from click.exceptions import UsageError
+
 
 AEGIS = "aegis"
 AEGIS_BASENAME = "aegis.zip"
@@ -53,6 +57,10 @@ SOURCE_DATASETS = [
     AEGIS, LOWLIGHT, DIALECTS, REDDIT, ESSAYS, NSFW, MOVIES
 ]
 
+
+##########################################################################
+## Downloaders
+##########################################################################
 
 def download_source_datasets(out=FIXTURES, exclude=None):
     """
@@ -213,3 +221,96 @@ def download_movies(out=FIXTURES):
                     if image.mode != "RGB":
                         image = image.convert("RGB")
                     image.save(d, format="jpeg")
+
+
+##########################################################################
+## Sampling
+##########################################################################
+
+
+def sample_source_datasets(
+    datasets, fixtures=FIXTURES, out=FIXTURES, size=0.25, suffix="-sample"
+):
+    """
+    Sample the specified datasets creating a smaller dataset for benchmarking.
+    """
+    samplers = {
+        AEGIS: sample_aegis,
+        LOWLIGHT: sample_lowlight,
+        DIALECTS: sample_dialects,
+        REDDIT: sample_reddit,
+        ESSAYS: sample_essays,
+        NSFW: sample_nsfw,
+        MOVIES: sample_movies,
+    }
+
+    # Check that the samplers are available
+    for dataset in datasets:
+        dataset = dataset.strip().lower()
+        if dataset not in samplers:
+            raise UsageError(f"unknown dataset '{dataset}': cannot run sampler")
+
+    # Execute samplers
+    for dataset in datasets:
+        dataset = dataset.strip().lower()
+        samplers[dataset](fixtures, out, size, suffix)
+
+
+def _sample_files(name, fixtures=FIXTURES, out=FIXTURES, size=0.25, suffix="-sample"):
+    files_read, files_written = 0, 0
+    inpath, outpath = _sample_paths(name, fixtures, out, suffix)
+
+    with zipfile.ZipFile(inpath, "r") as zi:
+        with zipfile.ZipFile(outpath, "x", compression=zipfile.ZIP_DEFLATED) as zo:
+            for fp in zi.infolist():
+                if fp.is_dir() or fp.filename.startswith("."):
+                    continue
+
+                with zi.open(fp.filename, "r") as f:
+                    files_read += 1
+                    if random.random() <= size:
+                        with zo.open(fp.filename, "w") as o:
+                            o.write(f.read())
+                            files_written += 1
+
+    print(f"sample {outpath} wrote {files_written} out of {files_read}")
+
+
+def _sample_jsonl(name, fixtures=FIXTURES, out=FIXTURES, size=0.25, suffix="-sample"):
+    fname, _ = os.path.splitext(name)
+    fname += ".jsonl"
+
+    lines_read, lines_written = 0, 0
+
+    inpath, outpath = _sample_paths(name, fixtures, out, suffix)
+    with zipfile.ZipFile(inpath, "r") as zi:
+        with zipfile.ZipFile(outpath, "x", compression=zipfile.ZIP_DEFLATED) as zo:
+            with zi.open(fname, "r") as f:
+                with zo.open(fname, "w") as o:
+                    for line in f:
+                        lines_read += 1
+                        if random.random() <= size:
+                            o.write(line)
+                            lines_written += 1
+
+    print(f"sample {outpath} wrote {lines_written} out of {lines_read}")
+
+
+def _sample_paths(name, fixtures, out, suffix):
+    inpath = os.path.join(fixtures, name)
+    basename, ext = os.path.splitext(name)
+    outpath = os.path.join(out, f"{basename}{suffix}{ext}")
+
+    if os.path.exists(outpath):
+        os.remove(outpath)
+
+    return inpath, outpath
+
+
+sample_aegis = partial(_sample_jsonl, AEGIS_BASENAME)
+sample_lowlight = partial(_sample_files, LOWLIGHT_BASENAME)
+sample_dialects = partial(_sample_files, DIALECTS_BASENAME)
+sample_reddit = partial(_sample_jsonl, REDDIT_BASENAME)
+sample_essays = partial(_sample_jsonl, ESSAYS_BASENAME)
+sample_nsfw = partial(_sample_files, NSFW_BASENAME)
+sample_movies = partial(_sample_files, MOVIES_BASENAME)

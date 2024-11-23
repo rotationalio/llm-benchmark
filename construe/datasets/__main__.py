@@ -7,6 +7,7 @@ import click
 from construe.version import get_version
 
 from .source import download_source_datasets, SOURCE_DATASETS
+from .source import sample_source_datasets
 from .manifest import generate_manifest
 from .path import FIXTURES
 
@@ -67,6 +68,45 @@ def originals(fixtures=FIXTURES, exclude=None):
     Download original datasets and store them in fixtures.
     """
     download_source_datasets(out=FIXTURES, exclude=exclude)
+
+
+@main.command(epilog=EPILOG)
+@click.option(
+    "-f",
+    "--fixtures",
+    type=str,
+    default=FIXTURES,
+    help="path to fixtures directory to find source datasets in",
+)
+@click.option(
+    "-o",
+    "--out",
+    type=str,
+    default=FIXTURES,
+    help="directory to write the sampled data to",
+)
+@click.option(
+    "-s",
+    "--size",
+    type=float,
+    default=0.25,
+    help="approximate random sample size",
+)
+@click.option(
+    "-S",
+    "--suffix",
+    type=str,
+    default="-sample",
+    help="suffix to append to the dataset name",
+)
+@click.argument(
+    "dataset",
+    nargs=-1,
+    required=True,
+    type=click.Choice(SOURCE_DATASETS, case_sensitive=False),
+)
+def sample(dataset, fixtures=FIXTURES, out=FIXTURES, size=0.25, suffix="-sample"):
+    sample_source_datasets(dataset, fixtures, out, size, suffix)
 
 
 if __name__ == "__main__":
