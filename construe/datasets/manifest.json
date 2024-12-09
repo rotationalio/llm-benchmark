@@ -43,6 +43,10 @@
     "url": "https://storage.googleapis.com/construe/v0.3.0/reddit-sample.zip",
     "signature": "24088c648b8c3497d0b682102c3fa965d46ca22abe8f94695287e09bf82db991"
   },
+  "lowlight-sample": {
+    "url": "https://storage.googleapis.com/construe/v0.3.0/lowlight-sample.zip",
+    "signature": "f34bafa588441b8e240b0932e9ac446d9f805bdfdb22640c036c441258220eaf"
+  },
   "movies": {
     "url": "https://storage.googleapis.com/construe/v0.3.0/movies.zip",
     "signature": "618f7aa8aa103192ee8b76fc701ff182b2a41e5e78675a4d6af707e490d36f45"

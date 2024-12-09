@@ -8,7 +8,20 @@ import platform
 
 from .version import get_version
 from .exceptions import DeviceError
+
+
 from .datasets.path import get_data_home
+from .datasets.loaders import cleanup_all_datasets
+from .datasets.download import (
+    download_all_datasets,
+    download_dialects,
+    download_lowlight,
+    download_reddit,
+    download_movies,
+    download_essays,
+    download_aegis,
+    download_nsfw,
+)
 
 from .basic import BasicBenchmark
 from .moondream import MoonDreamBenchmark
@@ -17,6 +30,10 @@ from .moondream import MoonDreamBenchmark
 CONTEXT_SETTINGS = {
     "help_option_names": ["-h", "--help"],
 }
+
+DATASETS = [
+    "all", "dialects", "lowlight", "reddit", "movies", "essays", "aegis", "nsfw",
+]
 
 
 @click.group(context_settings=CONTEXT_SETTINGS)
@@ -118,6 +135,66 @@ def moondream(ctx, **kwargs):
     kwargs["env"] = ctx.obj["env"]
     benchmark = MoonDreamBenchmark(**kwargs)
     benchmark.run()
+
+
+@main.command()
+@click.option(
+    "-C",
+    "--clean",
+    default=False,
+    help="cleanup the downloaded data cache and exit",
+)
+@click.option(
+    "-d",
+    "--download",
+    default=None,
+    type=click.Choice(DATASETS, case_sensitive=False),
+)
+@click.option(
+    "-S",
+    "--sample/--no-sample",
+    default=True,
+    help="if downloading a dataset, download only a sample",
+)
+@click.option(
+    "-v",
+    "--verbose/--no-verbose",
+    default=False,
+    help="print verbose info, otherwise just print the datasets path",
+)
+@click.pass_context
+def datasets(ctx, clean=False, download=None, sample=True, verbose=False):
+    """
+    Helper utility for managing the dataset cache for benchmarks.
+    """
+    if clean and download:
+        raise click.ClickException("cannot specify both --clean and --download")
+
+    data_home = ctx.obj["data_home"]
+    if clean:
+        cleanup_all_datasets(data_home)
+        return
+
+    if download is not None:
+        downloader = {
+            "all": download_all_datasets,
+            "dialects": download_dialects,
+            "lowlight": download_lowlight,
+            "reddit": download_reddit,
+            "movies": download_movies,
+            "essays": download_essays,
+            "aegis": download_aegis,
+            "nsfw": download_nsfw,
+        }[download]
+
+        downloader(sample=sample, data_home=data_home)
+        return
+
+    # Provide some info
+    if verbose:
+        print(f"downloaded datasets are stored in {data_home}")
+    else:
+        print(data_home)
 
 
 if __name__ == "__main__":
