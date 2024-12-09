@@ -12,8 +12,9 @@ from functools import partial
 from .manifest import load_manifest
 from .download import download_data
 from ..exceptions import DatasetsError
-from .path import get_data_home
-from .path import dataset_archive, find_dataset_path, cleanup_dataset
+from .path import find_dataset_path, get_data_home
+from .path import dataset_archive, cleanup_dataset
+from .path import DIALECTS, LOWLIGHT, REDDIT, MOVIES, ESSAYS, AEGIS, NSFW
 
 
 __all__ = [
@@ -29,13 +30,6 @@ __all__ = [
 
 
 DATASETS = load_manifest()
-DIALECTS = "dialects"
-LOWLIGHT = "lowlight"
-REDDIT = "reddit"
-MOVIES = "movies"
-ESSAYS = "essays"
-AEGIS = "aegis"
-NSFW = "nsfw"
 
 
 def _info(dataset):
@@ -111,8 +105,9 @@ def load_all_datasets(sample=True, data_home=None):
         if name == "load_all_datasets":
             continue
 
-        f = getattr(module, name)
-        f(sample=sample, data_home=data_home)
+        f = module[name]
+        for row in f(sample=sample, data_home=data_home):
+            yield row
 
 
 def cleanup_all_datasets(data_home=None):

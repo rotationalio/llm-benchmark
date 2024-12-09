@@ -17,6 +17,15 @@ MANIFEST = os.path.join(os.path.dirname(__file__), "manifest.json")
 # Data dir is the location of downloaded datasets
 DATADIR = Path.home() / ".construe" / "data"
 
+# Names of the datasets
+DIALECTS = "dialects"
+LOWLIGHT = "lowlight"
+REDDIT = "reddit"
+MOVIES = "movies"
+ESSAYS = "essays"
+AEGIS = "aegis"
+NSFW = "nsfw"
+
 
 def get_data_home(path=None):
     """

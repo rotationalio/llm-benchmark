@@ -12,8 +12,16 @@ from .exceptions import DeviceError
 
 from .datasets.path import get_data_home
 from .datasets.loaders import cleanup_all_datasets
-from .datasets.loaders import load_all_datasets, load_essays, load_aegis, load_nsfw
-from .datasets.loaders import load_dialects, load_lowlight, load_reddit, load_movies
+from .datasets.download import (
+    download_all_datasets,
+    download_dialects,
+    download_lowlight,
+    download_reddit,
+    download_movies,
+    download_essays,
+    download_aegis,
+    download_nsfw,
+)
 
 from .basic import BasicBenchmark
 from .moondream import MoonDreamBenchmark
@@ -168,18 +176,18 @@ def datasets(ctx, clean=False, download=None, sample=True, verbose=False):
         return
 
     if download is not None:
-        loader = {
-            "all": load_all_datasets,
-            "dialects": load_dialects,
-            "lowlight": load_lowlight,
-            "reddit": load_reddit,
-            "movies": load_movies,
-            "essays": load_essays,
-            "aegis": load_aegis,
-            "nsfw": load_nsfw
+        downloader = {
+            "all": download_all_datasets,
+            "dialects": download_dialects,
+            "lowlight": download_lowlight,
+            "reddit": download_reddit,
+            "movies": download_movies,
+            "essays": download_essays,
+            "aegis": download_aegis,
+            "nsfw": download_nsfw,
         }[download]
 
-        next(loader(sample=sample, data_home=data_home))
+        downloader(sample=sample, data_home=data_home)
         return
 
     # Provide some info
