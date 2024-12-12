@@ -162,3 +162,4 @@ cython_debug/
 #.idea/
 
 construe/datasets/fixtures
+construe/models/fixtures
