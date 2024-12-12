@@ -106,11 +106,14 @@ def originals(fixtures=FIXTURES, exclude=None):
     type=click.Choice(SOURCE_DATASETS, case_sensitive=False),
 )
 def sample(dataset, fixtures=FIXTURES, out=FIXTURES, size=0.25, suffix="-sample"):
+    """
+    Create a sample dataset from the original that is smaller.
+    """
     sample_source_datasets(dataset, fixtures, out, size, suffix)
 
 
 if __name__ == "__main__":
     main(
         obj={},
-        prog_name="construe-datasets",
+        prog_name="python -m construe.datasets",
     )
