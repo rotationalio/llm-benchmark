@@ -1,5 +1,5 @@
 """
-Manifest handlers for downloading and checking signatures
+Manifest handlers for downloading cloud resources and checking signatures.
 """
 
 import os
@@ -10,22 +10,21 @@ from urllib.parse import urljoin
 
 from .signature import sha256sum
 from ..version import get_version
-from .path import FIXTURES, MANIFEST
 
 
+BUCKET = "construe"
 BASE_URL = "https://storage.googleapis.com/"
+
+MODELS = "models"
 DATASETS = "datasets"
-APPLICATION = "construe"
 
 
-def load_manifest(path=MANIFEST):
-    with open(MANIFEST, "r") as f:
+def load_manifest(path):
+    with open(path, "r") as f:
         return json.load(f)
 
 
-def generate_manifest(fixtures=FIXTURES, out=MANIFEST):
-    out = out or MANIFEST
-
+def generate_manifest(fixtures, out, upload_type):
     manifest = {}
     version = get_version(short=True)
 
@@ -34,7 +33,7 @@ def generate_manifest(fixtures=FIXTURES, out=MANIFEST):
         name, _ = os.path.splitext(fname)
 
         manifest[name] = {
-            "url": make_fixture_url(fname, version=version),
+            "url": make_fixture_url(fname, upload_type=upload_type, version=version),
             "signature": sha256sum(path),
         }
 
@@ -42,7 +41,11 @@ def generate_manifest(fixtures=FIXTURES, out=MANIFEST):
         json.dump(manifest, o, indent=2)
 
 
-def make_fixture_url(fname, app=APPLICATION, upload_type=DATASETS, version=None):
-    version = version or get_version(short=True)
-    path = os.path.join(app, f"v{version}", upload_type, fname)
+def make_fixture_url(fname, upload_type, version=None):
+    path = make_fixture_path(fname, upload_type, version)
     return urljoin(BASE_URL, path)
+
+
+def make_fixture_path(fname, upload_type, version=None):
+    version = version or get_version(short=True)
+    return os.path.join(f"v{version}", upload_type, fname)

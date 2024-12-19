@@ -8,6 +8,7 @@ from construe.version import get_version
 
 from .source import download_source_models, SOURCE_MODELS
 from .convert import convert_source_models
+from ..cloud.gcp import upload_models
 from .path import FIXTURES
 
 
@@ -46,7 +47,7 @@ def main():
     type=click.Choice(SOURCE_MODELS, case_sensitive=False),
     default=None,
     multiple=True,
-    help="specify models to explictly include in tflite conversions",
+    help="specify models to explicitly include in tflite conversions",
 )
 def originals(fixtures=FIXTURES, exclude=None, include=None):
     """
@@ -77,13 +78,51 @@ def originals(fixtures=FIXTURES, exclude=None, include=None):
     type=click.Choice(SOURCE_MODELS, case_sensitive=False),
     default=None,
     multiple=True,
-    help="specify models to explictly include in tflite conversions",
+    help="specify models to explicitly include in tflite conversions",
 )
 def convert(fixtures=FIXTURES, exclude=None, include=None):
     """
     Convert source models to the tflite format for use in benchmarks.
     """
     convert_source_models(out=FIXTURES, exclude=exclude, include=include)
+
+
+@main.command(epilog=EPILOG)
+@click.option(
+    "-f",
+    "--fixtures",
+    type=str,
+    default=FIXTURES,
+    help="path to fixtures directory where source models have been downloaded",
+)
+@click.option(
+    "-e",
+    "--exclude",
+    type=click.Choice(SOURCE_MODELS, case_sensitive=False),
+    default=None,
+    multiple=True,
+    help="specify models to exclude from upload",
+)
+@click.option(
+    "-i",
+    "--include",
+    type=click.Choice(SOURCE_MODELS, case_sensitive=False),
+    default=None,
+    multiple=True,
+    help="specify models to explicitly include in upload",
+)
+@click.option(
+    "-c",
+    "--credentials",
+    type=str,
+    default=None,
+    help="path to service account json credentials for upload",
+)
+def upload(**kwargs):
+    """
+    Upload converted models to GCP for user downloads.
+    """
+    upload_models(**kwargs)
 
 
 if __name__ == "__main__":

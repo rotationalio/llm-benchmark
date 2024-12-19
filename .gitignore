@@ -163,3 +163,6 @@ cython_debug/
 
 construe/datasets/fixtures
 construe/models/fixtures
+
+# For credentials management
+.secret
