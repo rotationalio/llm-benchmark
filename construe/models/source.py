@@ -3,15 +3,17 @@ This package downloads and instantiates the source models from HuggingFace.
 """
 
 import os
+import tensorflow as tf
 
 from .path import FIXTURES
+from .tflite import TFLiteGenerateModel
 
 from transformers import MobileViTImageProcessor, MobileViTForImageClassification
+from transformers import WhisperProcessor, TFWhisperForConditionalGeneration
 from transformers import AutoModelForImageClassification, AutoImageProcessor
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers import AutoModelForSequenceClassification
 from transformers import ViTImageProcessor
-from transformers import TFWhisperModel
 
 from gliner import GLiNER
 from huggingface_hub import from_pretrained_keras
@@ -21,47 +23,39 @@ MOONDREAM_ID = "vikhyatk/moondream2"
 MOONDREAM_REVISION = "2024-08-26"
 MOONDREAM_DIR = "moondream"
 MOONDREAM_SAVED_MODEL_DIR = "hf_moondream_saved"
-MOONDREAM_TFLITE = "moondream.tflite"
 
 WHISPER_ID = "openai/whisper-tiny.en"
 WHISPER_REVISION = "main"
 WHISPER_DIR = "whisper"
 WHISPER_SAVED_MODEL_DIR = "tf_whisper_saved"
-WHISPER_TFLITE = "whisper.tflite"
 
 MOBILENET_ID = "google/mobilenet_v2_1.0_224"
 MOBILENET_REVISION = "main"
 MOBILENET_DIR = "mobilenet"
 MOBILENET_SAVED_MODEL_DIR = "hf_mobilenet_saved"
-MOBILENET_TFLITE = "mobilenet.tflite"
 
 MOBILEVIT_ID = "apple/mobilevit-xx-small"
 MOBILEVIT_REVISION = "main"
 MOBILEVIT_DIR = "mobilevit"
 MOBILEVIT_SAVED_MODEL_DIR = "hf_mobilevit_saved"
-MOBILEVIT_TFLITE = "mobilevit.tflite"
 
 NSFW_ID = "Falconsai/nsfw_image_detection"
 NSFW_REVISION = "main"
 NSFW_DIR = "nsfw"
 NSFW_SAVED_MODEL_DIR = "hf_nsfw_saved"
-NSFW_TFLITE = "nsfw.tflite"
 
 LOWLIGHT_ID = "keras-io/lowlight-enhance-mirnet"
 LOWLIGHT_DIR = "lowlight"
 LOWLIGHT_SAVED_MODEL_DIR = "tf_lowlight_saved"
-LOWLIGHT_TFLITE = "lowlight.tflite"
 
 OFFENSIVE_ID = "KoalaAI/OffensiveSpeechDetector"
 OFFENSIVE_REVISION = "main"
 OFFENSIVE_DIR = "offensive"
 OFFENSIVE_SAVED_MODEL_DIR = "hf_offensive_saved"
-OFFENSIVE_TFLITE = "offensive.tflite"
 
 GLINER_ID = "knowledgator/gliner-bi-small-v1.0"
 GLINER_DIR = "gliner"
 GLINER_SAVED_MODEL_DIR = "hf_gliner_saved"
-GLINER_TFLITE = "gliner.tflite"
 
 SOURCE_MODELS = [
     MOONDREAM_DIR,
@@ -75,7 +69,11 @@ SOURCE_MODELS = [
 ]
 
 
-def download_source_models(out=FIXTURES, exclude=None):
+##########################################################################
+## Source Models
+##########################################################################
+
+def download_source_models(out=FIXTURES, exclude=None, include=None):
     """
     Download all source models to the specified directory, excluding any by name.
     """
@@ -94,6 +92,16 @@ def download_source_models(out=FIXTURES, exclude=None):
     exclude = set([
         item.strip().lower() for item in exclude
     ])
+
+    include = include or []
+    include = set([
+        item.strip().lower() for item in include
+    ])
+
+    if include:
+        for source in SOURCE_MODELS:
+            if source not in include:
+                exclude.add(source)
 
     for name, download in downloaders.items():
         if name in exclude:
@@ -117,6 +125,7 @@ def download_moondream(
     model.save_pretrained(path)
     tokenizer.save_pretrained(path)
 
+    print(f"moondream downloaded to {path}")
     return path
 
 
@@ -124,9 +133,16 @@ def download_whisper(out=FIXTURES, model_id=WHISPER_ID, revision=WHISPER_REVISIO
     """
     Download the whisper tiny english model and save it to fixtures.
     """
-    model = TFWhisperModel.from_pretrained(model_id, revision=revision)
+    processor = WhisperProcessor.from_pretrained(model_id, revision=revision)
+    model = TFWhisperForConditionalGeneration.from_pretrained(model_id, revision=revision)
+    generate = TFLiteGenerateModel(model)
+
     path = os.path.join(out, WHISPER_DIR, WHISPER_SAVED_MODEL_DIR)
-    model.save(path)
+
+    tf.saved_model.save(generate, path, signatures={"serving_default": generate.serving})
+    processor.save_pretrained(path)
+
+    print(f"whisper downloaded to {path}")
     return path
 
 
@@ -146,6 +162,7 @@ def download_mobilenet(
     model.save_pretrained(path)
     preprocessor.save_pretrained(path)
 
+    print(f"mobilenet downloaded to {path}")
     return path
 
 
@@ -163,6 +180,7 @@ def download_mobilevit(
     model.save_pretrained(path)
     preprocessor.save_pretrained(path)
 
+    print(f"mobilevit downloaded to {path}")
     return path
 
 
@@ -178,6 +196,7 @@ def download_nsfw(out=FIXTURES, model_id=NSFW_ID, revision=NSFW_REVISION):
     model.save_pretrained(path)
     preprocessor.save_pretrained(path)
 
+    print(f"nsfw downloaded to {path}")
     return path
 
 
@@ -188,6 +207,8 @@ def download_lowlight(out=FIXTURES, model_id=LOWLIGHT_ID):
     model = from_pretrained_keras(model_id)
     path = os.path.join(out, LOWLIGHT_DIR, LOWLIGHT_SAVED_MODEL_DIR)
     model.save(path)
+
+    print(f"lowlight downloaded to {path}")
     return path
 
 
@@ -207,6 +228,7 @@ def download_offensive(
     model.save_pretrained(path)
     tokenizer.save_pretrained(path)
 
+    print(f"offensive downloaded to {path}")
     return path
 
 
@@ -217,4 +239,6 @@ def download_gliner(out=FIXTURES, model_id=GLINER_ID):
     model = GLiNER.from_pretrained(model_id)
     path = os.path.join(out, GLINER_DIR, GLINER_SAVED_MODEL_DIR)
     model.save_pretrained(path)
+
+    print(f"gliner downloaded to {path}")
     return path
