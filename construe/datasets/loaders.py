@@ -59,7 +59,7 @@ def _load_file_dataset(name, sample=True, data_home=None):
 
 def _load_jsonl_dataset(name, sample=True, data_home=None):
     data_path = _load_prepare(name, sample=sample, data_home=data_home)
-    for path in glob.glob(os.path.jsoin(data_path, "*.jsonl")):
+    for path in glob.glob(os.path.join(data_path, "*.jsonl")):
         with open(path, "r") as f:
             for line in f:
                 yield json.load(f)
