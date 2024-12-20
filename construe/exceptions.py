@@ -27,6 +27,14 @@ class ModelsError(ConstrueError):
     pass
 
 
+class InferenceError(ConstrueError):
+    pass
+
+
+class BenchmarkError(ConstrueError):
+    pass
+
+
 class DeviceError(ConstrueError):
 
     def __init__(self, e):

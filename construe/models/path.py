@@ -28,7 +28,7 @@ OFFENSIVE = "offensive"
 GLINER = "gliner"
 
 
-def get_models_home(path=None):
+def get_model_home(path=None):
     """
     Return the path of the Construe models directory. This folder is used by
     model loaders to avoid downloading model parameters several times.
@@ -51,7 +51,7 @@ def get_models_home(path=None):
     return path
 
 
-def find_model_path(model, models_home=None, fname=None, ext=None, raises=True):
+def find_model_path(model, model_home=None, fname=None, ext=None, raises=True):
     """
     Looks up the path to the model specified in the models home directory. The storage
     location of the models can be set with the $CONSTRUE_MODELS environment variable.
@@ -59,16 +59,16 @@ def find_model_path(model, models_home=None, fname=None, ext=None, raises=True):
     If the model is not found a ``ModelsError`` is raised by default.
     """
     # Resolve the root directory that stores the models
-    models_home = get_models_home(models_home)
+    model_home = get_model_home(model_home)
 
     # Determine the path to the model
     if fname is None:
         if ext is None:
-            path = os.path.join(models_home, model)
+            path = os.path.join(model_home, model)
         else:
-            path = os.path.join(models_home, model, "{}{}".format(model, ext))
+            path = os.path.join(model_home, model, "{}{}".format(model, ext))
     else:
-        path = os.path.join(models_home, model, fname)
+        path = os.path.join(model_home, model, fname)
 
     if not os.path.exists(path):
         if not raises:
@@ -103,7 +103,7 @@ def model_archive(model, signature, model_home=None, ext=".zip"):
     Checks to see if the model archive file exists and determines if it is the latest
     version by comparing the signature specified with the archive signature.
     """
-    model_home = get_models_home(model_home)
+    model_home = get_model_home(model_home)
     path = os.path.join(model_home, model+ext)
 
     if os.path.exists(path) and os.path.isfile(path):
@@ -113,7 +113,7 @@ def model_archive(model, signature, model_home=None, ext=".zip"):
 
 def cleanup_model(model, model_home=None, archive=".zip"):
     removed = 0
-    model_home = get_models_home(model_home)
+    model_home = get_model_home(model_home)
 
     # Paths to remove
     datadir = os.path.join(model_home, model)
