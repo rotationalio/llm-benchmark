@@ -9,7 +9,7 @@ from .exceptions import InferenceError
 from .models import load_whisper, cleanup_whisper
 
 
-class WhisperBenchmark(object):
+class Whisper(object):
 
     def __init__(self, **kwargs):
         self.model_home = None

@@ -9,6 +9,7 @@ import platform
 from .version import get_version
 from .exceptions import DeviceError
 
+from .models.path import get_model_home
 
 from .datasets.path import get_data_home
 from .datasets.loaders import cleanup_all_datasets
@@ -23,9 +24,12 @@ from .datasets.download import (
     download_nsfw,
 )
 
+
+from .whisper import Whisper
 from .basic import BasicBenchmark
-from .whisper import WhisperBenchmark
 from .moondream import MoonDreamBenchmark
+
+from .benchmark import BenchmarkRunner
 
 
 CONTEXT_SETTINGS = {
@@ -33,12 +37,26 @@ CONTEXT_SETTINGS = {
 }
 
 DATASETS = [
-    "all", "dialects", "lowlight", "reddit", "movies", "essays", "aegis", "nsfw",
+    "all",
+    "dialects",
+    "lowlight",
+    "reddit",
+    "movies",
+    "essays",
+    "aegis",
+    "nsfw",
 ]
 
 
 @click.group(context_settings=CONTEXT_SETTINGS)
 @click.version_option(get_version(), message="%(prog)s v%(version)s")
+@click.option(
+    "-o",
+    "--out",
+    default="construe.json",
+    type=str,
+    help="specify the path to write the benchmark results to",
+)
 @click.option(
     "-d",
     "--device",
@@ -55,11 +73,31 @@ DATASETS = [
     help="name of the experimental environment for comparison (default is hostname)",
 )
 @click.option(
+    "-c",
+    "--count",
+    default=1,
+    type=int,
+    help="specify the number of times to run each benchmark",
+)
+@click.option(
     "-D",
     "--datadir",
     default=None,
     envvar="CONSTRUE_DATA",
     help="specify the location to download datasets to",
+)
+@click.option(
+    "-M",
+    "--modeldir",
+    default=None,
+    envvar="CONSTRUE_MODELS",
+    help="specify the location to download models to",
+)
+@click.option(
+    "-S",
+    "--sample/--no-sample",
+    default=True,
+    help="use sample dataset instead of full dataset for benchmark",
 )
 @click.option(
     "-C",
@@ -68,7 +106,17 @@ DATASETS = [
     help="cleanup all downloaded datasets after the benchmark is run",
 )
 @click.pass_context
-def main(ctx, env=None, device=None, datadir=None, cleanup=True):
+def main(
+    ctx,
+    out=None,
+    env=None,
+    device=None,
+    count=1,
+    datadir=None,
+    modeldir=None,
+    sample=True,
+    cleanup=True,
+):
     """
     A utility for executing inferencing benchmarks.
     """
@@ -78,15 +126,19 @@ def main(ctx, env=None, device=None, datadir=None, cleanup=True):
         except RuntimeError as e:
             raise DeviceError(e)
 
-        click.echo(f"using torch.device(\"{device}\")")
+        click.echo(f'using torch.device("{device}")')
 
     if env is None:
         env = platform.node()
 
     ctx.ensure_object(dict)
+    ctx.obj["out"] = out
     ctx.obj["device"] = device
     ctx.obj["env"] = env
+    ctx.obj["n_runs"] = count
     ctx.obj["data_home"] = get_data_home(datadir)
+    ctx.obj["model_home"] = get_model_home(modeldir)
+    ctx.obj["use_sample"] = sample
     ctx.obj["cleanup"] = cleanup
 
 
@@ -144,11 +196,10 @@ def whisper(ctx, **kwargs):
     """
     Executes audio-to-text inferencing benchmarks.
     """
-    kwargs["env"] = ctx.obj["env"]
-    benchmark = WhisperBenchmark(**kwargs)
-    benchmark.before()
-    benchmark.run()
-    benchmark.after()
+    out = ctx.obj.pop("out")
+    runner = BenchmarkRunner(benchmarks=[Whisper], **ctx.obj)
+    runner.run()
+    runner.save(out)
 
 
 @main.command()

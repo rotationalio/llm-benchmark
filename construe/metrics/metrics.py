@@ -30,7 +30,6 @@ class Metric:
     description: Optional[str] = None
     device: Optional[str] = None
     env: Optional[str] = None
-    units: Optional[str] = None
 
     @property
     def title(self) -> str:
@@ -69,6 +68,7 @@ class Measurement:
     metric: Metric
     raw_metrics: List[float]
     per_run: int = 1
+    units: Optional[str] = None
     metadata: Optional[Dict[Any, Any]] = None
 
     def __post_init__(self) -> None:
