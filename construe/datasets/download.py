@@ -9,7 +9,7 @@ from tqdm import tqdm
 from functools import partial
 from urllib.request import urlopen
 
-from .signature import sha256sum
+from ..cloud.signature import sha256sum
 from .manifest import load_manifest
 from .path import get_data_home, cleanup_dataset
 from .path import DIALECTS, LOWLIGHT, REDDIT, MOVIES, ESSAYS, AEGIS, NSFW
