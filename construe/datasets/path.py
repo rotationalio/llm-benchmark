@@ -6,7 +6,7 @@ import os
 import shutil
 
 from pathlib import Path
-from .signature import sha256sum
+from ..cloud.signature import sha256sum
 from construe.exceptions import DatasetsError
 
 

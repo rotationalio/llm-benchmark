@@ -6,6 +6,7 @@ import os
 import tensorflow as tf
 
 from .path import FIXTURES
+from ..utils import resolve_exclude
 from .tflite import TFLiteGenerateModel
 
 from transformers import MobileViTImageProcessor, MobileViTForImageClassification
@@ -88,20 +89,7 @@ def download_source_models(out=FIXTURES, exclude=None, include=None):
         GLINER_DIR: download_gliner,
     }
 
-    exclude = exclude or []
-    exclude = set([
-        item.strip().lower() for item in exclude
-    ])
-
-    include = include or []
-    include = set([
-        item.strip().lower() for item in include
-    ])
-
-    if include:
-        for source in SOURCE_MODELS:
-            if source not in include:
-                exclude.add(source)
+    exclude = resolve_exclude(exclude, include, SOURCE_MODELS)
 
     for name, download in downloaders.items():
         if name in exclude:
