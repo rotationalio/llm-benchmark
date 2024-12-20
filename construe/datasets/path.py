@@ -55,8 +55,8 @@ def find_dataset_path(dataset, data_home=None, fname=None, ext=None, raises=True
     """
     Looks up the path to the dataset specified in the data home directory,
     which is found using the ``get_data_home`` function. By default data home
-    is colocated with the code, but can be modified with the CONSTRUE_DATA
-    environment variable, or passing in a different directory.
+    is in a config directory in the user's home folder, but can be modified with the
+    $CONSTRUE_DATA environment variable, or passing in a different directory.
 
     If the dataset is not found a ``DatasetsError`` is raised by default.
     """
@@ -80,9 +80,7 @@ def find_dataset_path(dataset, data_home=None, fname=None, ext=None, raises=True
             return None
 
         raise DatasetsError(
-            ("could not find dataset at {} - does it need to be downloaded?").format(
-                path
-            )
+            f"could not find dataset at {path} - does it need to be downloaded?"
         )
 
     return path

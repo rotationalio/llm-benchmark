@@ -2,24 +2,14 @@
 Handle downloading datasets from our content URL
 """
 
-import os
-import zipfile
-
-from tqdm import tqdm
 from functools import partial
-from urllib.request import urlopen
 
-from ..cloud.signature import sha256sum
+from .path import get_data_home
 from .manifest import load_manifest
-from .path import get_data_home, cleanup_dataset
+from ..cloud.download import download_zip
 from .path import DIALECTS, LOWLIGHT, REDDIT, MOVIES, ESSAYS, AEGIS, NSFW
 
-
-from construe.exceptions import DatasetsError
-
-
-# Downlod chunk size
-CHUNK = 524288
+from ..exceptions import DatasetsError
 
 
 def download_data(url, signature, data_home=None, replace=False, extract=True):
@@ -29,53 +19,15 @@ def download_data(url, signature, data_home=None, replace=False, extract=True):
     the download with the given signature and extracts the archive.
     """
     data_home = get_data_home(data_home)
-
-    # Get the name of the file from the URL
-    basename = os.path.basename(url)
-    name, _ = os.path.splitext(basename)
-
-    # Get the archive and data directory paths
-    archive = os.path.join(data_home, basename)
-    datadir = os.path.join(data_home, name)
-
-    # If the archive exists cleanup or raise override exception
-    if os.path.exists(archive):
-        if not replace:
-            raise DatasetsError(
-                f"dataset already exists at {archive}, set replace=False to overwrite"
-            )
-        cleanup_dataset(name, data_home=data_home)
-
-    # Create the output directory if it does not exist
-    if not os.path.exists(datadir):
-        os.mkdir(datadir)
-
-    # Fetch the response in a streaming fashion and write it to disk.
-    response = urlopen(url)
-    content_length = int(response.headers["Content-Length"])
-
-    with open(archive, "wb") as f:
-        pbar = tqdm(
-            unit="B", total=content_length, desc=f"Downloading {basename}", leave=False
-        )
-        while True:
-            chunk = response.read(CHUNK)
-            if not chunk:
-                break
-            f.write(chunk)
-            pbar.update(len(chunk))
-
-    # Compare the signature of the archive to the expected one
-    if sha256sum(archive) != signature:
-        raise ValueError("Download signature does not match hardcoded signature!")
-
-    # If extract, extract the zipfile.
-    if extract:
-        zf = zipfile.ZipFile(archive)
-        zf.extractall(path=datadir)
+    download_zip(url, data_home, signature=signature, replace=replace, extract=extract)
 
 
 def _download_dataset(name, sample=True, data_home=True, replace=False, extract=True):
+    """
+    Downloads the zipped data set specified using the manifest URL, saving it to the
+    data directory specified by ``get_data_home``. The download is verified with
+    the given signature then extracted.
+    """
     if sample and not name.endswith("-sample"):
         name = name + "-sample"
 
