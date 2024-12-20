@@ -8,7 +8,8 @@ from construe.version import get_version
 
 from .source import download_source_models, SOURCE_MODELS
 from .convert import convert_source_models
-from ..cloud.gcp import upload_models
+from .manifest import generate_manifest
+from .upload import upload_models
 from .path import FIXTURES
 
 
@@ -85,6 +86,28 @@ def convert(fixtures=FIXTURES, exclude=None, include=None):
     Convert source models to the tflite format for use in benchmarks.
     """
     convert_source_models(out=FIXTURES, exclude=exclude, include=include)
+
+
+@main.command(epilog=EPILOG)
+@click.option(
+    "-f",
+    "--fixtures",
+    type=str,
+    default=FIXTURES,
+    help="path to fixtures directory to generate manifest from",
+)
+@click.option(
+    "-o",
+    "--out",
+    type=str,
+    default=None,
+    help="path to write the manifest to",
+)
+def manifest(fixtures=FIXTURES, out=None):
+    """
+    Generate a manifest file from local fixtures.
+    """
+    generate_manifest(fixtures, out)
 
 
 @main.command(epilog=EPILOG)

@@ -6,11 +6,6 @@ import os
 import glob
 import json
 
-from ..version import get_version
-from ..models.source import SOURCE_MODELS
-from .manifest import make_fixture_path, MODELS
-from ..models.path import FIXTURES as MODEL_FIXTURES
-
 try:
     from google.cloud import storage
 except ImportError:
@@ -19,37 +14,6 @@ except ImportError:
 
 CONSTRUE_BUCKET = "construe"
 GOOGLE_CREDENTIALS = "GOOGLE_APPLICATION_CREDENTIALS"
-
-
-def upload_models(fixtures=MODEL_FIXTURES, exclude=None, include=None, credentials=None):
-    """
-    Upload all models from the model fixtures directory.
-    """
-    exclude = exclude or []
-    exclude = set([item.strip().lower() for item in exclude])
-
-    include = include or []
-    include = set([
-        item.strip().lower() for item in include
-    ])
-
-    if include:
-        for source in SOURCE_MODELS:
-            if source not in include:
-                exclude.add(source)
-
-    version = get_version(short=True)
-    client = connect_storage(credentials)
-
-    for name in SOURCE_MODELS:
-        if name in exclude:
-            continue
-
-        name += ".zip"
-        dst = make_fixture_path(name, MODELS, version=version)
-        src = os.path.join(fixtures, name)
-
-        upload(dst, src, client)
 
 
 def upload(name, path, client=None, bucket=CONSTRUE_BUCKET):

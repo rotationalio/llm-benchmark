@@ -9,6 +9,7 @@ from construe.version import get_version
 from .source import download_source_datasets, SOURCE_DATASETS
 from .source import sample_source_datasets
 from .manifest import generate_manifest
+from .upload import upload_datasets
 from .path import FIXTURES
 
 
@@ -63,11 +64,19 @@ def manifest(fixtures=FIXTURES, out=None):
     multiple=True,
     help="specify datasets to exclude from source download",
 )
-def originals(fixtures=FIXTURES, exclude=None):
+@click.option(
+    "-i",
+    "--include",
+    type=click.Choice(SOURCE_DATASETS, case_sensitive=False),
+    default=None,
+    multiple=True,
+    help="specify datasets to explicitly include in source download",
+)
+def originals(fixtures=FIXTURES, exclude=None, include=None):
     """
     Download original datasets and store them in fixtures.
     """
-    download_source_datasets(out=FIXTURES, exclude=exclude)
+    download_source_datasets(out=FIXTURES, exclude=exclude, include=include)
 
 
 @main.command(epilog=EPILOG)
@@ -110,6 +119,44 @@ def sample(dataset, fixtures=FIXTURES, out=FIXTURES, size=0.25, suffix="-sample"
     Create a sample dataset from the original that is smaller.
     """
     sample_source_datasets(dataset, fixtures, out, size, suffix)
+
+
+@main.command(epilog=EPILOG)
+@click.option(
+    "-f",
+    "--fixtures",
+    type=str,
+    default=FIXTURES,
+    help="path to fixtures directory where source datasets have been downloaded",
+)
+@click.option(
+    "-e",
+    "--exclude",
+    type=click.Choice(SOURCE_DATASETS, case_sensitive=False),
+    default=None,
+    multiple=True,
+    help="specify datasets to exclude from upload",
+)
+@click.option(
+    "-i",
+    "--include",
+    type=click.Choice(SOURCE_DATASETS, case_sensitive=False),
+    default=None,
+    multiple=True,
+    help="specify datasets to explicitly include in upload",
+)
+@click.option(
+    "-c",
+    "--credentials",
+    type=str,
+    default=None,
+    help="path to service account json credentials for upload",
+)
+def upload(**kwargs):
+    """
+    Upload datasets to GCP for user downloads.
+    """
+    upload_datasets(**kwargs)
 
 
 if __name__ == "__main__":
