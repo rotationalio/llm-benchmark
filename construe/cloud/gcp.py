@@ -6,6 +6,8 @@ import os
 import glob
 import json
 
+from ..exceptions import UploadError
+
 try:
     from google.cloud import storage
 except ImportError:
@@ -24,7 +26,7 @@ def upload(name, path, client=None, bucket=CONSTRUE_BUCKET):
         client = connect_storage()
 
     if not os.path.exists(path) or not os.path.isfile(path):
-        raise ValueError("no zip file exists at " + path)
+        raise UploadError("no zip file exists at " + path)
 
     bucket = client.get_bucket(bucket)
     blob = bucket.blob(name)
@@ -44,7 +46,7 @@ def connect_storage(credentials=None):
     credentials = credentials or find_service_account()
 
     if credentials is None:
-        raise RuntimeError(
+        raise UploadError(
             "could not find service account credentials: "
             "set either $GOOGLE_APPLICATION_CREDENTIALS to the path "
             "or store the credentials in the .secret folder"

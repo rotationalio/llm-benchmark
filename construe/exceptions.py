@@ -11,7 +11,19 @@ class ConstrueError(ClickException):
     pass
 
 
+class DownloadError(ConstrueError):
+    pass
+
+
+class UploadError(ConstrueError):
+    pass
+
+
 class DatasetsError(ConstrueError):
+    pass
+
+
+class ModelsError(ConstrueError):
     pass
 
 
