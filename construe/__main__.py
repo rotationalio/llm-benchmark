@@ -24,6 +24,7 @@ from .datasets.download import (
 )
 
 from .basic import BasicBenchmark
+from .whisper import WhisperBenchmark
 from .moondream import MoonDreamBenchmark
 
 
@@ -135,6 +136,19 @@ def moondream(ctx, **kwargs):
     kwargs["env"] = ctx.obj["env"]
     benchmark = MoonDreamBenchmark(**kwargs)
     benchmark.run()
+
+
+@main.command()
+@click.pass_context
+def whisper(ctx, **kwargs):
+    """
+    Executes audio-to-text inferencing benchmarks.
+    """
+    kwargs["env"] = ctx.obj["env"]
+    benchmark = WhisperBenchmark(**kwargs)
+    benchmark.before()
+    benchmark.run()
+    benchmark.after()
 
 
 @main.command()

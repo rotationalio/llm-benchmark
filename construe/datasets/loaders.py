@@ -48,7 +48,7 @@ def _load_prepare(name, sample=True, data_home=None):
         info.update({"data_home": data_home, "replace": False, "extract": True})
         download_data(**info)
 
-    return find_dataset_path(name, fname=None, ext=None)
+    return find_dataset_path(name, data_home=data_home, fname=None, ext=None)
 
 
 def _load_file_dataset(name, sample=True, data_home=None):

@@ -4,7 +4,7 @@ Handle downloading models from content URLs
 
 from functools import partial
 
-from .path import get_models_home
+from .path import get_model_home
 from .manifest import load_manifest
 from ..cloud.download import download_zip
 from .path import NSFW, LOWLIGHT, OFFENSIVE, GLINER
@@ -16,17 +16,17 @@ from ..exceptions import ModelsError
 def download_model(url, signature, model_home=None, replace=False, extract=True):
     """
     Downloads the zipped model file specified at the given URL saving it to the models
-    directory specified by ``get_models_home``. The download is verified with the
+    directory specified by ``get_model_home``. The download is verified with the
     given signature then extracted.
     """
-    model_home = get_models_home(model_home)
+    model_home = get_model_home(model_home)
     download_zip(url, model_home, signature=signature, replace=replace, extract=extract)
 
 
 def _download_model(name, model_home=None, replace=False, extract=True):
     """
     Downloads the zipped model file specified using the manifest URL, saving it to the
-    models directory specified by ``get_models_home``. The download is verified with
+    models directory specified by ``get_model_home``. The download is verified with
     the given signature then extracted.
     """
     models = load_manifest()
