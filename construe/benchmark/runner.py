@@ -9,8 +9,9 @@ from .base import Benchmark
 from ..metrics import Metric, Measurement, dump
 from ..exceptions import ConstrueError, BenchmarkError
 
+from tqdm import tqdm
 from datetime import datetime, timezone
-from typing import Iterable, List, Dict, Optional
+from typing import Iterable, List, Dict, Optional, Type
 
 
 DATEFMT = "%Y-%m-%dT%H:%M:%S.%fZ"
@@ -45,7 +46,7 @@ class BenchmarkRunner(object):
         self.benchmarks = benchmarks
 
         for b in self.benchmarks:
-            if not isinstance(b, Benchmark):
+            if not issubclass(b, Benchmark):
                 raise BenchmarkError(f"{b.__name__} is not a Benchmark")
 
     @property
@@ -60,30 +61,37 @@ class BenchmarkRunner(object):
             env=self.env,
             device=self.device,
             options=self.benchmark_kwargs,
+            errors=[],
         )
 
         self.run_complete_ = False
         self.measurements_ = []
+
         started = time.time()
 
         for cls in self.benchmarks:
+            total = cls.total(**self.benchmark_kwargs)
             for i in range(self.n_runs):
-                # TODO: do we need to pass separate metadata to the kwargs?
-                benchmark = cls(**self.benchmark_kwargs)
-
-                try:
-                    for measurement in self.execute(i, benchmark):
-                        self.measurements_.append(measurement)
-                        self.results_.successes += 1
-                except ConstrueError as e:
-                    self.results_.failures += 1
-                    self.results_.errors.append(str(e))
+                self.run_benchmark(i, total, cls)
 
         self.results_.duration = time.time() - started
-        self.results.measurements = Measurement.merge(self.measurements_)
+        self.results_.measurements = Measurement.merge(self.measurements_)
         self.run_complete_ = True
 
-    def execute(self, idx: int, benchmark: Benchmark) -> Iterable[Measurement]:
+    def run_benchmark(self, idx: int, total: int, Runner: Type):
+        # TODO: do we need to pass separate metadata to the kwargs?
+        progress = tqdm(total=total, desc=f"Running {Runner.__name__} Benchmark {idx+1}", leave=False)
+        benchmark = Runner(**self.benchmark_kwargs)
+
+        try:
+            for measurement in self.execute(idx, benchmark, progress):
+                self.measurements_.append(measurement)
+                self.results_.successes += 1
+        except ConstrueError as e:
+            self.results_.failures += 1
+            self.results_.errors.append(str(e))
+
+    def execute(self, idx: int, benchmark: Benchmark, progress: tqdm) -> Iterable[Measurement]:
         # Setup the benchmark
         benchmark.before()
 
@@ -102,7 +110,7 @@ class BenchmarkRunner(object):
 
                 ptimes.append(t2 - t1)
                 itimes.append(t3 - t2)
-
+                progress.update(1)
         finally:
             # Ensure benchmark is cleaned up despite any errors if this is the last
             # run of the benchmark and cleanup is specified (otherwise leave cache).
@@ -141,12 +149,8 @@ class BenchmarkRunner(object):
         if not self.is_complete:
             raise BenchmarkError("cannot save benchmarks that haven't been run")
 
-        output = {}
-        output.update(self.info_)
-        output["measurements"] = self.measurements_
-
         with open(path, "w") as o:
-            dump(o, output)
+            dump(self.results_, o)
 
 
 @dataclasses.dataclass(init=True, repr=False, eq=True)
@@ -158,8 +162,8 @@ class Results:
     n_runs: int
     benchmarks: List[str]
     started: str
-    duration: Optional[float]
     errors: List[str] = list
+    duration: Optional[float] = None
     env: Optional[str] = None
     device: Optional[str] = None
     options: Optional[Dict] = None

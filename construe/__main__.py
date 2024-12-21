@@ -6,10 +6,10 @@ import click
 import torch
 import platform
 
+from datetime import datetime
+
 from .version import get_version
 from .exceptions import DeviceError
-
-from .models.path import get_model_home
 
 from .datasets.path import get_data_home
 from .datasets.loaders import cleanup_all_datasets
@@ -22,6 +22,20 @@ from .datasets.download import (
     download_essays,
     download_aegis,
     download_nsfw,
+)
+
+from .models.path import get_model_home
+from .models.loaders import cleanup_all_models
+from .models.download import (
+    download_all_models,
+    download_moondream,
+    download_whisper,
+    download_mobilenet,
+    download_mobilevit,
+    download_nsfw as download_nsfw_model,
+    download_offensive,
+    download_lowlight as download_lowlight_model,
+    download_gliner,
 )
 
 
@@ -47,13 +61,25 @@ DATASETS = [
     "nsfw",
 ]
 
+MODELS = [
+    "all",
+    "moondream",
+    "whisper",
+    "mobilenet",
+    "mobilevit",
+    "nsfw",
+    "offensive",
+    "lowlight",
+    "gliner",
+]
+
 
 @click.group(context_settings=CONTEXT_SETTINGS)
 @click.version_option(get_version(), message="%(prog)s v%(version)s")
 @click.option(
     "-o",
     "--out",
-    default="construe.json",
+    default=None,
     type=str,
     help="specify the path to write the benchmark results to",
 )
@@ -131,6 +157,9 @@ def main(
     if env is None:
         env = platform.node()
 
+    if out is None:
+        out = f"construe-results-{datetime.now().strftime("%Y%m%d%H%M%S")}.json"
+
     ctx.ensure_object(dict)
     ctx.obj["out"] = out
     ctx.obj["device"] = device
@@ -205,7 +234,7 @@ def whisper(ctx, **kwargs):
 @main.command()
 @click.option(
     "-C",
-    "--clean",
+    "--clean/--no-clean",
     default=False,
     help="cleanup the downloaded data cache and exit",
 )
@@ -230,7 +259,7 @@ def whisper(ctx, **kwargs):
 @click.pass_context
 def datasets(ctx, clean=False, download=None, sample=True, verbose=False):
     """
-    Helper utility for managing the dataset cache for benchmarks.
+    Helper utility for managing the dataset cache.
     """
     if clean and download:
         raise click.ClickException("cannot specify both --clean and --download")
@@ -252,7 +281,7 @@ def datasets(ctx, clean=False, download=None, sample=True, verbose=False):
             "nsfw": download_nsfw,
         }[download]
 
-        downloader(sample=sample, data_home=data_home)
+        downloader(sample=sample, data_home=data_home, progress=True)
         return
 
     # Provide some info
@@ -260,6 +289,61 @@ def datasets(ctx, clean=False, download=None, sample=True, verbose=False):
         print(f"downloaded datasets are stored in {data_home}")
     else:
         print(data_home)
+
+
+@main.command()
+@click.option(
+    "-C",
+    "--clean/--no-clean",
+    default=False,
+    help="cleanup the downloaded models cache and exit",
+)
+@click.option(
+    "-d",
+    "--download",
+    default=None,
+    type=click.Choice(MODELS, case_sensitive=False),
+)
+@click.option(
+    "-v",
+    "--verbose/--no-verbose",
+    default=False,
+    help="print verbose info, otherwise just print the models path",
+)
+@click.pass_context
+def models(ctx, clean=False, download=None, sample=True, verbose=False):
+    """
+    Helper utility for managing the models cache.
+    """
+    if clean and download:
+        raise click.ClickException("cannot specify both --clean and --download")
+
+    model_home = ctx.obj["model_home"]
+    if clean:
+        cleanup_all_models(model_home)
+        return
+
+    if download is not None:
+        downloader = {
+            "all": download_all_models,
+            "moondream": download_moondream,
+            "whisper": download_whisper,
+            "mobilenet": download_mobilenet,
+            "mobilevit": download_mobilevit,
+            "nsfw": download_nsfw_model,
+            "offensive": download_offensive,
+            "lowlight": download_lowlight_model,
+            "gliner": download_gliner,
+        }[download]
+
+        downloader(model_home=model_home, progress=True)
+        return
+
+    # Provide some info
+    if verbose:
+        print(f"downloaded models are stored in {model_home}")
+    else:
+        print(model_home)
 
 
 if __name__ == "__main__":

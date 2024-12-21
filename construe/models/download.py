@@ -13,17 +13,21 @@ from .path import MOONDREAM, WHISPER, MOBILENET, MOBILEVIT
 from ..exceptions import ModelsError
 
 
-def download_model(url, signature, model_home=None, replace=False, extract=True):
+def download_model(
+    url, signature, model_home=None, replace=False, extract=True, progress=False
+):
     """
     Downloads the zipped model file specified at the given URL saving it to the models
     directory specified by ``get_model_home``. The download is verified with the
     given signature then extracted.
     """
     model_home = get_model_home(model_home)
-    download_zip(url, model_home, signature=signature, replace=replace, extract=extract)
+    download_zip(
+        url, model_home, signature, replace=replace, extract=extract, progress=progress
+    )
 
 
-def _download_model(name, model_home=None, replace=False, extract=True):
+def _download_model(name, model_home=None, replace=False, extract=True, progress=False):
     """
     Downloads the zipped model file specified using the manifest URL, saving it to the
     models directory specified by ``get_model_home``. The download is verified with
@@ -34,7 +38,14 @@ def _download_model(name, model_home=None, replace=False, extract=True):
         raise ModelsError(f"no model named {name} exists")
 
     info = models[name]
-    info.update({"model_home": model_home, "replace": replace, "extract": extract})
+    info.update(
+        {
+            "model_home": model_home,
+            "replace": replace,
+            "extract": extract,
+            "progress": progress,
+        }
+    )
     download_model(**info)
 
 
@@ -49,11 +60,17 @@ download_gliner = partial(_download_model, GLINER)
 
 
 DOWNLOADERS = [
-    download_moondream, download_whisper, download_mobilenet, download_mobilevit,
-    download_nsfw, download_lowlight, download_offensive, download_gliner,
+    download_moondream,
+    download_whisper,
+    download_mobilenet,
+    download_mobilevit,
+    download_nsfw,
+    download_lowlight,
+    download_offensive,
+    download_gliner,
 ]
 
 
-def download_all_models(model_home=None, replace=True, extract=True):
+def download_all_models(model_home=None, replace=True, extract=True, progress=False):
     for f in DOWNLOADERS:
-        f(model_home=model_home, replace=replace, extract=extract)
+        f(model_home=model_home, replace=replace, extract=extract, progress=progress)

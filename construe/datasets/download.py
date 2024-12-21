@@ -12,17 +12,23 @@ from .path import DIALECTS, LOWLIGHT, REDDIT, MOVIES, ESSAYS, AEGIS, NSFW
 from ..exceptions import DatasetsError
 
 
-def download_data(url, signature, data_home=None, replace=False, extract=True):
+def download_data(
+    url, signature, data_home=None, replace=False, extract=True, progress=False
+):
     """
     Downloads the zipped data set specified at the given URL, saving it to
     the data directory specified by ``get_data_home``. This function verifies
     the download with the given signature and extracts the archive.
     """
     data_home = get_data_home(data_home)
-    download_zip(url, data_home, signature=signature, replace=replace, extract=extract)
+    download_zip(
+        url, data_home, signature, replace=replace, extract=extract, progress=progress
+    )
 
 
-def _download_dataset(name, sample=True, data_home=True, replace=False, extract=True):
+def _download_dataset(
+    name, sample=True, data_home=True, replace=False, extract=True, progress=False
+):
     """
     Downloads the zipped data set specified using the manifest URL, saving it to the
     data directory specified by ``get_data_home``. The download is verified with
@@ -36,7 +42,12 @@ def _download_dataset(name, sample=True, data_home=True, replace=False, extract=
         raise DatasetsError(f"no dataset named {name} exists")
 
     info = datasets[name]
-    info.update({"data_home": data_home, "replace": replace, "extract": extract})
+    info.update({
+        "data_home": data_home,
+        "replace": replace,
+        "extract": extract,
+        "progress": progress,
+    })
     download_data(**info)
 
 
@@ -50,11 +61,24 @@ download_nsfw = partial(_download_dataset, NSFW)
 
 
 DOWNLOADERS = [
-    download_dialects, download_lowlight, download_reddit,
-    download_movies, download_essays, download_aegis, download_nsfw,
+    download_dialects,
+    download_lowlight,
+    download_reddit,
+    download_movies,
+    download_essays,
+    download_aegis,
+    download_nsfw,
 ]
 
 
-def download_all_datasets(sample=True, data_home=True, replace=True, extract=True):
+def download_all_datasets(
+    sample=True, data_home=True, replace=True, extract=True, progress=False
+):
     for f in DOWNLOADERS:
-        f(sample=sample, data_home=data_home, replace=replace, extract=extract)
+        f(
+            sample=sample,
+            data_home=data_home,
+            replace=replace,
+            extract=extract,
+            progress=progress,
+        )

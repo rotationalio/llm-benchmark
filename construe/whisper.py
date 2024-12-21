@@ -2,20 +2,29 @@
 Whisper benchmark runner
 """
 
-from typing import Dict
+import soundfile as sf
 
-from .datasets import load_dialects
+from .benchmark import Benchmark
 from .exceptions import InferenceError
 from .models import load_whisper, cleanup_whisper
+from .datasets import load_dialects, cleanup_dialects
 
 
-class Whisper(object):
+class Whisper(Benchmark):
 
-    def __init__(self, **kwargs):
-        self.model_home = None
-        self.data_home = None
-        for key, val in kwargs.items():
-            setattr(self, key, val)
+    @staticmethod
+    def total(**kwargs):
+        # TODO: load this number from the manifest instead of counting
+        data_home = kwargs.pop("data_home", None)
+        use_sample = kwargs.pop("use_sample", True)
+        return sum(1 for _ in load_dialects(data_home=data_home, sample=use_sample))
+
+    @property
+    def description(self):
+        return (
+            "utilizes the whisper-tiny english model to "
+            "transcribe audio from various UK dialects"
+        )
 
     def before(self):
         model, processor = load_whisper(model_home=self.model_home)
@@ -23,26 +32,27 @@ class Whisper(object):
         self.processor = processor
         self.generate = self.model.get_signature_runner()
 
-    def run(self):
-        dataset = load_dialects(data_home=self.data_home)
-        for instance in dataset:
-            # TODO: time how long it takes to perform the inference
-            # TODO: measure memory consumption during inferencing
-            # TODO: make this function part of the base object
-            transcript = self.inference(instance)
-            print(transcript)
+    def after(self, cleanup=True):
+        if cleanup:
+            cleanup_whisper(model_home=self.model_home)
+            cleanup_dialects(data_home=self.data_home, sample=self.use_sample)
 
-    def after(self):
-        cleanup_whisper(model_home=self.model_home)
+    def instances(self):
+        return load_dialects(data_home=self.data_home, sample=self.use_sample)
 
-    def preprocess(self, instance: Dict):
-        audio = instance.get("audio", {}).get("array", None)
-        if not audio:
-            raise InferenceError("could not extract audio from instance")
+    def preprocess(self, instance):
+        # Instance is a path to a a sound file on disk.
+        try:
+            audio, samplerate = sf.read(instance)
+        except Exception as e:
+            raise InferenceError("could not extract audio from file") from e
 
-        return self.processor(audio, return_tensors="tf")
+        audio = audio.astype('float64')
+        audio = audio / 32767.0
 
-    def inference(self, instance: Dict):
-        audio = self.preprocess(instance)
-        sequences = self.generate(input_features=audio.input_featrures)["sequences"]
+        return self.processor(audio, sampling_rate=samplerate, return_tensors="tf")
+
+    def inference(self, instance):
+        audio = instance.input_features
+        sequences = self.generate(input_features=audio)["sequences"]
         return self.processor.batch_decode(sequences, skip_special_tokens=True)
