@@ -61,6 +61,7 @@ class BenchmarkRunner(object):
             env=self.env,
             device=self.device,
             options=self.benchmark_kwargs,
+            errors=[],
         )
 
         self.run_complete_ = False
@@ -148,12 +149,8 @@ class BenchmarkRunner(object):
         if not self.is_complete:
             raise BenchmarkError("cannot save benchmarks that haven't been run")
 
-        output = {}
-        output.update(self.info_)
-        output["measurements"] = self.measurements_
-
         with open(path, "w") as o:
-            dump(o, output)
+            dump(self.results_, o)
 
 
 @dataclasses.dataclass(init=True, repr=False, eq=True)

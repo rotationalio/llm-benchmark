@@ -6,6 +6,8 @@ import click
 import torch
 import platform
 
+from datetime import datetime
+
 from .version import get_version
 from .exceptions import DeviceError
 
@@ -77,7 +79,7 @@ MODELS = [
 @click.option(
     "-o",
     "--out",
-    default="construe.json",
+    default=None,
     type=str,
     help="specify the path to write the benchmark results to",
 )
@@ -154,6 +156,9 @@ def main(
 
     if env is None:
         env = platform.node()
+
+    if out is None:
+        out = f"construe-results-{datetime.now().strftime("%Y%m%d%H%M%S")}.json"
 
     ctx.ensure_object(dict)
     ctx.obj["out"] = out
