@@ -74,7 +74,7 @@ class BenchmarkRunner(object):
                 self.run_benchmark(i, total, cls)
 
         self.results_.duration = time.time() - started
-        self.results.measurements = Measurement.merge(self.measurements_)
+        self.results_.measurements = Measurement.merge(self.measurements_)
         self.run_complete_ = True
 
     def run_benchmark(self, idx: int, total: int, Runner: Type):
