@@ -2,6 +2,8 @@
 Whisper benchmark runner
 """
 
+import soundfile as sf
+
 from .benchmark import Benchmark
 from .exceptions import InferenceError
 from .models import load_whisper, cleanup_whisper
@@ -32,11 +34,16 @@ class Whisper(Benchmark):
         return load_dialects(data_home=self.data_home, sample=self.use_sample)
 
     def preprocess(self, instance):
-        # TODO: the instance is a path to an .mp3 file on disk.
-        audio = instance.get("audio", {}).get("array", None)
-        if not audio:
-            raise InferenceError("could not extract audio from instance")
-        return self.processor(audio, return_tensors="tf")
+        # Instance is a path to a a sound file on disk.
+        try:
+            audio, samplerate = sf.read(instance)
+        except Exception as e:
+            raise InferenceError("could not extract audio from file") from e
+
+        audio = audio.astype('float64')
+        audio = audio / 32767.0
+
+        return self.processor(audio, sampling_rate=samplerate, return_tensors="tf")
 
     def inference(self, instance):
         audio = instance.input_features
