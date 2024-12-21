@@ -17,7 +17,7 @@ from .signature import sha256sum
 CHUNK = 524288
 
 
-def download_zip(url, out, signature, replace=False, extract=True):
+def download_zip(url, out, signature, replace=False, extract=True, progress=False):
     """
     Download a zipped file at the given URL saving it to the out directory. Once
     downloaded, verify the signature to make sure the download hasn't been tampered
@@ -50,16 +50,21 @@ def download_zip(url, out, signature, replace=False, extract=True):
     response = urlopen(url)
     content_length = int(response.headers["Content-Length"])
 
-    with open(archive, "wb") as f:
+    pbar = None
+    if progress:
         pbar = tqdm(
             unit="B", total=content_length, desc=f"Downloading {basename}", leave=False
         )
+
+    with open(archive, "wb") as f:
         while True:
             chunk = response.read(CHUNK)
             if not chunk:
                 break
             f.write(chunk)
-            pbar.update(len(chunk))
+
+            if pbar:
+                pbar.update(len(chunk))
 
     # Compare the signature of the archive to the expected one
     if sha256sum(archive) != signature:

@@ -9,6 +9,7 @@ from .base import Benchmark
 from ..metrics import Metric, Measurement, dump
 from ..exceptions import ConstrueError, BenchmarkError
 
+from halo import Halo
 from datetime import datetime, timezone
 from typing import Iterable, List, Dict, Optional
 
@@ -45,14 +46,21 @@ class BenchmarkRunner(object):
         self.benchmarks = benchmarks
 
         for b in self.benchmarks:
-            if not isinstance(b, Benchmark):
+            if not issubclass(b, Benchmark):
                 raise BenchmarkError(f"{b.__name__} is not a Benchmark")
 
     @property
     def is_complete(self):
         return getattr(self, "run_complete_", False)
 
+    @property
+    def spinner(self):
+        if not hasattr(self, "_spinner"):
+            self._spinner = Halo(text="Starting Benchmark", spinner="dots")
+        return self._spinner
+
     def run(self):
+        self.spinner.start()
         self.results_ = Results(
             n_runs=self.n_runs,
             benchmarks=[b.__name__ for b in self.benchmarks],
@@ -67,6 +75,8 @@ class BenchmarkRunner(object):
         started = time.time()
 
         for cls in self.benchmarks:
+            self.spinner.text = f"Running {cls.__name__} Benchmark"
+
             for i in range(self.n_runs):
                 # TODO: do we need to pass separate metadata to the kwargs?
                 benchmark = cls(**self.benchmark_kwargs)
@@ -82,6 +92,7 @@ class BenchmarkRunner(object):
         self.results_.duration = time.time() - started
         self.results.measurements = Measurement.merge(self.measurements_)
         self.run_complete_ = True
+        self.spinner.stop()
 
     def execute(self, idx: int, benchmark: Benchmark) -> Iterable[Measurement]:
         # Setup the benchmark
@@ -102,7 +113,6 @@ class BenchmarkRunner(object):
 
                 ptimes.append(t2 - t1)
                 itimes.append(t3 - t2)
-
         finally:
             # Ensure benchmark is cleaned up despite any errors if this is the last
             # run of the benchmark and cleanup is specified (otherwise leave cache).
@@ -158,8 +168,8 @@ class Results:
     n_runs: int
     benchmarks: List[str]
     started: str
-    duration: Optional[float]
     errors: List[str] = list
+    duration: Optional[float] = None
     env: Optional[str] = None
     device: Optional[str] = None
     options: Optional[Dict] = None
