@@ -9,9 +9,9 @@ from .base import Benchmark
 from ..metrics import Metric, Measurement, dump
 from ..exceptions import ConstrueError, BenchmarkError
 
-from halo import Halo
+from tqdm import tqdm
 from datetime import datetime, timezone
-from typing import Iterable, List, Dict, Optional
+from typing import Iterable, List, Dict, Optional, Type
 
 
 DATEFMT = "%Y-%m-%dT%H:%M:%S.%fZ"
@@ -53,14 +53,7 @@ class BenchmarkRunner(object):
     def is_complete(self):
         return getattr(self, "run_complete_", False)
 
-    @property
-    def spinner(self):
-        if not hasattr(self, "_spinner"):
-            self._spinner = Halo(text="Starting Benchmark", spinner="dots")
-        return self._spinner
-
     def run(self):
-        self.spinner.start()
         self.results_ = Results(
             n_runs=self.n_runs,
             benchmarks=[b.__name__ for b in self.benchmarks],
@@ -72,29 +65,32 @@ class BenchmarkRunner(object):
 
         self.run_complete_ = False
         self.measurements_ = []
+
         started = time.time()
 
         for cls in self.benchmarks:
-            self.spinner.text = f"Running {cls.__name__} Benchmark"
-
+            total = cls.total(**self.benchmark_kwargs)
             for i in range(self.n_runs):
-                # TODO: do we need to pass separate metadata to the kwargs?
-                benchmark = cls(**self.benchmark_kwargs)
-
-                try:
-                    for measurement in self.execute(i, benchmark):
-                        self.measurements_.append(measurement)
-                        self.results_.successes += 1
-                except ConstrueError as e:
-                    self.results_.failures += 1
-                    self.results_.errors.append(str(e))
+                self.run_benchmark(i, total, cls)
 
         self.results_.duration = time.time() - started
         self.results.measurements = Measurement.merge(self.measurements_)
         self.run_complete_ = True
-        self.spinner.stop()
 
-    def execute(self, idx: int, benchmark: Benchmark) -> Iterable[Measurement]:
+    def run_benchmark(self, idx: int, total: int, Runner: Type):
+        # TODO: do we need to pass separate metadata to the kwargs?
+        progress = tqdm(total=total, desc=f"Running {Runner.__name__} Benchmark {idx+1}", leave=False)
+        benchmark = Runner(**self.benchmark_kwargs)
+
+        try:
+            for measurement in self.execute(idx, benchmark, progress):
+                self.measurements_.append(measurement)
+                self.results_.successes += 1
+        except ConstrueError as e:
+            self.results_.failures += 1
+            self.results_.errors.append(str(e))
+
+    def execute(self, idx: int, benchmark: Benchmark, progress: tqdm) -> Iterable[Measurement]:
         # Setup the benchmark
         benchmark.before()
 
@@ -113,6 +109,7 @@ class BenchmarkRunner(object):
 
                 ptimes.append(t2 - t1)
                 itimes.append(t3 - t2)
+                progress.update(1)
         finally:
             # Ensure benchmark is cleaned up despite any errors if this is the last
             # run of the benchmark and cleanup is specified (otherwise leave cache).

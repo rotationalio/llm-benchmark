@@ -12,6 +12,13 @@ from .datasets import load_dialects, cleanup_dialects
 
 class Whisper(Benchmark):
 
+    @staticmethod
+    def total(**kwargs):
+        # TODO: load this number from the manifest instead of counting
+        data_home = kwargs.pop("data_home", None)
+        use_sample = kwargs.pop("use_sample", True)
+        return sum(1 for _ in load_dialects(data_home=data_home, sample=use_sample))
+
     @property
     def description(self):
         return (

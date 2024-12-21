@@ -16,6 +16,16 @@ class Benchmark(abc.ABC):
     correctly set for generic benchmarks to be run correctly.
     """
 
+    @staticmethod
+    @abc.abstractmethod
+    def total(**kwargs):
+        """
+        For progress bar purposes should report the total number of instances in one
+        run of the Benchmark. Generally this should be hard-coded but can also be
+        computed if necessary.
+        """
+        pass
+
     def __init__(self, **kwargs):
         self._data_home = get_data_home(kwargs.pop("data_home", None))
         self._model_home = get_model_home(kwargs.pop("model_home", None))
