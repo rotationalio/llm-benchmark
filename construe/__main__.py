@@ -3,7 +3,6 @@ Primary entry point for construe CLI application
 """
 
 import click
-import torch
 import platform
 
 from datetime import datetime
@@ -174,6 +173,7 @@ def main(
     """
     if device is not None:
         try:
+            import torch
             torch.set_default_device(device)
         except RuntimeError as e:
             raise DeviceError(e)
@@ -184,7 +184,7 @@ def main(
         env = platform.node()
 
     if out is None:
-        out = f"construe-results-{datetime.now().strftime("%Y%m%d%H%M%S")}.json"
+        out = f"construe-results-{datetime.now().strftime('%Y%m%d%H%M%S')}.json"
 
     ctx.ensure_object(dict)
     ctx.obj["out"] = out
