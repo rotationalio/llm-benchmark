@@ -195,14 +195,14 @@ def main(
 
 @main.command()
 @click.option(
-    "-e",
+    "-E",
     "--exclude",
     default=None,
     type=click.Choice(BENCHMARKS.keys(), case_sensitive=False),
     help="specify benchmarks to exclude from runner",
 )
 @click.option(
-    "-i",
+    "-I",
     "--include",
     default=None,
     type=click.Choice(BENCHMARKS.keys(), case_sensitive=False),

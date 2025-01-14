@@ -22,17 +22,63 @@ The command line utility help is as follows:
 ```
 Usage: construe [OPTIONS] COMMAND [ARGS]...
 
+  A utility for executing inferencing benchmarks.
+
 Options:
-  --version          Show the version and exit.
-  -d, --device TEXT  specify the pytorch device to run on e.g. cpu, mps or
-                     cuda
-  -e, --env TEXT     name of the experimental environment for comparison
-                     (default is hostname)
-  -h, --help         Show this message and exit.
+  --version                     Show the version and exit.
+  -o, --out TEXT                specify the path to write the benchmark
+                                results to
+  -d, --device TEXT             specify the pytorch device to run on e.g. cpu,
+                                mps or cuda
+  -e, --env TEXT                name of the experimental environment for
+                                comparison (default is hostname)
+  -c, --count INTEGER           specify the number of times to run each
+                                benchmark
+  -l, --limit INTEGER           limit the number of instances to inference on
+                                in each benchmark
+  -D, --datadir TEXT            specify the location to download datasets to
+  -M, --modeldir TEXT           specify the location to download models to
+  -S, --sample / --no-sample    use sample dataset instead of full dataset for
+                                benchmark
+  -C, --cleanup / --no-cleanup  cleanup all downloaded datasets after the
+                                benchmark is run
+  -Q, --verbose / --quiet       specify the verbosity of the output and
+                                progress bars
+  -h, --help                    Show this message and exit.
 
 Commands:
-  basic
-  moondream
+  basic      Runs basic dot product performance benchmarks.
+  datasets   Helper utility for managing the dataset cache.
+  models     Helper utility for managing the models cache.
+  moondream  Executes image-to-text inferencing benchmarks.
+  run        Executes all available benchmarks.
+  whisper    Executes audio-to-text inferencing benchmarks.
+```
+
+## Run Benchmarks
+
+You can either run all available benchamrks (excluding some, or specifying which benchmarks to include) or you can run an individual benchmark. To run all benchmarks:
+
+```
+$ construe -e "MacBook Pro 2022 M1" run
+```
+
+This will run all available benchmarks. The `-e` flag specifies the environment for comparison purposes and the results will be saved as a JSON file on the local disk.
+
+When running each benchmark, the model and dataset for that benchmark is downloaded, the benchmark is executed, then the model and dataset are cleaned up. If you do not want the data to be cleaned up use the `-C` or `--no-cleanup` flag to cache the models and datasets between runs.
+
+If you would like to limit the number of instances per run you can use the `-l` or `--limit` flag; this might speed up the benchmarks if you're just trying to get a simple sense of inferening on the device. You can also specify the `-c` or `--count` flag to run each benchmark multiple times on the same instances to get more detailed results.
+
+To run an individual benchmark, run it by name; for example to run the `whisper` speech-to-text benchmark:
+
+```
+$ construe whisper
+```
+
+Alternatively if you want to exclude `whisper` (e.g. run all benchmarks but `whisper`), use the `-E` or `--exclude` flag as follows:
+
+```
+$ construe run -E whisper
 ```
 
 ## Basic Benchmarks
@@ -60,25 +106,6 @@ Options:
                              benchmark
   -S, --seed INTEGER         set the random seed for random generation
   -h, --help                 Show this message and exit.
-```
-
-## Moondream Benchmarks
-
-The [moondream](https://huggingface.co/vikhyatk/moondream2) package contains small image-to-text computer vision models that can be used in the first step of a [content moderation](https://www.cloudraft.io/blog/content-moderation-using-llamaindex-and-llm) workflow (e.g. image to text, moderate text). This benchmark executes the model for _encoding_ and _inferencing_ on a small number of images and reports the average time for both operations and the line-by-line memory usage of the model.
-
-It can be run as follows:
-
-```
-$ construe moondream
-```
-
-Command usage is as follows:
-
-```
-Usage: construe moondream [OPTIONS]
-
-Options:
-  -h, --help  Show this message and exit.
 ```
 
 ## Model References
