@@ -46,9 +46,9 @@ from .whisper import Whisper
 from .lowlight import LowLight
 from .mobilenet import MobileNet
 from .mobilevit import MobileViT
+from .moondream import MoonDream
 from .offensive import Offensive
 from .basic import BasicBenchmark
-from .moondream import MoonDreamBenchmark
 
 from .benchmark import BenchmarkRunner
 
@@ -276,9 +276,10 @@ def moondream(ctx, **kwargs):
     """
     Executes image-to-text inferencing benchmarks.
     """
-    kwargs["env"] = ctx.obj["env"]
-    benchmark = MoonDreamBenchmark(**kwargs)
-    benchmark.run()
+    out = ctx.obj.pop("out")
+    runner = BenchmarkRunner(benchmarks=[MoonDream], **ctx.obj)
+    runner.run()
+    runner.save(out)
 
 
 @main.command()

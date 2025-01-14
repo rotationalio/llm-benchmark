@@ -23,7 +23,7 @@ __all__ = [
     "load_all_models", "cleanup_all_models",
     "load_moondream", "cleanup_moondream",
     "load_whisper", "cleanup_whisper",
-    "load_mobilenet", "cleanup_mobilenet",
+    "load_mobilevit", "cleanup_mobilevit",
     "load_mobilevit", "cleanup_mobilevit",
     "load_nsfw", "cleanup_nsfw",
     "load_lowlight", "cleanup_lowlight",
@@ -69,7 +69,7 @@ def load_whisper(model_home=None):
     return model, processor
 
 
-def load_mobilenet(model_home=None):
+def load_mobilevit(model_home=None):
     pass
 
 
@@ -126,7 +126,7 @@ def cleanup_all_models(model_home=None):
 
 cleanup_moondream = partial(cleanup_model, MOONDREAM)
 cleanup_whisper = partial(cleanup_model, WHISPER)
-cleanup_mobilenet = partial(cleanup_model, MOBILENET)
+cleanup_mobilevit = partial(cleanup_model, MOBILENET)
 cleanup_mobilevit = partial(cleanup_model, MOBILEVIT)
 cleanup_nsfw = partial(cleanup_model, NSFW)
 cleanup_lowlight = partial(cleanup_model, LOWLIGHT)
