@@ -40,7 +40,13 @@ from .models.download import (
 )
 
 
+from .nsfw import NSFW
+from .gliner import GLiNER
 from .whisper import Whisper
+from .lowlight import LowLight
+from .mobilenet import MobileNet
+from .mobilevit import MobileViT
+from .offensive import Offensive
 from .basic import BasicBenchmark
 from .moondream import MoonDreamBenchmark
 
@@ -283,6 +289,78 @@ def whisper(ctx, **kwargs):
     """
     out = ctx.obj.pop("out")
     runner = BenchmarkRunner(benchmarks=[Whisper], **ctx.obj)
+    runner.run()
+    runner.save(out)
+
+
+@main.command()
+@click.pass_context
+def mobilenet(ctx, **kwargs):
+    """
+    Executes image classification inferencing benchmarks.
+    """
+    out = ctx.obj.pop("out")
+    runner = BenchmarkRunner(benchmarks=[MobileNet], **ctx.obj)
+    runner.run()
+    runner.save(out)
+
+
+@main.command()
+@click.pass_context
+def mobilevit(ctx, **kwargs):
+    """
+    Executes object detection inferencing benchmarks.
+    """
+    out = ctx.obj.pop("out")
+    runner = BenchmarkRunner(benchmarks=[MobileViT], **ctx.obj)
+    runner.run()
+    runner.save(out)
+
+
+@main.command()
+@click.pass_context
+def nsfw(ctx, **kwargs):
+    """
+    Executes NSFW image classification inferencing benchmarks.
+    """
+    out = ctx.obj.pop("out")
+    runner = BenchmarkRunner(benchmarks=[NSFW], **ctx.obj)
+    runner.run()
+    runner.save(out)
+
+
+@main.command()
+@click.pass_context
+def lowlight(ctx, **kwargs):
+    """
+    Executes lowlight image enhancement inferencing benchmarks.
+    """
+    out = ctx.obj.pop("out")
+    runner = BenchmarkRunner(benchmarks=[LowLight], **ctx.obj)
+    runner.run()
+    runner.save(out)
+
+
+@main.command()
+@click.pass_context
+def offensive(ctx, **kwargs):
+    """
+    Executes offensive speech text classification inferencing benchmarks.
+    """
+    out = ctx.obj.pop("out")
+    runner = BenchmarkRunner(benchmarks=[Offensive], **ctx.obj)
+    runner.run()
+    runner.save(out)
+
+
+@main.command()
+@click.pass_context
+def gliner(ctx, **kwargs):
+    """
+    Executes GLiNER named entity discovery inferencing benchmarks.
+    """
+    out = ctx.obj.pop("out")
+    runner = BenchmarkRunner(benchmarks=[GLiNER], **ctx.obj)
     runner.run()
     runner.save(out)
 
