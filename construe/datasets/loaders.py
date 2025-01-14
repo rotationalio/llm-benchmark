@@ -45,7 +45,7 @@ def _load_prepare(name, sample=True, data_home=None):
     info = _info(name)
     if not dataset_archive(name, info["signature"], data_home=data_home):
         # If the dataset does not exist, download and extract it
-        info.update({"data_home": data_home, "replace": False, "extract": True})
+        info.update({"data_home": data_home, "replace": True, "extract": True})
         download_data(**info)
 
     return find_dataset_path(name, data_home=data_home, fname=None, ext=None)

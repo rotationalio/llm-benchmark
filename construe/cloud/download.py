@@ -36,7 +36,7 @@ def download_zip(url, out, signature, replace=False, extract=True, progress=True
     if os.path.exists(archive):
         if not replace:
             raise DownloadError(
-                f"dataset already exists at {archive}, set replace=False to overwrite"
+                f"file already exists at {archive}, set replace=False to overwrite"
             )
 
         shutil.rmtree(datadir)

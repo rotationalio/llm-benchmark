@@ -9,6 +9,7 @@ import platform
 from datetime import datetime
 
 from .version import get_version
+from .utils import resolve_exclude
 from .exceptions import DeviceError
 
 from .datasets.path import get_data_home
@@ -72,6 +73,10 @@ MODELS = [
     "lowlight",
     "gliner",
 ]
+
+BENCHMARKS = {
+    "whisper": Whisper,
+}
 
 
 @click.group(context_settings=CONTEXT_SETTINGS)
@@ -190,6 +195,37 @@ def main(
 
 @main.command()
 @click.option(
+    "-e",
+    "--exclude",
+    default=None,
+    type=click.Choice(BENCHMARKS.keys(), case_sensitive=False),
+    help="specify benchmarks to exclude from runner",
+)
+@click.option(
+    "-i",
+    "--include",
+    default=None,
+    type=click.Choice(BENCHMARKS.keys(), case_sensitive=False),
+    help="specify benchmarks to include in runner",
+)
+@click.pass_context
+def run(ctx, **kwargs):
+    """
+    Executes all available benchmarks.
+    """
+    out = ctx.obj.pop("out")
+    exclude = resolve_exclude(
+        kwargs.pop("exclude"), kwargs.pop("include"), BENCHMARKS.keys()
+    )
+    benchmarks = [bench for name, bench in BENCHMARKS.items() if name not in exclude]
+
+    runner = BenchmarkRunner(benchmarks=benchmarks, **ctx.obj)
+    runner.run()
+    runner.save(out)
+
+
+@main.command()
+@click.option(
     "-o",
     "--saveto",
     default=None,
@@ -221,6 +257,9 @@ def basic(ctx, **kwargs):
     Runs basic dot product performance benchmarks.
     """
     kwargs["env"] = ctx.obj["env"]
+    if kwargs["saveto"] is None:
+        kwargs["saveto"] = ctx.obj["out"]
+
     benchmark = BasicBenchmark(**kwargs)
     benchmark.run()
 
