@@ -15,6 +15,7 @@ prune tests/fixtures
 
 graft construe
 prune construe/datasets/fixtures
+prune construe/models/fixtures
 
 global-exclude __pycache__
 global-exclude *.py[co]
