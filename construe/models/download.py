@@ -14,7 +14,7 @@ from ..exceptions import ModelsError
 
 
 def download_model(
-    url, signature, model_home=None, replace=False, extract=True, progress=False
+    url, signature, model_home=None, replace=False, extract=True, progress=True
 ):
     """
     Downloads the zipped model file specified at the given URL saving it to the models
@@ -27,7 +27,7 @@ def download_model(
     )
 
 
-def _download_model(name, model_home=None, replace=False, extract=True, progress=False):
+def _download_model(name, model_home=None, replace=False, extract=True, progress=True):
     """
     Downloads the zipped model file specified using the manifest URL, saving it to the
     models directory specified by ``get_model_home``. The download is verified with
@@ -71,6 +71,6 @@ DOWNLOADERS = [
 ]
 
 
-def download_all_models(model_home=None, replace=True, extract=True, progress=False):
+def download_all_models(model_home=None, replace=True, extract=True, progress=True):
     for f in DOWNLOADERS:
         f(model_home=model_home, replace=replace, extract=extract, progress=progress)

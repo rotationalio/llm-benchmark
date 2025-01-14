@@ -106,6 +106,13 @@ MODELS = [
     help="specify the number of times to run each benchmark",
 )
 @click.option(
+    "-l",
+    "--limit",
+    default=None,
+    type=int,
+    help="limit the number of instances to inference on in each benchmark",
+)
+@click.option(
     "-D",
     "--datadir",
     default=None,
@@ -131,6 +138,12 @@ MODELS = [
     default=True,
     help="cleanup all downloaded datasets after the benchmark is run",
 )
+@click.option(
+    "-Q",
+    "--verbose/--quiet",
+    default=True,
+    help="specify the verbosity of the output and progress bars",
+)
 @click.pass_context
 def main(
     ctx,
@@ -138,10 +151,12 @@ def main(
     env=None,
     device=None,
     count=1,
+    limit=None,
     datadir=None,
     modeldir=None,
     sample=True,
     cleanup=True,
+    verbose=True,
 ):
     """
     A utility for executing inferencing benchmarks.
@@ -165,10 +180,12 @@ def main(
     ctx.obj["device"] = device
     ctx.obj["env"] = env
     ctx.obj["n_runs"] = count
+    ctx.obj["limit"] = limit
     ctx.obj["data_home"] = get_data_home(datadir)
     ctx.obj["model_home"] = get_model_home(modeldir)
     ctx.obj["use_sample"] = sample
     ctx.obj["cleanup"] = cleanup
+    ctx.obj["verbose"] = verbose
 
 
 @main.command()

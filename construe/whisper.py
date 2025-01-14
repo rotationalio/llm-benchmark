@@ -4,8 +4,8 @@ Whisper benchmark runner
 
 import soundfile as sf
 
-from .benchmark import Benchmark
 from .exceptions import InferenceError
+from .benchmark import Benchmark, limit_generator
 from .models import load_whisper, cleanup_whisper
 from .datasets import load_dialects, cleanup_dialects
 
@@ -37,8 +37,9 @@ class Whisper(Benchmark):
             cleanup_whisper(model_home=self.model_home)
             cleanup_dialects(data_home=self.data_home, sample=self.use_sample)
 
-    def instances(self):
-        return load_dialects(data_home=self.data_home, sample=self.use_sample)
+    def instances(self, limit=None):
+        dataset = load_dialects(data_home=self.data_home, sample=self.use_sample)
+        return limit_generator(dataset, limit)
 
     def preprocess(self, instance):
         # Instance is a path to a a sound file on disk.

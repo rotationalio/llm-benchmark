@@ -6,6 +6,7 @@ import time
 import dataclasses
 
 from .base import Benchmark
+from ..utils import humanize_duration
 from ..metrics import Metric, Measurement, dump
 from ..exceptions import ConstrueError, BenchmarkError
 
@@ -29,20 +30,25 @@ class BenchmarkRunner(object):
         device: str = None,
         env: str = None,
         n_runs: int = 1,
+        limit: int = None,
         data_home: str = None,
         model_home: str = None,
         use_sample: bool = True,
         cleanup: bool = True,
+        verbose: bool = True,
     ):
         self.env = env
         self.device = device
         self.n_runs = n_runs
+        self.limit = limit
         self.benchmark_kwargs = {
             "data_home": data_home,
             "model_home": model_home,
             "use_sample": use_sample,
+            "progress": verbose,
         }
         self.cleanup = cleanup
+        self.verbose = verbose
         self.benchmarks = benchmarks
 
         for b in self.benchmarks:
@@ -56,6 +62,7 @@ class BenchmarkRunner(object):
     def run(self):
         self.results_ = Results(
             n_runs=self.n_runs,
+            limit=self.limit,
             benchmarks=[b.__name__ for b in self.benchmarks],
             started=datetime.now(timezone.utc).strftime(DATEFMT),
             env=self.env,
@@ -70,13 +77,18 @@ class BenchmarkRunner(object):
         started = time.time()
 
         for cls in self.benchmarks:
-            total = cls.total(**self.benchmark_kwargs)
+            total = self.limit or cls.total(**self.benchmark_kwargs)
             for i in range(self.n_runs):
                 self.run_benchmark(i, total, cls)
 
         self.results_.duration = time.time() - started
         self.results_.measurements = Measurement.merge(self.measurements_)
         self.run_complete_ = True
+
+        if self.verbose:
+            print(f"{len(self.benchmarks)} benchmark(s) complete in {humanize_duration(self.results_.duration)}")
+            if self.cleanup:
+                print("cleaned up data and model caches: all downloaded data removed")
 
     def run_benchmark(self, idx: int, total: int, Runner: Type):
         # TODO: do we need to pass separate metadata to the kwargs?
@@ -101,7 +113,7 @@ class BenchmarkRunner(object):
         try:
             # Time each inference
             # TODO: measure memory usage during inferencing
-            for instance in benchmark.instances():
+            for instance in benchmark.instances(limit=self.limit):
                 t1 = time.time()
                 features = benchmark.preprocess(instance)
                 t2 = time.time()
@@ -152,6 +164,9 @@ class BenchmarkRunner(object):
         with open(path, "w") as o:
             dump(self.results_, o)
 
+        if self.verbose:
+            print("benchmark results saved to", path)
+
 
 @dataclasses.dataclass(init=True, repr=False, eq=True)
 class Results:
@@ -163,6 +178,7 @@ class Results:
     benchmarks: List[str]
     started: str
     errors: List[str] = list
+    limit: Optional[int] = None
     duration: Optional[float] = None
     env: Optional[str] = None
     device: Optional[str] = None

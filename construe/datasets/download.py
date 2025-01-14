@@ -13,7 +13,7 @@ from ..exceptions import DatasetsError
 
 
 def download_data(
-    url, signature, data_home=None, replace=False, extract=True, progress=False
+    url, signature, data_home=None, replace=False, extract=True, progress=True
 ):
     """
     Downloads the zipped data set specified at the given URL, saving it to
@@ -27,7 +27,7 @@ def download_data(
 
 
 def _download_dataset(
-    name, sample=True, data_home=True, replace=False, extract=True, progress=False
+    name, sample=True, data_home=True, replace=False, extract=True, progress=True
 ):
     """
     Downloads the zipped data set specified using the manifest URL, saving it to the
@@ -72,7 +72,7 @@ DOWNLOADERS = [
 
 
 def download_all_datasets(
-    sample=True, data_home=True, replace=True, extract=True, progress=False
+    sample=True, data_home=True, replace=True, extract=True, progress=True
 ):
     for f in DOWNLOADERS:
         f(

@@ -30,6 +30,7 @@ class Benchmark(abc.ABC):
         self._data_home = get_data_home(kwargs.pop("data_home", None))
         self._model_home = get_model_home(kwargs.pop("model_home", None))
         self._use_sample = kwargs.pop("use_sample", True)
+        self._progress = kwargs.pop("progress", True)
         self._options = kwargs
 
     @property
@@ -78,7 +79,7 @@ class Benchmark(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def instances(self) -> Generator[Any, None, None]:
+    def instances(self, limit=None) -> Generator[Any, None, None]:
         """
         This method should yield all instances in the dataset at least once.
         """
