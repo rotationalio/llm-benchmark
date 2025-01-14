@@ -2,7 +2,8 @@
 Utilities for construe
 """
 
-from typing import Iterable, Set
+from datetime import timedelta
+from typing import Iterable, Set, Union
 
 
 def resolve_exclude(
@@ -30,3 +31,24 @@ def resolve_exclude(
                 exclude.add(item)
 
     return exclude
+
+
+def humanize_duration(duration: Union[int, float, timedelta]) -> str:
+    """
+    Represent a duration as a human readable string. If an int or a float are passed
+    then it is assumed to be in seconds.
+    """
+    if not isinstance(duration, timedelta):
+        duration = timedelta(seconds=duration)
+
+    days = duration.days
+    hours, remainder = divmod(duration.seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+
+    if days:
+        return f"{days}d {hours}h {minutes}m {seconds}s"
+    if hours:
+        return f"{hours}h {minutes}m {seconds}s"
+    if minutes:
+        return f"{minutes}m {seconds}s"
+    return f"{seconds}s"

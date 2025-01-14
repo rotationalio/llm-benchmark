@@ -9,6 +9,7 @@ import platform
 from datetime import datetime
 
 from .version import get_version
+from .utils import resolve_exclude
 from .exceptions import DeviceError
 
 from .datasets.path import get_data_home
@@ -73,6 +74,10 @@ MODELS = [
     "gliner",
 ]
 
+BENCHMARKS = {
+    "whisper": Whisper,
+}
+
 
 @click.group(context_settings=CONTEXT_SETTINGS)
 @click.version_option(get_version(), message="%(prog)s v%(version)s")
@@ -106,6 +111,13 @@ MODELS = [
     help="specify the number of times to run each benchmark",
 )
 @click.option(
+    "-l",
+    "--limit",
+    default=None,
+    type=int,
+    help="limit the number of instances to inference on in each benchmark",
+)
+@click.option(
     "-D",
     "--datadir",
     default=None,
@@ -131,6 +143,12 @@ MODELS = [
     default=True,
     help="cleanup all downloaded datasets after the benchmark is run",
 )
+@click.option(
+    "-Q",
+    "--verbose/--quiet",
+    default=True,
+    help="specify the verbosity of the output and progress bars",
+)
 @click.pass_context
 def main(
     ctx,
@@ -138,10 +156,12 @@ def main(
     env=None,
     device=None,
     count=1,
+    limit=None,
     datadir=None,
     modeldir=None,
     sample=True,
     cleanup=True,
+    verbose=True,
 ):
     """
     A utility for executing inferencing benchmarks.
@@ -165,10 +185,43 @@ def main(
     ctx.obj["device"] = device
     ctx.obj["env"] = env
     ctx.obj["n_runs"] = count
+    ctx.obj["limit"] = limit
     ctx.obj["data_home"] = get_data_home(datadir)
     ctx.obj["model_home"] = get_model_home(modeldir)
     ctx.obj["use_sample"] = sample
     ctx.obj["cleanup"] = cleanup
+    ctx.obj["verbose"] = verbose
+
+
+@main.command()
+@click.option(
+    "-e",
+    "--exclude",
+    default=None,
+    type=click.Choice(BENCHMARKS.keys(), case_sensitive=False),
+    help="specify benchmarks to exclude from runner",
+)
+@click.option(
+    "-i",
+    "--include",
+    default=None,
+    type=click.Choice(BENCHMARKS.keys(), case_sensitive=False),
+    help="specify benchmarks to include in runner",
+)
+@click.pass_context
+def run(ctx, **kwargs):
+    """
+    Executes all available benchmarks.
+    """
+    out = ctx.obj.pop("out")
+    exclude = resolve_exclude(
+        kwargs.pop("exclude"), kwargs.pop("include"), BENCHMARKS.keys()
+    )
+    benchmarks = [bench for name, bench in BENCHMARKS.items() if name not in exclude]
+
+    runner = BenchmarkRunner(benchmarks=benchmarks, **ctx.obj)
+    runner.run()
+    runner.save(out)
 
 
 @main.command()
@@ -204,6 +257,9 @@ def basic(ctx, **kwargs):
     Runs basic dot product performance benchmarks.
     """
     kwargs["env"] = ctx.obj["env"]
+    if kwargs["saveto"] is None:
+        kwargs["saveto"] = ctx.obj["out"]
+
     benchmark = BasicBenchmark(**kwargs)
     benchmark.run()
 

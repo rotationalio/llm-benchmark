@@ -17,7 +17,7 @@ from .signature import sha256sum
 CHUNK = 524288
 
 
-def download_zip(url, out, signature, replace=False, extract=True, progress=False):
+def download_zip(url, out, signature, replace=False, extract=True, progress=True):
     """
     Download a zipped file at the given URL saving it to the out directory. Once
     downloaded, verify the signature to make sure the download hasn't been tampered
@@ -36,7 +36,7 @@ def download_zip(url, out, signature, replace=False, extract=True, progress=Fals
     if os.path.exists(archive):
         if not replace:
             raise DownloadError(
-                f"dataset already exists at {archive}, set replace=False to overwrite"
+                f"file already exists at {archive}, set replace=False to overwrite"
             )
 
         shutil.rmtree(datadir)
