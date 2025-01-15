@@ -48,4 +48,4 @@ def make_fixture_url(fname, upload_type, version=None):
 
 def make_fixture_path(fname, upload_type, version=None):
     version = version or get_version(short=True)
-    return os.path.join(BUCKET, f"v{version}", upload_type, fname)
+    return os.path.join(f"v{version}", upload_type, fname)

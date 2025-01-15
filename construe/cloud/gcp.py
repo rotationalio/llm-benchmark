@@ -28,9 +28,12 @@ def upload(name, path, client=None, bucket=CONSTRUE_BUCKET):
     if not os.path.exists(path) or not os.path.isfile(path):
         raise UploadError("no zip file exists at " + path)
 
-    bucket = client.get_bucket(bucket)
-    blob = bucket.blob(name)
-    blob.upload_from_filename(path)
+    try:
+        bucket = client.get_bucket(bucket)
+        blob = bucket.blob(name)
+        blob.upload_from_filename(path)
+    except Exception as e:
+        raise UploadError(f"could not upload {name}") from e
 
     return blob.public_url
 

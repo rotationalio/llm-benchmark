@@ -106,7 +106,7 @@ def convert_whisper(out=FIXTURES):
     # Zip the model for packaging
     zipname = os.path.join(out, WHISPER_DIR)
     shutil.make_archive(zipname, "zip", converted)
-    print(f"whisper converted to {zipname+".zip"}")
+    print(f"whisper converted to {zipname+'.zip'}")
 
 
 def convert_mobilenet(out=FIXTURES):
@@ -163,10 +163,26 @@ def convert_lowlight(out=FIXTURES):
     path = os.path.join(out, LOWLIGHT_DIR, LOWLIGHT_SAVED_MODEL_DIR)
     model = from_pretrained_keras(path)
 
-    assert model is not None
+    # Convert the model
+    converter = tf.lite.TFLiteConverter.from_keras_model(model)
+    converter.target_spec.supported_ops = [
+        tf.lite.OpsSet.TFLITE_BUILTINS,  # enable TensorFlow Lite ops.
+        tf.lite.OpsSet.SELECT_TF_OPS     # enable TensorFlow ops.
+    ]
+    converter.optimizations = [tf.lite.Optimize.DEFAULT]
+    tflite = converter.convert()
 
-    out = os.path.join(out, LOWLIGHT_DIR, LOWLIGHT_TFLITE)
-    print(f"lowlight converted to {out}")
+    converted = os.path.join(out, LOWLIGHT_DIR, LOWLIGHT_DIR)
+    os.mkdir(converted)
+
+    tfpath = os.path.join(converted, LOWLIGHT_TFLITE)
+    with open(tfpath, 'wb') as f:
+        f.write(tflite)
+
+    # Zip the model for packaging
+    zipname = os.path.join(out, LOWLIGHT_DIR)
+    shutil.make_archive(zipname, "zip", converted)
+    print(f"lowlight converted to {zipname+'.zip'}")
 
 
 def convert_offensive(out=FIXTURES):

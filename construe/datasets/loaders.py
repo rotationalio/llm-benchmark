@@ -51,9 +51,20 @@ def _load_prepare(name, sample=True, data_home=None):
     return find_dataset_path(name, data_home=data_home, fname=None, ext=None)
 
 
-def _load_file_dataset(name, sample=True, data_home=None):
+def _load_file_dataset(name, sample=True, data_home=None, no_dirs=True, pattern=None):
+    # Find the data path
     data_path = _load_prepare(name, sample=sample, data_home=data_home)
-    for path in glob.glob(os.path.join(data_path, "**", "*")):
+
+    # Glob pattern for discovering files in the dataset
+    if pattern is not None:
+        pattern = os.path.join(data_path, name, "**", "*")
+    else:
+        pattern = os.path.join(data_path, pattern)
+
+    for path in glob.glob(pattern):
+        if no_dirs and os.path.isdir(path):
+            continue
+
         yield path
 
 
@@ -74,7 +85,7 @@ def _cleanup_dataset(name, sample=True, data_home=None):
 load_dialects = partial(_load_file_dataset, DIALECTS)
 cleanup_dialects = partial(_cleanup_dataset, DIALECTS)
 
-load_lowlight = partial(_load_file_dataset, LOWLIGHT)
+load_lowlight = partial(_load_file_dataset, LOWLIGHT, pattern="lowlight/**/*.png")
 cleanup_lowlight = partial(_cleanup_dataset, LOWLIGHT)
 
 load_reddit = partial(_load_jsonl_dataset, REDDIT)
