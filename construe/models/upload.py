@@ -29,4 +29,5 @@ def upload_models(fixtures=FIXTURES, exclude=None, include=None, credentials=Non
         dst = make_fixture_path(name, MODELS, version=version)
         src = os.path.join(fixtures, name)
 
-        upload(dst, src, client)
+        url = upload(dst, src, client)
+        print(f"uploaded {url}")

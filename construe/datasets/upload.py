@@ -28,4 +28,5 @@ def upload_datasets(fixtures=FIXTURES, exclude=None, include=None, credentials=N
         for fname in (name + ".zip", name + "-sample.zip"):
             dst = make_fixture_path(fname, DATASETS, version=version)
             src = os.path.join(fixtures, fname)
-            upload(dst, src, client)
+            url = upload(dst, src, client)
+            print(f"uploaded {url}")
