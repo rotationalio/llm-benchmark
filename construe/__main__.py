@@ -81,6 +81,7 @@ MODELS = [
 
 BENCHMARKS = {
     "whisper": Whisper,
+    "lowlight": LowLight,
 }
 
 
