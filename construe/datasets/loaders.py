@@ -45,8 +45,11 @@ def _load_prepare(name, sample=True, data_home=None):
     info = _info(name)
     if not dataset_archive(name, info["signature"], data_home=data_home):
         # If the dataset does not exist, download and extract it
-        info.update({"data_home": data_home, "replace": True, "extract": True})
-        download_data(**info)
+        kwargs = {
+            "data_home": data_home, "replace": True, "extract": True,
+            "url": info["url"], "signature": info["signature"],
+        }
+        download_data(**kwargs)
 
     return find_dataset_path(name, data_home=data_home, fname=None, ext=None)
 
@@ -56,8 +59,8 @@ def _load_file_dataset(name, sample=True, data_home=None, no_dirs=True, pattern=
     data_path = _load_prepare(name, sample=sample, data_home=data_home)
 
     # Glob pattern for discovering files in the dataset
-    if pattern is not None:
-        pattern = os.path.join(data_path, name, "**", "*")
+    if pattern is None:
+        pattern = os.path.join(data_path, "**", "*")
     else:
         pattern = os.path.join(data_path, pattern)
 
@@ -73,7 +76,7 @@ def _load_jsonl_dataset(name, sample=True, data_home=None):
     for path in glob.glob(os.path.join(data_path, "*.jsonl")):
         with open(path, "r") as f:
             for line in f:
-                yield json.load(f)
+                yield json.loads(line.strip())
 
 
 def _cleanup_dataset(name, sample=True, data_home=None):
@@ -100,7 +103,7 @@ cleanup_essays = partial(_cleanup_dataset, ESSAYS)
 load_aegis = partial(_load_jsonl_dataset, AEGIS)
 cleanup_aegis = partial(_cleanup_dataset, AEGIS)
 
-load_nsfw = partial(_load_file_dataset, NSFW)
+load_nsfw = partial(_load_file_dataset, NSFW, pattern="nsfw/**/*.jpg")
 cleanup_nsfw = partial(_cleanup_dataset, NSFW)
 
 

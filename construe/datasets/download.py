@@ -42,13 +42,15 @@ def _download_dataset(
         raise DatasetsError(f"no dataset named {name} exists")
 
     info = datasets[name]
-    info.update({
+    kwargs = {
         "data_home": data_home,
         "replace": replace,
         "extract": extract,
         "progress": progress,
-    })
-    download_data(**info)
+        "url": info["url"],
+        "signature": info["signature"],
+    }
+    download_data(**kwargs)
 
 
 download_dialects = partial(_download_dataset, DIALECTS)

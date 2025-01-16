@@ -11,7 +11,7 @@ import zipfile
 import soundfile as sf
 
 from .path import FIXTURES
-from .download import CHUNK
+from ..cloud.download import CHUNK
 
 from datasets import Audio
 from functools import partial

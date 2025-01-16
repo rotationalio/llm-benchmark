@@ -36,3 +36,5 @@ jobs:
 
       - name: Run Tests
         run: pytest
+        env:
+          CONSTRUE_TEST_SAMPLE_LOADERS: 1

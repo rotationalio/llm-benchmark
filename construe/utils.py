@@ -2,6 +2,8 @@
 Utilities for construe
 """
 
+import os
+
 from datetime import timedelta
 from typing import Iterable, Set, Union
 
@@ -52,3 +54,16 @@ def humanize_duration(duration: Union[int, float, timedelta]) -> str:
     if minutes:
         return f"{minutes}m {seconds}s"
     return f"{seconds}s"
+
+
+def dirsize(path):
+    """
+    Return the size utilized by the contents of a directory specified by path in bytes.
+    """
+    bytes = 0
+    for dirpath, dirnames, filenames in os.walk(path):
+        for f in filenames:
+            fp = os.path.join(dirpath, f)
+            if not os.path.islink(fp):
+                bytes += os.path.getsize(fp)
+    return bytes
