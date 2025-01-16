@@ -6,6 +6,8 @@ import os
 import numpy as np
 import tensorflow as tf
 
+from .datasets import DATASETS
+from .exceptions import DatasetsError
 from .benchmark import Benchmark, limit_generator
 from .models import load_lowlight as load_lowlight_model
 from .models import cleanup_lowlight as cleanup_lowlight_model
@@ -17,12 +19,12 @@ class LowLight(Benchmark):
 
     @staticmethod
     def total(**kwargs):
-        ## TODO: load this number from the manifest instead of counting
-        data_home = kwargs.pop("data_home", None)
+        ## Return number of lowlight images from the manifest
         use_sample = kwargs.pop("use_sample", True)
-        return sum(
-            1 for _ in load_lowlight_dataset(data_home=data_home, sample=use_sample)
-        )
+        name = "lowlight-sample" if use_sample else "lowlight"
+        if name not in DATASETS:
+            raise DatasetsError("lowlight dataset not found in manifest")
+        return DATASETS[name]["classes"]["low"]
 
     @property
     def description(self):
@@ -32,9 +34,6 @@ class LowLight(Benchmark):
         )
 
     def before(self):
-        # Supress logging output from tflite interpreter
-        tf.lite.get_logger().setLevel("ERROR")
-
         # Load and setup the interpreter for the lowlight dataset
         model = load_lowlight_model(model_home=self.model_home)
         model.resize_tensor_input(0, [1, 400, 600, 3])

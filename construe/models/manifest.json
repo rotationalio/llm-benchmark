@@ -1,10 +1,18 @@
 {
   "lowlight": {
     "url": "https://storage.googleapis.com/construe/v0.3.0/models/lowlight.zip",
-    "signature": "cb4e955a52d9fb23537ef033812cdf64828a1c37b38d0aeb50b67b12651e9bdc"
+    "signature": "cb4e955a52d9fb23537ef033812cdf64828a1c37b38d0aeb50b67b12651e9bdc",
+    "size": {
+      "compressed": 36745264,
+      "decompressed": 37709200
+    }
   },
   "whisper": {
     "url": "https://storage.googleapis.com/construe/v0.3.0/models/whisper.zip",
-    "signature": "e355a473fe0df0d289a6cb0fe8c3bde01f2f4e4f232532bd8cf76273e3198222"
+    "signature": "e355a473fe0df0d289a6cb0fe8c3bde01f2f4e4f232532bd8cf76273e3198222",
+    "size": {
+      "compressed": 28328063,
+      "decompressed": 42416036
+    }
   }
 }

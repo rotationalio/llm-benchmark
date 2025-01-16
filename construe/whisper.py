@@ -4,20 +4,23 @@ Whisper benchmark runner
 
 import soundfile as sf
 
+from .exceptions import DatasetsError
 from .exceptions import InferenceError
 from .benchmark import Benchmark, limit_generator
 from .models import load_whisper, cleanup_whisper
-from .datasets import load_dialects, cleanup_dialects
+from .datasets import load_dialects, cleanup_dialects, DATASETS
 
 
 class Whisper(Benchmark):
 
     @staticmethod
     def total(**kwargs):
-        # TODO: load this number from the manifest instead of counting
-        data_home = kwargs.pop("data_home", None)
+        # Return the number of dialects from the manifest
         use_sample = kwargs.pop("use_sample", True)
-        return sum(1 for _ in load_dialects(data_home=data_home, sample=use_sample))
+        name = "dialects-sample" if use_sample else "dialects"
+        if name not in DATASETS:
+            raise DatasetsError("dialects dataset not found in manifest")
+        return DATASETS[name]["instances"]
 
     @property
     def description(self):

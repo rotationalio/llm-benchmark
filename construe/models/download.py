@@ -38,15 +38,15 @@ def _download_model(name, model_home=None, replace=False, extract=True, progress
         raise ModelsError(f"no model named {name} exists")
 
     info = models[name]
-    info.update(
-        {
-            "model_home": model_home,
-            "replace": replace,
-            "extract": extract,
-            "progress": progress,
-        }
-    )
-    download_model(**info)
+    kwargs = {
+        "model_home": model_home,
+        "replace": replace,
+        "extract": extract,
+        "progress": progress,
+        "url": info["url"],
+        "signature": info["signature"],
+    }
+    download_model(**kwargs)
 
 
 download_moondream = partial(_download_model, MOONDREAM)

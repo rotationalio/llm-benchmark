@@ -4,19 +4,22 @@ on embedded devices and serves as an example model in content moderation use
 cases where the image is captioned and then the caption is moderated.
 """
 
+from .exceptions import DatasetsError
 from .benchmark import Benchmark, limit_generator
-from .datasets import load_nsfw, cleanup_nsfw
 from .models import load_moondream, cleanup_moondream
+from .datasets import load_nsfw, cleanup_nsfw, DATASETS
 
 
 class MoonDream(Benchmark):
 
     @staticmethod
     def total(**kwargs):
-        # TODO: load this number from the manifest instead of counting
-        data_home = kwargs.pop("data_home", None)
+        # Return the number of nsfw images from the manifest
         use_sample = kwargs.pop("use_sample", True)
-        return sum(1 for _ in load_nsfw(data_home=data_home, sample=use_sample))
+        name = "nsfw-sample" if use_sample else "nsfw"
+        if name not in DATASETS:
+            raise DatasetsError("nsfw dataset not found in manifest")
+        return DATASETS[name]["instances"]
 
     @property
     def description(self):

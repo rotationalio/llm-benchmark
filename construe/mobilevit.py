@@ -2,19 +2,22 @@
 MobileViT benchmark runner
 """
 
+from .exceptions import DatasetsError
 from .benchmark import Benchmark, limit_generator
 from .models import load_mobilevit, cleanup_mobilevit
-from .datasets import load_movies, cleanup_movies
+from .datasets import load_movies, cleanup_movies, DATASETS
 
 
 class MobileViT(Benchmark):
 
     @staticmethod
     def total(**kwargs):
-        ## TODO: load this number from the manifest instead of counting
-        data_home = kwargs.pop("data_home", None)
+        ## Return the number of movie stills from the manifest
         use_sample = kwargs.pop("use_sample", True)
-        return sum(1 for _ in load_movies(data_home=data_home, sample=use_sample))
+        name = "movies-sample" if use_sample else "movies"
+        if name not in DATASETS:
+            raise DatasetsError("movies dataset not found in manifest")
+        return DATASETS[name]["instances"]
 
     @property
     def description(self):
