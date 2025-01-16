@@ -45,8 +45,11 @@ def _model_path(name, tflite=True, model_home=None):
     info = _info(name)
     if not model_archive(name, info["signature"], model_home=model_home):
         # If the model does not exist, download and extract it
-        info.update({"model_home": model_home, "replace": True, "extract": True})
-        download_model(**info)
+        kwargs = {
+            "model_home": model_home, "replace": True, "extract": True,
+            "url": info["url"], "signature": info["signature"]
+        }
+        download_model(**kwargs)
 
     if tflite:
         return find_model_path(name, model_home=model_home, ext=".tflite")

@@ -2,6 +2,8 @@
 NSFW Image Classification benchmark runner
 """
 
+from .datasets import DATASETS
+from .exceptions import DatasetsError
 from .benchmark import Benchmark, limit_generator
 from .models import load_nsfw as load_nsfw_model
 from .models import cleanup_nsfw as cleanup_nsfw_model
@@ -13,10 +15,12 @@ class NSFW(Benchmark):
 
     @staticmethod
     def total(**kwargs):
-        ## TODO: load this number from the manifest instead of counting
-        data_home = kwargs.pop("data_home", None)
+        # Return the number of nsfw images from the manifest
         use_sample = kwargs.pop("use_sample", True)
-        return sum(1 for _ in load_nsfw_dataset(data_home=data_home, sample=use_sample))
+        name = "nsfw-sample" if use_sample else "nsfw"
+        if name not in DATASETS:
+            raise DatasetsError("nsfw dataset not found in manifest")
+        return DATASETS[name]["instances"]
 
     @property
     def description(self):

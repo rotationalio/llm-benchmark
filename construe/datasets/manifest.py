@@ -56,7 +56,17 @@ def dataset_extra(path, name, **kwargs):
 
 
 def _count_files(name, datadir, extra):
-    for path in glob.glob(os.path.join(datadir, name, "**", "*")):
+    patterns = {
+        "lowlight": "lowlight/**/*.png",
+        "nsfw": "nsfw/**/*.jpg",
+    }
+
+    if name in patterns:
+        pattern = patterns[name]
+    else:
+        pattern = "**/*"
+
+    for path in glob.glob(os.path.join(datadir, pattern)):
         if os.path.isdir(path):
             continue
 
@@ -66,10 +76,14 @@ def _count_files(name, datadir, extra):
 
 
 def _count_jsonl(name, datadir, extra):
-    for path in glob.glob(os.path.join(datadir, name, "*.jsonl")):
+    for path in glob.glob(os.path.join(datadir, "*.jsonl")):
         with open(path, "r") as f:
             for line in f:
-                data = json.loads(line)
-                label = data["label"]
+                try:
+                    json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+
                 extra["instances"] += 1
-                extra["classes"][label] += 1
+
+    del extra["classes"]

@@ -2,19 +2,22 @@
 GLiNER named entity discovery benchmark runner
 """
 
-from .benchmark import Benchmark, limit_generator
+from .exceptions import DatasetsError
 from .models import load_gliner, cleanup_gliner
-from .datasets import load_essays, cleanup_essays
+from .benchmark import Benchmark, limit_generator
+from .datasets import load_essays, cleanup_essays, DATASETS
 
 
 class GLiNER(Benchmark):
 
     @staticmethod
     def total(**kwargs):
-        ## TODO: load this number from the manifest instead of counting
-        data_home = kwargs.pop("data_home", None)
+        # Return the number of essays from the manifest
         use_sample = kwargs.pop("use_sample", True)
-        return sum(1 for _ in load_essays(data_home=data_home, sample=use_sample))
+        name = "essays-sample" if use_sample else "essays"
+        if name not in DATASETS:
+            raise DatasetsError("essays dataset not found in manifest")
+        return DATASETS[name]["instances"]
 
     @property
     def description(self):

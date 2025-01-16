@@ -6,8 +6,7 @@
       "compressed": 916334,
       "decompressed": 2878359
     },
-    "instances": 0,
-    "classes": {}
+    "instances": 3030
   },
   "aegis": {
     "url": "https://storage.googleapis.com/construe/v0.3.0/datasets/aegis.zip",
@@ -16,8 +15,7 @@
       "compressed": 3619910,
       "decompressed": 11362916
     },
-    "instances": 0,
-    "classes": {}
+    "instances": 11997
   },
   "dialects-sample": {
     "url": "https://storage.googleapis.com/construe/v0.3.0/datasets/dialects-sample.zip",
@@ -26,8 +24,20 @@
       "compressed": 243136640,
       "decompressed": 356704802
     },
-    "instances": 0,
-    "classes": {}
+    "instances": 1785,
+    "classes": {
+      "northern_male": 203,
+      "southern_female": 417,
+      "northern_female": 65,
+      "irish_male": 48,
+      "scottish_male": 172,
+      "welsh_female": 120,
+      "southern_male": 436,
+      "midlands_female": 24,
+      "midlands_male": 51,
+      "welsh_male": 157,
+      "scottish_female": 92
+    }
   },
   "dialects": {
     "url": "https://storage.googleapis.com/construe/v0.3.0/datasets/dialects.zip",
@@ -36,8 +46,20 @@
       "compressed": 2466918919,
       "decompressed": 3605272328
     },
-    "instances": 0,
-    "classes": {}
+    "instances": 17877,
+    "classes": {
+      "northern_male": 2097,
+      "southern_female": 4161,
+      "northern_female": 750,
+      "irish_male": 450,
+      "scottish_male": 1649,
+      "welsh_female": 1199,
+      "southern_male": 4331,
+      "midlands_female": 246,
+      "midlands_male": 450,
+      "welsh_male": 1650,
+      "scottish_female": 894
+    }
   },
   "essays-sample": {
     "url": "https://storage.googleapis.com/construe/v0.3.0/datasets/essays-sample.zip",
@@ -46,8 +68,7 @@
       "compressed": 1796330,
       "decompressed": 8785856
     },
-    "instances": 0,
-    "classes": {}
+    "instances": 512
   },
   "essays": {
     "url": "https://storage.googleapis.com/construe/v0.3.0/datasets/essays.zip",
@@ -56,8 +77,7 @@
       "compressed": 7116584,
       "decompressed": 35516576
     },
-    "instances": 0,
-    "classes": {}
+    "instances": 2078
   },
   "lowlight-sample": {
     "url": "https://storage.googleapis.com/construe/v0.3.0/datasets/lowlight-sample.zip",
@@ -92,8 +112,10 @@
       "compressed": 381174092,
       "decompressed": 387776108
     },
-    "instances": 0,
-    "classes": {}
+    "instances": 5465,
+    "classes": {
+      "movies": 5465
+    }
   },
   "movies": {
     "url": "https://storage.googleapis.com/construe/v0.3.0/datasets/movies.zip",
@@ -102,8 +124,10 @@
       "compressed": 7351355869,
       "decompressed": 7479027563
     },
-    "instances": 0,
-    "classes": {}
+    "instances": 106844,
+    "classes": {
+      "movies": 106844
+    }
   },
   "nsfw-sample": {
     "url": "https://storage.googleapis.com/construe/v0.3.0/datasets/nsfw-sample.zip",
@@ -112,10 +136,10 @@
       "compressed": 6429140,
       "decompressed": 6535438
     },
-    "instances": 55,
+    "instances": 53,
     "classes": {
-      "safe": 29,
-      "nsfw": 26
+      "safe": 28,
+      "nsfw": 25
     }
   },
   "nsfw": {
@@ -125,10 +149,10 @@
       "compressed": 27937058,
       "decompressed": 28266876
     },
-    "instances": 218,
+    "instances": 215,
     "classes": {
-      "safe": 110,
-      "nsfw": 108
+      "safe": 108,
+      "nsfw": 107
     }
   },
   "reddit-sample": {
@@ -138,8 +162,7 @@
       "compressed": 63979,
       "decompressed": 278734
     },
-    "instances": 0,
-    "classes": {}
+    "instances": 957
   },
   "reddit": {
     "url": "https://storage.googleapis.com/construe/v0.3.0/datasets/reddit.zip",
@@ -148,7 +171,6 @@
       "compressed": 244363,
       "decompressed": 1117785
     },
-    "instances": 0,
-    "classes": {}
+    "instances": 3844
   }
 }

@@ -2,19 +2,22 @@
 Offensive speech benchmark runner
 """
 
+from .exceptions import DatasetsError
 from .benchmark import Benchmark, limit_generator
 from .models import load_offensive, cleanup_offensive
-from .datasets import load_aegis, cleanup_aegis
+from .datasets import load_aegis, cleanup_aegis, DATASETS
 
 
 class Offensive(Benchmark):
 
     @staticmethod
     def total(**kwargs):
-        ## TODO: load this number from the manifest instead of counting
-        data_home = kwargs.pop("data_home", None)
+        ## Return the number of aegis comments from the manifest
         use_sample = kwargs.pop("use_sample", True)
-        return sum(1 for _ in load_aegis(data_home=data_home, sample=use_sample))
+        name = "aegis-sample" if use_sample else "aegis"
+        if name not in DATASETS:
+            raise DatasetsError("aegis dataset not found in manifest")
+        return DATASETS[name]["instances"]
 
     @property
     def description(self):
