@@ -56,7 +56,7 @@ def humanize_duration(duration: Union[int, float, timedelta]) -> str:
     return f"{seconds}s"
 
 
-def dirsize(path):
+def dirsize(path: str) -> int:
     """
     Return the size utilized by the contents of a directory specified by path in bytes.
     """

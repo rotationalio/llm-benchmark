@@ -31,6 +31,7 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.coverage",
     "sphinx.ext.viewcode",
+    "sphinx_autodoc_typehints",
     "sphinx_rtd_theme",
     "myst_parser",
     "numpydoc",
@@ -47,6 +48,7 @@ source_suffix = {
 
 pygments_style = "sphinx"
 
+numpydoc_class_members_toctree = False
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
