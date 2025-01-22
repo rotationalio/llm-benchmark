@@ -1,8 +1,9 @@
-# API Reference
+# Utilities
 
 ```{eval-rst}
-.. automodule:: construe
+.. automodule:: construe.utils
     :members:
     :undoc-members:
+    :member-order: bysource
     :show-inheritance:
 ```

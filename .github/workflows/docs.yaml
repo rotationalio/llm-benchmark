@@ -17,6 +17,8 @@ jobs:
     defaults:
       run:
         working-directory: ${{ github.workspace }}/llm-benchmark
+    env:
+      CONSTRUE_CANONICAL_URL: https://construe.rotational.dev/
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
