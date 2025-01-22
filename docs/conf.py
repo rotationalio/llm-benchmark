@@ -14,15 +14,27 @@ import sys
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath(".."))
 
+import construe  # noqa
+
 project = 'Construe'
-copyright = '2025, Rotational Labs'
+copyright = '2024, Rotational Labs'
 author = 'Rotational Labs'
-release = 'v0.4.0'
+
+version = construe.get_version(short=True)
+release = "v" + construe.get_version(short=False)
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ["myst_parser", "sphinx_rtd_theme", "sphinx.ext.autodoc"]
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.coverage",
+    "sphinx.ext.viewcode",
+    "sphinx_rtd_theme",
+    "myst_parser",
+    "numpydoc",
+]
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'requirements.txt']
@@ -33,9 +45,13 @@ source_suffix = {
     ".md": "markdown",
 }
 
+pygments_style = "sphinx"
+
+
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "sphinx_rtd_theme"
 html_static_path = ['_static']
 html_baseurl = os.environ.get("CONSTRUE_CANONICAL_URL", "/")
+html_favicon = "_static/favicon.ico"
