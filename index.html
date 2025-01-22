@@ -1,0 +1,162 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Construe: An LLM Benchmark Utility &mdash; Construe v0.4.0-beta.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="canonical" href="https://construe.rotational.dev/index.html" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=24bb955b"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting Started" href="quickstart.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            Construe
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarks.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developers.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Construe</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Construe: An LLM Benchmark Utility</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="construe-an-llm-benchmark-utility">
+<h1>Construe: An LLM Benchmark Utility<a class="headerlink" href="#construe-an-llm-benchmark-utility" title="Link to this heading"></a></h1>
+<p>Construe is an LLM benchmarking utility that focuses on <em>inferencing</em> latency and memory usage on devices that support inferencing acceleration. It currently focuses on the embedded device space and uses <code class="docutils literal notranslate"><span class="pre">tflite</span></code> as the inferencing environment (though PyTorch support may be added in the future). The primary purpose of this library is to understand how different acceleration support such as <a class="reference external" href="https://en.wikipedia.org/wiki/AMD_APU">APUs</a>, <a class="reference external" href="https://en.wikipedia.org/wiki/AI_accelerator">NPUs</a>, <a class="reference external" href="https://en.wikipedia.org/wiki/Tensor_Processing_Unit">TPUs</a>, and <a class="reference external" href="https://en.wikipedia.org/wiki/Graphics_processing_unit">GPUs</a> behave differently for AI in an edge or resource constrained environment.</p>
+<p>Although this Python package can be used as a library for benchmarking purposes; the primary use is via the installation of a command line program, <code class="docutils literal notranslate"><span class="pre">construe</span></code>. This program runs multiple or individual benchmarks and saves the results to an output file. When running the benchmarks, for each benchmark, <code class="docutils literal notranslate"><span class="pre">construe</span></code> takes the following actions:</p>
+<ol class="arabic simple">
+<li><p>Download the model</p></li>
+<li><p>Download the dataset (by default, a sample of the full dataset)</p></li>
+<li><p>Execute benchmark</p></li>
+<li><p>Cleanup the model and dataset</p></li>
+<li><p>Repeat steps 1-4 for all remaining benchmarks</p></li>
+<li><p>Save the output results to disk</p></li>
+</ol>
+<p>Model and dataset downloads are from a hosted cloud bucket rather than from Hugging Face or from GitHub to ensure that the data can be geographically located in proximity to where the benchmarks are being run and to isolate specific versions and conversions of the models and datasets.</p>
+<p>In order to conserve space on limited devices - the downloads are cleaned up before moving on to the next benchmark. Samples of the dataset are downloaded by default to also reduce space utilization.</p>
+<p>The output results are saved in a JSON format for easy analysis and reporting.</p>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#run-benchmarks">Run Benchmarks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#data-storage">Data Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#basic-benchmarks">Basic Benchmarks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarks.html">Benchmarks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="benchmarks.html#model-references">Model References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmarks.html#dataset-references">Dataset References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developers.html">Development Guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#tests-and-linting">Tests and Linting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#dataset-management">Dataset Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#models-management">Models Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#releases">Releases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/construe.html">Benchmarks Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/benchmark.html">Benchmark Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/metrics.html">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/datasets.html">Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/cloud.html">Cloud Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/exceptions.html">Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/utils.html">Utilities</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quickstart.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rotational Labs.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

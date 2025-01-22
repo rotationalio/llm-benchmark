@@ -1,0 +1,268 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Benchmarks &mdash; Construe v0.4.0-beta.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="canonical" href="https://construe.rotational.dev/benchmarks.html" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=24bb955b"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Development Guidelines" href="developers.html" />
+    <link rel="prev" title="Getting Started" href="quickstart.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Construe
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Benchmarks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#model-references">Model References</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#model-download-size">Model Download Size</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dataset-references">Dataset References</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dataset-download-size">Dataset Download Size</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developers.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Construe</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Benchmarks</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/benchmarks.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="benchmarks">
+<h1>Benchmarks<a class="headerlink" href="#benchmarks" title="Link to this heading"></a></h1>
+<p>A benchmark is the combination of a model with a dataset – for each instance in the dataset, the model is applied to it and the amount of time it takes to preprocess and inference is measured. Preprocessing refers to the amount of time it takes to convert the raw data into a feature tensor array; inferencing refers to the amount of time it take to apply the feature array to the model to generate an output.</p>
+<p>Note that some models have multiple preprocessing and inferencing steps; for example the moondream model applies a captioning model to an image, then a classification model to the caption.</p>
+<p>All benchmarks currently use the <code class="docutils literal notranslate"><span class="pre">tflite</span></code> runtime for embedded devices.</p>
+<p>The following benchmarks are implemented:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gliner</span></code>: applies the GLiNER model to identify and classify named entities in long-form essays.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lowlight</span></code>: enhances image quality using a convolutional model that understands how to enrich low-light images.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mobilenet</span></code>: uses the MobileNet v2 model to classify objects in scenes from movie stills.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mobilevit</span></code>: uses the MobileViT model to identify objects in scenes from movie stills.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">moondream</span></code>: uses an image captioning and text classification model for content moderation on NSFW images.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nsfw</span></code>: ses a fine-tuned computer vision model to classify images as safe or not safe for work (nsfw).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">offensive</span></code>: applies the offensive speech detection model to the aegis content safety dataset.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">whisper</span></code>: utilities the whisper-tiney english transcription model to create transcribe audio of various UK dialects.</p></li>
+</ol>
+<p>Further information about the models and datasets can be found below.</p>
+<section id="model-references">
+<h2>Model References<a class="headerlink" href="#model-references" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Image to Text: <a class="reference external" href="https://huggingface.co/vikhyatk/moondream2">Moondream (vikhyatk/moondream2)</a></p></li>
+<li><p>Speech to Text: <a class="reference external" href="https://huggingface.co/docs/transformers/en/model_doc/whisper">Whisper (openai/whisper-tiny.en)</a></p></li>
+<li><p>Image Classification: <a class="reference external" href="https://huggingface.co/docs/transformers/en/model_doc/mobilenet_v2">MobileNet (google/mobilenet_v2_1.0_224)</a></p></li>
+<li><p>Object Detection: <a class="reference external" href="https://huggingface.co/docs/transformers/en/model_doc/mobilevit">MobileViT (apple/mobilevit-xx-small)</a></p></li>
+<li><p>NSFW Image Classification <a class="reference external" href="https://huggingface.co/Falconsai/nsfw_image_detection">Fine-Tuned Vision Transformer (ViT) for NSFW Image Classification (Falconsai/nsfw_image_detection)</a></p></li>
+<li><p>Image Enhancement <a class="reference external" href="https://huggingface.co/keras-io/lowlight-enhance-mirnet">LoL MIRNet (keras-io/lowlight-enhance-mirnet)</a></p></li>
+<li><p>Text Classification: <a class="reference external" href="https://huggingface.co/KoalaAI/OffensiveSpeechDetector">Offensive Speech Detector (KoalaAI/OffensiveSpeechDetector)</a></p></li>
+<li><p>Token Classification: <a class="reference external" href="https://huggingface.co/knowledgator/gliner-bi-small-v1.0">GLiNER (knowledgator/gliner-bi-small-v1.0)</a></p></li>
+</ol>
+<section id="model-download-size">
+<h3>Model Download Size<a class="headerlink" href="#model-download-size" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>model</p></th>
+<th class="head"><p>compressed</p></th>
+<th class="head"><p>decompressed</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>lowlight</p></td>
+<td><p>35.04 MiB (36,745,264 B)</p></td>
+<td><p>35.96 MiB (37,709,200 B)</p></td>
+</tr>
+<tr class="row-odd"><td><p>whisper</p></td>
+<td><p>27.02 MiB (28,328,063 B)</p></td>
+<td><p>40.45 MiB (42,416,036 B)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="dataset-references">
+<h2>Dataset References<a class="headerlink" href="#dataset-references" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://huggingface.co/datasets/nvidia/Aegis-AI-Content-Safety-Dataset-1.0">AEGIS AI Content Safety v1.0</a>: Text data that is used to show examples of content safety (e.g. harmful text) described by Nvidia’s content safety taxonomy.</p></li>
+<li><p><a class="reference external" href="https://paperswithcode.com/dataset/lol">LoL (Low-Light) Dataset</a>: Contains 500 low-light and normal-light image pairs for image enhancement.</p></li>
+<li><p><a class="reference external" href="https://huggingface.co/datasets/ylacombe/english_dialects">English Dialects</a>: Contains 31 hours of audo from 120 individuals speaking with different accents of the British Isles and is used for speech to text.</p></li>
+<li><p><a class="reference external" href="https://huggingface.co/datasets/ummagumm-a/reddit_posts_comments">Reddit Posts Comments</a>: A text dataset of comments on Reddit posts that can be used for NER and content moderation tasks on short form text.</p></li>
+<li><p><a class="reference external" href="https://huggingface.co/datasets/knarasi1/student_and_llm_essays">Student and LLM Essays</a>: A text dataset of essays written by students (and LLMs) that can be used for NER and content moderation tasks on longer form text.</p></li>
+<li><p><a class="reference external" href="https://huggingface.co/datasets/zanderlewis/nsfw_detection_large">NSFW Detection</a>: An image dataset that contains NSFW and SFW images used for content moderation.</p></li>
+<li><p><a class="reference external" href="https://huggingface.co/datasets/unography/movie-scenes">Movie Scenes</a>: An image dataset that contains stills from commercial movies and can be used for image classification and content-moderation tasks.</p></li>
+</ol>
+<section id="dataset-download-size">
+<h3>Dataset Download Size<a class="headerlink" href="#dataset-download-size" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>dataset</p></th>
+<th class="head"><p>instances</p></th>
+<th class="head"><p>compressed</p></th>
+<th class="head"><p>decompressed</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>aegis</p></td>
+<td><p>11,997</p></td>
+<td><p>3.45 MiB (3,619,910 B)</p></td>
+<td><p>10.84 MiB (11,362,916 B)</p></td>
+</tr>
+<tr class="row-odd"><td><p>aegis-sample</p></td>
+<td><p>3,030</p></td>
+<td><p>894.86 KiB (916,334 B)</p></td>
+<td><p>2.75 MiB (2,878,359 B)</p></td>
+</tr>
+<tr class="row-even"><td><p>dialects</p></td>
+<td><p>17,877</p></td>
+<td><p>2.30 GiB (2,466,918,919 B)</p></td>
+<td><p>3.36 GiB (3,605,272,328 B)</p></td>
+</tr>
+<tr class="row-odd"><td><p>dialects-sample</p></td>
+<td><p>1,785</p></td>
+<td><p>231.87 MiB (243,136,640 B)</p></td>
+<td><p>340.18 MiB (356,704,802 B)</p></td>
+</tr>
+<tr class="row-even"><td><p>essays</p></td>
+<td><p>2,078</p></td>
+<td><p>6.79 MiB (7,116,584 B)</p></td>
+<td><p>33.87 MiB (35,516,576 B)</p></td>
+</tr>
+<tr class="row-odd"><td><p>essays-sample</p></td>
+<td><p>512</p></td>
+<td><p>1.71 MiB (1,796,330 B)</p></td>
+<td><p>8.38 MiB (8,785,856 B)</p></td>
+</tr>
+<tr class="row-even"><td><p>lowlight</p></td>
+<td><p>1,000</p></td>
+<td><p>331.37 MiB (347,470,078 B)</p></td>
+<td><p>332.12 MiB (348,256,471 B)</p></td>
+</tr>
+<tr class="row-odd"><td><p>lowlight-sample</p></td>
+<td><p>475</p></td>
+<td><p>158.52 MiB (166,217,847 B)</p></td>
+<td><p>158.89 MiB (166,608,858 B)</p></td>
+</tr>
+<tr class="row-even"><td><p>movies</p></td>
+<td><p>106,844</p></td>
+<td><p>6.85 GiB (7,351,355,869 B)</p></td>
+<td><p>6.97 GiB (7,479,027,563 B)</p></td>
+</tr>
+<tr class="row-odd"><td><p>movies-sample</p></td>
+<td><p>5,465</p></td>
+<td><p>363.52 MiB (381,174,092 B)</p></td>
+<td><p>369.81 MiB (387,776,108 B)</p></td>
+</tr>
+<tr class="row-even"><td><p>nsfw</p></td>
+<td><p>215</p></td>
+<td><p>26.64 MiB (27,937,058 B)</p></td>
+<td><p>26.96 MiB (28,266,876 B)</p></td>
+</tr>
+<tr class="row-odd"><td><p>nsfw-sample</p></td>
+<td><p>53</p></td>
+<td><p>6.13 MiB (6,429,140 B)</p></td>
+<td><p>6.23 MiB (6,535,438 B)</p></td>
+</tr>
+<tr class="row-even"><td><p>reddit</p></td>
+<td><p>3,844</p></td>
+<td><p>238.64 KiB (244,363 B)</p></td>
+<td><p>1.06 MiB (1,117,785 B)</p></td>
+</tr>
+<tr class="row-odd"><td><p>reddit-sample</p></td>
+<td><p>957</p></td>
+<td><p>62.48 KiB (63,979 B)</p></td>
+<td><p>272.20 KiB (278,734 B)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quickstart.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="developers.html" class="btn btn-neutral float-right" title="Development Guidelines" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rotational Labs.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

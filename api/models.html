@@ -1,0 +1,367 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Models &mdash; Construe v0.4.0-beta.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="https://construe.rotational.dev/api/models.html" />
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=24bb955b"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Cloud Utilities" href="cloud.html" />
+    <link rel="prev" title="Datasets" href="datasets.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Construe
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developers.html">Development Guidelines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="construe.html">Benchmarks Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html">Benchmark Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html">Datasets</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#construe.models.loaders.load_all_models"><code class="docutils literal notranslate"><span class="pre">load_all_models()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.models.loaders.cleanup_all_models"><code class="docutils literal notranslate"><span class="pre">cleanup_all_models()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.models.loaders.load_moondream"><code class="docutils literal notranslate"><span class="pre">load_moondream()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.models.loaders.cleanup_moondream"><code class="docutils literal notranslate"><span class="pre">cleanup_moondream()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.models.loaders.load_whisper"><code class="docutils literal notranslate"><span class="pre">load_whisper()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.models.loaders.cleanup_whisper"><code class="docutils literal notranslate"><span class="pre">cleanup_whisper()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.models.loaders.load_mobilenet"><code class="docutils literal notranslate"><span class="pre">load_mobilenet()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.models.loaders.cleanup_mobilenet"><code class="docutils literal notranslate"><span class="pre">cleanup_mobilenet()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.models.loaders.load_mobilevit"><code class="docutils literal notranslate"><span class="pre">load_mobilevit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.models.loaders.cleanup_mobilevit"><code class="docutils literal notranslate"><span class="pre">cleanup_mobilevit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.models.loaders.load_nsfw"><code class="docutils literal notranslate"><span class="pre">load_nsfw()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.models.loaders.cleanup_nsfw"><code class="docutils literal notranslate"><span class="pre">cleanup_nsfw()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.models.loaders.load_lowlight"><code class="docutils literal notranslate"><span class="pre">load_lowlight()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.models.loaders.cleanup_lowlight"><code class="docutils literal notranslate"><span class="pre">cleanup_lowlight()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.models.loaders.load_offensive"><code class="docutils literal notranslate"><span class="pre">load_offensive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.models.loaders.cleanup_offensive"><code class="docutils literal notranslate"><span class="pre">cleanup_offensive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.models.loaders.load_gliner"><code class="docutils literal notranslate"><span class="pre">load_gliner()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.models.loaders.cleanup_gliner"><code class="docutils literal notranslate"><span class="pre">cleanup_gliner()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-construe.models.tflite">TFLite</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#construe.models.tflite.TFLiteGenerateModel"><code class="docutils literal notranslate"><span class="pre">TFLiteGenerateModel</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-construe.models.manifest">Manifest</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#construe.models.manifest.load_manifest"><code class="docutils literal notranslate"><span class="pre">load_manifest()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#construe.models.manifest.generate_manifest"><code class="docutils literal notranslate"><span class="pre">generate_manifest()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-construe.models.path">Path</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#construe.models.path.get_model_home"><code class="docutils literal notranslate"><span class="pre">get_model_home()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#construe.models.path.find_model_path"><code class="docutils literal notranslate"><span class="pre">find_model_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#construe.models.path.model_exists"><code class="docutils literal notranslate"><span class="pre">model_exists()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#construe.models.path.model_tflite_exists"><code class="docutils literal notranslate"><span class="pre">model_tflite_exists()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#construe.models.path.model_archive"><code class="docutils literal notranslate"><span class="pre">model_archive()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#construe.models.path.cleanup_model"><code class="docutils literal notranslate"><span class="pre">cleanup_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cloud.html">Cloud Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Construe</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Models</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/models.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-construe.models.loaders">
+<span id="models"></span><h1>Models<a class="headerlink" href="#module-construe.models.loaders" title="Link to this heading"></a></h1>
+<p>Managers for loading models</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.loaders.load_all_models">
+<span class="sig-prename descclassname"><span class="pre">construe.models.loaders.</span></span><span class="sig-name descname"><span class="pre">load_all_models</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/models/loaders.html#load_all_models"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.models.loaders.load_all_models" title="Link to this definition"></a></dt>
+<dd><p>Load all available models as defined by __all__</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.loaders.cleanup_all_models">
+<span class="sig-prename descclassname"><span class="pre">construe.models.loaders.</span></span><span class="sig-name descname"><span class="pre">cleanup_all_models</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/models/loaders.html#cleanup_all_models"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.models.loaders.cleanup_all_models" title="Link to this definition"></a></dt>
+<dd><p>Delete everything in the model home directory</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.loaders.load_moondream">
+<span class="sig-prename descclassname"><span class="pre">construe.models.loaders.</span></span><span class="sig-name descname"><span class="pre">load_moondream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/models/loaders.html#load_moondream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.models.loaders.load_moondream" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.loaders.cleanup_moondream">
+<span class="sig-prename descclassname"><span class="pre">construe.models.loaders.</span></span><span class="sig-name descname"><span class="pre">cleanup_moondream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.zip'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.models.loaders.cleanup_moondream" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.loaders.load_whisper">
+<span class="sig-prename descclassname"><span class="pre">construe.models.loaders.</span></span><span class="sig-name descname"><span class="pre">load_whisper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/models/loaders.html#load_whisper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.models.loaders.load_whisper" title="Link to this definition"></a></dt>
+<dd><p>Returns a tflite interpreter with the whisper model and the whisper prepocessor.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.loaders.cleanup_whisper">
+<span class="sig-prename descclassname"><span class="pre">construe.models.loaders.</span></span><span class="sig-name descname"><span class="pre">cleanup_whisper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.zip'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.models.loaders.cleanup_whisper" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.loaders.load_mobilenet">
+<span class="sig-prename descclassname"><span class="pre">construe.models.loaders.</span></span><span class="sig-name descname"><span class="pre">load_mobilenet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/models/loaders.html#load_mobilenet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.models.loaders.load_mobilenet" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.loaders.cleanup_mobilenet">
+<span class="sig-prename descclassname"><span class="pre">construe.models.loaders.</span></span><span class="sig-name descname"><span class="pre">cleanup_mobilenet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.zip'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.models.loaders.cleanup_mobilenet" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.loaders.load_mobilevit">
+<span class="sig-prename descclassname"><span class="pre">construe.models.loaders.</span></span><span class="sig-name descname"><span class="pre">load_mobilevit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/models/loaders.html#load_mobilevit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.models.loaders.load_mobilevit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.loaders.cleanup_mobilevit">
+<span class="sig-prename descclassname"><span class="pre">construe.models.loaders.</span></span><span class="sig-name descname"><span class="pre">cleanup_mobilevit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.zip'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.models.loaders.cleanup_mobilevit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.loaders.load_nsfw">
+<span class="sig-prename descclassname"><span class="pre">construe.models.loaders.</span></span><span class="sig-name descname"><span class="pre">load_nsfw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/models/loaders.html#load_nsfw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.models.loaders.load_nsfw" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.loaders.cleanup_nsfw">
+<span class="sig-prename descclassname"><span class="pre">construe.models.loaders.</span></span><span class="sig-name descname"><span class="pre">cleanup_nsfw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.zip'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.models.loaders.cleanup_nsfw" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.loaders.load_lowlight">
+<span class="sig-prename descclassname"><span class="pre">construe.models.loaders.</span></span><span class="sig-name descname"><span class="pre">load_lowlight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/models/loaders.html#load_lowlight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.models.loaders.load_lowlight" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.loaders.cleanup_lowlight">
+<span class="sig-prename descclassname"><span class="pre">construe.models.loaders.</span></span><span class="sig-name descname"><span class="pre">cleanup_lowlight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.zip'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.models.loaders.cleanup_lowlight" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.loaders.load_offensive">
+<span class="sig-prename descclassname"><span class="pre">construe.models.loaders.</span></span><span class="sig-name descname"><span class="pre">load_offensive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/models/loaders.html#load_offensive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.models.loaders.load_offensive" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.loaders.cleanup_offensive">
+<span class="sig-prename descclassname"><span class="pre">construe.models.loaders.</span></span><span class="sig-name descname"><span class="pre">cleanup_offensive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.zip'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.models.loaders.cleanup_offensive" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.loaders.load_gliner">
+<span class="sig-prename descclassname"><span class="pre">construe.models.loaders.</span></span><span class="sig-name descname"><span class="pre">load_gliner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/models/loaders.html#load_gliner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.models.loaders.load_gliner" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.loaders.cleanup_gliner">
+<span class="sig-prename descclassname"><span class="pre">construe.models.loaders.</span></span><span class="sig-name descname"><span class="pre">cleanup_gliner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.zip'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.models.loaders.cleanup_gliner" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<section id="module-construe.models.tflite">
+<span id="tflite"></span><h2>TFLite<a class="headerlink" href="#module-construe.models.tflite" title="Link to this heading"></a></h2>
+<p>Utilities for model loading and conversion.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="construe.models.tflite.TFLiteGenerateModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">construe.models.tflite.</span></span><span class="sig-name descname"><span class="pre">TFLiteGenerateModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/models/tflite.html#TFLiteGenerateModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.models.tflite.TFLiteGenerateModel" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Defines a model whose serving function is the generation call.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></dt><dd><p>Returns the name of this module as passed or determined in the ctor.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">name_scope</span></code></dt><dd><p>Returns a <cite>tf.name_scope</cite> instance for this class.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_trainable_variables</span></code></dt><dd><p>Sequence of non-trainable variables owned by this module and its submodules.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">submodules</span></code></dt><dd><p>Sequence of all sub-modules.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">trainable_variables</span></code></dt><dd><p>Sequence of trainable variables owned by this module and its submodules.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">variables</span></code></dt><dd><p>Sequence of variables owned by this module and its submodules.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">with_name_scope</span></code>(method)</p></td>
+<td><p>Decorator to automatically enter the module name scope.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>serving</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.models.tflite.TFLiteGenerateModel.serving">
+<span class="sig-name descname"><span class="pre">serving</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_features</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/models/tflite.html#TFLiteGenerateModel.serving"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.models.tflite.TFLiteGenerateModel.serving" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-construe.models.manifest">
+<span id="manifest"></span><h2>Manifest<a class="headerlink" href="#module-construe.models.manifest" title="Link to this heading"></a></h2>
+<p>Manifest handlers for models</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.manifest.load_manifest">
+<span class="sig-prename descclassname"><span class="pre">construe.models.manifest.</span></span><span class="sig-name descname"><span class="pre">load_manifest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/home/runner/work/llm-benchmark/llm-benchmark/llm-benchmark/construe/models/manifest.json'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/models/manifest.html#load_manifest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.models.manifest.load_manifest" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.manifest.generate_manifest">
+<span class="sig-prename descclassname"><span class="pre">construe.models.manifest.</span></span><span class="sig-name descname"><span class="pre">generate_manifest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fixtures</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/home/runner/work/llm-benchmark/llm-benchmark/llm-benchmark/construe/models/fixtures'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/home/runner/work/llm-benchmark/llm-benchmark/llm-benchmark/construe/models/manifest.json'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/models/manifest.html#generate_manifest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.models.manifest.generate_manifest" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-construe.models.path">
+<span id="path"></span><h2>Path<a class="headerlink" href="#module-construe.models.path" title="Link to this heading"></a></h2>
+<p>Path handling for model downloads</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.path.get_model_home">
+<span class="sig-prename descclassname"><span class="pre">construe.models.path.</span></span><span class="sig-name descname"><span class="pre">get_model_home</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/models/path.html#get_model_home"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.models.path.get_model_home" title="Link to this definition"></a></dt>
+<dd><p>Return the path of the Construe models directory. This folder is used by
+model loaders to avoid downloading model parameters several times.</p>
+<p>By default, this folder is in a config directory in the users home folderso the
+model can be can be easily located. Alternatively it can be set by the
+<code class="docutils literal notranslate"><span class="pre">$CONSTRUE_MODELS</span></code> environment variable, or programmatically by giving a folder
+path. Note that the <code class="docutils literal notranslate"><span class="pre">'~'</span></code> symbol is expanded to the user home directory, and
+environment variables are also expanded when resolving the path.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.path.find_model_path">
+<span class="sig-prename descclassname"><span class="pre">construe.models.path.</span></span><span class="sig-name descname"><span class="pre">find_model_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ext</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raises</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/models/path.html#find_model_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.models.path.find_model_path" title="Link to this definition"></a></dt>
+<dd><p>Looks up the path to the model specified in the models home directory. The storage
+location of the models can be set with the $CONSTRUE_MODELS environment variable.</p>
+<p>If the model is not found a <code class="docutils literal notranslate"><span class="pre">ModelsError</span></code> is raised by default.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.path.model_exists">
+<span class="sig-prename descclassname"><span class="pre">construe.models.path.</span></span><span class="sig-name descname"><span class="pre">model_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ext</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/models/path.html#model_exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.models.path.model_exists" title="Link to this definition"></a></dt>
+<dd><p>Checks to see if the specified model exists in the model home directory.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.path.model_tflite_exists">
+<span class="sig-prename descclassname"><span class="pre">construe.models.path.</span></span><span class="sig-name descname"><span class="pre">model_tflite_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_home</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/models/path.html#model_tflite_exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.models.path.model_tflite_exists" title="Link to this definition"></a></dt>
+<dd><p>Checks to see if the model .tflite file exists or not.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.path.model_archive">
+<span class="sig-prename descclassname"><span class="pre">construe.models.path.</span></span><span class="sig-name descname"><span class="pre">model_archive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ext</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.zip'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/models/path.html#model_archive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.models.path.model_archive" title="Link to this definition"></a></dt>
+<dd><p>Checks to see if the model archive file exists and determines if it is the latest
+version by comparing the signature specified with the archive signature.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.models.path.cleanup_model">
+<span class="sig-prename descclassname"><span class="pre">construe.models.path.</span></span><span class="sig-name descname"><span class="pre">cleanup_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.zip'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/models/path.html#cleanup_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.models.path.cleanup_model" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="datasets.html" class="btn btn-neutral float-left" title="Datasets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cloud.html" class="btn btn-neutral float-right" title="Cloud Utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rotational Labs.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

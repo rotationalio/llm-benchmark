@@ -1,0 +1,220 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference &mdash; Construe v0.4.0-beta.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="https://construe.rotational.dev/api/index.html" />
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=24bb955b"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Benchmarks Reference" href="construe.html" />
+    <link rel="prev" title="Development Guidelines" href="../developers.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Construe
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developers.html">Development Guidelines</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="construe.html">Benchmarks Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html">Benchmark Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html">Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud.html">Cloud Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Construe</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/index.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h1>
+<p>Welcome to the API documentation for Construe! This section contains a listing of the most important packages, modules, classes, and functions in the Construe library. This reference is primarily intended for Construe developers not Construe users.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="construe.html">Benchmarks Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="construe.html#module-construe.basic">Basic Benchmark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construe.html#module-construe.gliner">GLiNER Benchmark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construe.html#module-construe.lowlight">Lowlight Benchmark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construe.html#module-construe.mobilenet">MobileNet Benchmark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construe.html#module-construe.mobilevit">MobileViT Benchmark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construe.html#module-construe.moondream">Moondream Benchmark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construe.html#module-construe.nsfw">NSFW Benchmark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construe.html#module-construe.offensive">Offensive Benchmark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construe.html#module-construe.whisper">Whisper Benchmark</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="benchmark.html">Benchmark Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html#module-construe.benchmark.runner">Runner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html#module-construe.benchmark.base">Benchmark ABC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html#module-construe.benchmark.limit">Limit Utility</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html#module-construe.metrics.metrics">Dataclasses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html#module-construe.metrics.serialize">Serialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="datasets.html">Datasets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#construe.datasets.loaders.load_all_datasets"><code class="docutils literal notranslate"><span class="pre">load_all_datasets()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#construe.datasets.loaders.cleanup_all_datasets"><code class="docutils literal notranslate"><span class="pre">cleanup_all_datasets()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#construe.datasets.loaders.load_dialects"><code class="docutils literal notranslate"><span class="pre">load_dialects()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#construe.datasets.loaders.cleanup_dialects"><code class="docutils literal notranslate"><span class="pre">cleanup_dialects()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#construe.datasets.loaders.load_lowlight"><code class="docutils literal notranslate"><span class="pre">load_lowlight()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#construe.datasets.loaders.cleanup_lowlight"><code class="docutils literal notranslate"><span class="pre">cleanup_lowlight()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#construe.datasets.loaders.load_reddit"><code class="docutils literal notranslate"><span class="pre">load_reddit()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#construe.datasets.loaders.cleanup_reddit"><code class="docutils literal notranslate"><span class="pre">cleanup_reddit()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#construe.datasets.loaders.load_movies"><code class="docutils literal notranslate"><span class="pre">load_movies()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#construe.datasets.loaders.cleanup_movies"><code class="docutils literal notranslate"><span class="pre">cleanup_movies()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#construe.datasets.loaders.load_essays"><code class="docutils literal notranslate"><span class="pre">load_essays()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#construe.datasets.loaders.cleanup_essays"><code class="docutils literal notranslate"><span class="pre">cleanup_essays()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#construe.datasets.loaders.load_aegis"><code class="docutils literal notranslate"><span class="pre">load_aegis()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#construe.datasets.loaders.cleanup_aegis"><code class="docutils literal notranslate"><span class="pre">cleanup_aegis()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#construe.datasets.loaders.load_nsfw"><code class="docutils literal notranslate"><span class="pre">load_nsfw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#construe.datasets.loaders.cleanup_nsfw"><code class="docutils literal notranslate"><span class="pre">cleanup_nsfw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#module-construe.datasets.manifest">Manifest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html#module-construe.datasets.path">Path Helpers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="models.html#construe.models.loaders.load_all_models"><code class="docutils literal notranslate"><span class="pre">load_all_models()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#construe.models.loaders.cleanup_all_models"><code class="docutils literal notranslate"><span class="pre">cleanup_all_models()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#construe.models.loaders.load_moondream"><code class="docutils literal notranslate"><span class="pre">load_moondream()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#construe.models.loaders.cleanup_moondream"><code class="docutils literal notranslate"><span class="pre">cleanup_moondream()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#construe.models.loaders.load_whisper"><code class="docutils literal notranslate"><span class="pre">load_whisper()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#construe.models.loaders.cleanup_whisper"><code class="docutils literal notranslate"><span class="pre">cleanup_whisper()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#construe.models.loaders.load_mobilenet"><code class="docutils literal notranslate"><span class="pre">load_mobilenet()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#construe.models.loaders.cleanup_mobilenet"><code class="docutils literal notranslate"><span class="pre">cleanup_mobilenet()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#construe.models.loaders.load_mobilevit"><code class="docutils literal notranslate"><span class="pre">load_mobilevit()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#construe.models.loaders.cleanup_mobilevit"><code class="docutils literal notranslate"><span class="pre">cleanup_mobilevit()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#construe.models.loaders.load_nsfw"><code class="docutils literal notranslate"><span class="pre">load_nsfw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#construe.models.loaders.cleanup_nsfw"><code class="docutils literal notranslate"><span class="pre">cleanup_nsfw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#construe.models.loaders.load_lowlight"><code class="docutils literal notranslate"><span class="pre">load_lowlight()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#construe.models.loaders.cleanup_lowlight"><code class="docutils literal notranslate"><span class="pre">cleanup_lowlight()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#construe.models.loaders.load_offensive"><code class="docutils literal notranslate"><span class="pre">load_offensive()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#construe.models.loaders.cleanup_offensive"><code class="docutils literal notranslate"><span class="pre">cleanup_offensive()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#construe.models.loaders.load_gliner"><code class="docutils literal notranslate"><span class="pre">load_gliner()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#construe.models.loaders.cleanup_gliner"><code class="docutils literal notranslate"><span class="pre">cleanup_gliner()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#module-construe.models.tflite">TFLite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#module-construe.models.manifest">Manifest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#module-construe.models.path">Path</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cloud.html">Cloud Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cloud.html#module-construe.cloud.gcp">GCP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud.html#module-construe.cloud.manifest">Manifest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud.html#module-construe.cloud.signature">Signature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud.html#module-construe.cloud.download">Downloader</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="exceptions.html">Exceptions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html#construe.exceptions.ConstrueError"><code class="docutils literal notranslate"><span class="pre">ConstrueError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html#construe.exceptions.DownloadError"><code class="docutils literal notranslate"><span class="pre">DownloadError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html#construe.exceptions.UploadError"><code class="docutils literal notranslate"><span class="pre">UploadError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html#construe.exceptions.DatasetsError"><code class="docutils literal notranslate"><span class="pre">DatasetsError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html#construe.exceptions.ModelsError"><code class="docutils literal notranslate"><span class="pre">ModelsError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html#construe.exceptions.InferenceError"><code class="docutils literal notranslate"><span class="pre">InferenceError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html#construe.exceptions.BenchmarkError"><code class="docutils literal notranslate"><span class="pre">BenchmarkError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html#construe.exceptions.DeviceError"><code class="docutils literal notranslate"><span class="pre">DeviceError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#construe.utils.resolve_exclude"><code class="docutils literal notranslate"><span class="pre">resolve_exclude()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#construe.utils.humanize_duration"><code class="docutils literal notranslate"><span class="pre">humanize_duration()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#construe.utils.dirsize"><code class="docutils literal notranslate"><span class="pre">dirsize()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../developers.html" class="btn btn-neutral float-left" title="Development Guidelines" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="construe.html" class="btn btn-neutral float-right" title="Benchmarks Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rotational Labs.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

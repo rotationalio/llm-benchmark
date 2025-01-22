@@ -1,0 +1,962 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Benchmarks Reference &mdash; Construe v0.4.0-beta.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="https://construe.rotational.dev/api/construe.html" />
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=24bb955b"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Benchmark Library" href="benchmark.html" />
+    <link rel="prev" title="API Reference" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Construe
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developers.html">Development Guidelines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Benchmarks Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-construe.basic">Basic Benchmark</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#construe.basic.BasicBenchmark"><code class="docutils literal notranslate"><span class="pre">BasicBenchmark</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#construe.basic.batched_dot_bmm"><code class="docutils literal notranslate"><span class="pre">batched_dot_bmm()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#construe.basic.batched_dot_mul_sum"><code class="docutils literal notranslate"><span class="pre">batched_dot_mul_sum()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-construe.gliner">GLiNER Benchmark</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#construe.gliner.GLiNER"><code class="docutils literal notranslate"><span class="pre">GLiNER</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-construe.lowlight">Lowlight Benchmark</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#construe.lowlight.LowLight"><code class="docutils literal notranslate"><span class="pre">LowLight</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-construe.mobilenet">MobileNet Benchmark</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#construe.mobilenet.MobileNet"><code class="docutils literal notranslate"><span class="pre">MobileNet</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-construe.mobilevit">MobileViT Benchmark</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#construe.mobilevit.MobileViT"><code class="docutils literal notranslate"><span class="pre">MobileViT</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-construe.moondream">Moondream Benchmark</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#construe.moondream.MoonDream"><code class="docutils literal notranslate"><span class="pre">MoonDream</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-construe.nsfw">NSFW Benchmark</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#construe.nsfw.NSFW"><code class="docutils literal notranslate"><span class="pre">NSFW</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-construe.offensive">Offensive Benchmark</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#construe.offensive.Offensive"><code class="docutils literal notranslate"><span class="pre">Offensive</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-construe.whisper">Whisper Benchmark</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#construe.whisper.Whisper"><code class="docutils literal notranslate"><span class="pre">Whisper</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html">Benchmark Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html">Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud.html">Cloud Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Construe</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Benchmarks Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/construe.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="benchmarks-reference">
+<h1>Benchmarks Reference<a class="headerlink" href="#benchmarks-reference" title="Link to this heading"></a></h1>
+<p>The following is a reference of the benchmarks available in the top level <code class="docutils literal notranslate"><span class="pre">construe</span></code> package.</p>
+<section id="module-construe.basic">
+<span id="basic-benchmark"></span><h2>Basic Benchmark<a class="headerlink" href="#module-construe.basic" title="Link to this heading"></a></h2>
+<p>Benchmarks basic dot product torch operators.</p>
+<p>See: <a class="reference external" href="https://pytorch.org/tutorials/recipes/recipes/benchmark.html">https://pytorch.org/tutorials/recipes/recipes/benchmark.html</a></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="construe.basic.BasicBenchmark">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">construe.basic.</span></span><span class="sig-name descname"><span class="pre">BasicBenchmark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saveto</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_threads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fuzz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/basic.html#BasicBenchmark"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.basic.BasicBenchmark" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.basic.BasicBenchmark.fuzzer" title="construe.basic.BasicBenchmark.fuzzer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fuzzer</span></code></a>()</p></td>
+<td><p>Generates random tensors with 128 to 10000000 elements and sizes k0 and k1 chosen from a loguniform distribution in [1, 10000], 40% of which will be discontiguous on average.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>run</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>static</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.basic.BasicBenchmark.fuzzer">
+<span class="sig-name descname"><span class="pre">fuzzer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/basic.html#BasicBenchmark.fuzzer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.basic.BasicBenchmark.fuzzer" title="Link to this definition"></a></dt>
+<dd><p>Generates random tensors with 128 to 10000000 elements and sizes k0 and k1
+chosen from a loguniform distribution in [1, 10000], 40% of which will be
+discontiguous on average.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.basic.BasicBenchmark.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/basic.html#BasicBenchmark.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.basic.BasicBenchmark.run" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.basic.BasicBenchmark.static">
+<span class="sig-name descname"><span class="pre">static</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/basic.html#BasicBenchmark.static"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.basic.BasicBenchmark.static" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.basic.batched_dot_bmm">
+<span class="sig-prename descclassname"><span class="pre">construe.basic.</span></span><span class="sig-name descname"><span class="pre">batched_dot_bmm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/basic.html#batched_dot_bmm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.basic.batched_dot_bmm" title="Link to this definition"></a></dt>
+<dd><p>Computes batched dot by reducing to bmm</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.basic.batched_dot_mul_sum">
+<span class="sig-prename descclassname"><span class="pre">construe.basic.</span></span><span class="sig-name descname"><span class="pre">batched_dot_mul_sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/basic.html#batched_dot_mul_sum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.basic.batched_dot_mul_sum" title="Link to this definition"></a></dt>
+<dd><p>Computes batched dot by multiplying and summing</p>
+</dd></dl>
+
+</section>
+<section id="module-construe.gliner">
+<span id="gliner-benchmark"></span><h2>GLiNER Benchmark<a class="headerlink" href="#module-construe.gliner" title="Link to this heading"></a></h2>
+<p>GLiNER named entity discovery benchmark runner</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="construe.gliner.GLiNER">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">construe.gliner.</span></span><span class="sig-name descname"><span class="pre">GLiNER</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/gliner.html#GLiNER"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.gliner.GLiNER" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="benchmark.html#construe.benchmark.base.Benchmark" title="construe.benchmark.base.Benchmark"><code class="xref py py-class docutils literal notranslate"><span class="pre">Benchmark</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data_home</strong></dt><dd></dd>
+<dt><strong>description</strong></dt><dd></dd>
+<dt><strong>metadata</strong></dt><dd></dd>
+<dt><strong>model_home</strong></dt><dd></dd>
+<dt><strong>options</strong></dt><dd></dd>
+<dt><strong>use_sample</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.gliner.GLiNER.after" title="construe.gliner.GLiNER.after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">after</span></code></a>([cleanup])</p></td>
+<td><p>This method is called after the benchamrk is run; if cleanup is True the class should delete any cached datasets or models.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.gliner.GLiNER.before" title="construe.gliner.GLiNER.before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">before</span></code></a>()</p></td>
+<td><p>This method is called before the benchmark runs and should cause it to setup any datasets and models needed for the benchmark to run.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.gliner.GLiNER.inference" title="construe.gliner.GLiNER.inference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inference</span></code></a>(instance)</p></td>
+<td><p>This represents the primary inference of the benchmark and is measured for latency and memory usage to add to the metrics.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.gliner.GLiNER.instances" title="construe.gliner.GLiNER.instances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">instances</span></code></a>([limit])</p></td>
+<td><p>This method should yield all instances in the dataset at least once.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.gliner.GLiNER.preprocess" title="construe.gliner.GLiNER.preprocess"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocess</span></code></a>(instance)</p></td>
+<td><p>Any preprocessing that must be performed on an instance is handled with this method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.gliner.GLiNER.total" title="construe.gliner.GLiNER.total"><code class="xref py py-obj docutils literal notranslate"><span class="pre">total</span></code></a>(**kwargs)</p></td>
+<td><p>For progress bar purposes should report the total number of instances in one run of the Benchmark.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.gliner.GLiNER.after">
+<span class="sig-name descname"><span class="pre">after</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cleanup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/gliner.html#GLiNER.after"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.gliner.GLiNER.after" title="Link to this definition"></a></dt>
+<dd><p>This method is called after the benchamrk is run; if cleanup is True the
+class should delete any cached datasets or models.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.gliner.GLiNER.before">
+<span class="sig-name descname"><span class="pre">before</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/gliner.html#GLiNER.before"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.gliner.GLiNER.before" title="Link to this definition"></a></dt>
+<dd><p>This method is called before the benchmark runs and should cause it to
+setup any datasets and models needed for the benchmark to run.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="construe.gliner.GLiNER.description">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#construe.gliner.GLiNER.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.gliner.GLiNER.inference">
+<span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/gliner.html#GLiNER.inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.gliner.GLiNER.inference" title="Link to this definition"></a></dt>
+<dd><p>This represents the primary inference of the benchmark and is measured for
+latency and memory usage to add to the metrics.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.gliner.GLiNER.instances">
+<span class="sig-name descname"><span class="pre">instances</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/gliner.html#GLiNER.instances"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.gliner.GLiNER.instances" title="Link to this definition"></a></dt>
+<dd><p>This method should yield all instances in the dataset at least once.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.gliner.GLiNER.preprocess">
+<span class="sig-name descname"><span class="pre">preprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/gliner.html#GLiNER.preprocess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.gliner.GLiNER.preprocess" title="Link to this definition"></a></dt>
+<dd><p>Any preprocessing that must be performed on an instance is handled with this
+method. This method is measured for latency and memory usage as well.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.gliner.GLiNER.total">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/gliner.html#GLiNER.total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.gliner.GLiNER.total" title="Link to this definition"></a></dt>
+<dd><p>For progress bar purposes should report the total number of instances in one
+run of the Benchmark. Generally this should be hard-coded but can also be
+computed if necessary.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-construe.lowlight">
+<span id="lowlight-benchmark"></span><h2>Lowlight Benchmark<a class="headerlink" href="#module-construe.lowlight" title="Link to this heading"></a></h2>
+<p>LowLight image enhancement benchmark runner</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="construe.lowlight.LowLight">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">construe.lowlight.</span></span><span class="sig-name descname"><span class="pre">LowLight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/lowlight.html#LowLight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.lowlight.LowLight" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="benchmark.html#construe.benchmark.base.Benchmark" title="construe.benchmark.base.Benchmark"><code class="xref py py-class docutils literal notranslate"><span class="pre">Benchmark</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data_home</strong></dt><dd></dd>
+<dt><strong>description</strong></dt><dd></dd>
+<dt><strong>metadata</strong></dt><dd></dd>
+<dt><strong>model_home</strong></dt><dd></dd>
+<dt><strong>options</strong></dt><dd></dd>
+<dt><strong>use_sample</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.lowlight.LowLight.after" title="construe.lowlight.LowLight.after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">after</span></code></a>([cleanup])</p></td>
+<td><p>This method is called after the benchamrk is run; if cleanup is True the class should delete any cached datasets or models.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.lowlight.LowLight.before" title="construe.lowlight.LowLight.before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">before</span></code></a>()</p></td>
+<td><p>This method is called before the benchmark runs and should cause it to setup any datasets and models needed for the benchmark to run.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.lowlight.LowLight.inference" title="construe.lowlight.LowLight.inference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inference</span></code></a>(instance)</p></td>
+<td><p>This represents the primary inference of the benchmark and is measured for latency and memory usage to add to the metrics.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.lowlight.LowLight.instances" title="construe.lowlight.LowLight.instances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">instances</span></code></a>([limit])</p></td>
+<td><p>This method should yield all instances in the dataset at least once.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.lowlight.LowLight.preprocess" title="construe.lowlight.LowLight.preprocess"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocess</span></code></a>(instance)</p></td>
+<td><p>Any preprocessing that must be performed on an instance is handled with this method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.lowlight.LowLight.total" title="construe.lowlight.LowLight.total"><code class="xref py py-obj docutils literal notranslate"><span class="pre">total</span></code></a>(**kwargs)</p></td>
+<td><p>For progress bar purposes should report the total number of instances in one run of the Benchmark.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.lowlight.LowLight.after">
+<span class="sig-name descname"><span class="pre">after</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cleanup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/lowlight.html#LowLight.after"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.lowlight.LowLight.after" title="Link to this definition"></a></dt>
+<dd><p>This method is called after the benchamrk is run; if cleanup is True the
+class should delete any cached datasets or models.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.lowlight.LowLight.before">
+<span class="sig-name descname"><span class="pre">before</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/lowlight.html#LowLight.before"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.lowlight.LowLight.before" title="Link to this definition"></a></dt>
+<dd><p>This method is called before the benchmark runs and should cause it to
+setup any datasets and models needed for the benchmark to run.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="construe.lowlight.LowLight.description">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#construe.lowlight.LowLight.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.lowlight.LowLight.inference">
+<span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/lowlight.html#LowLight.inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.lowlight.LowLight.inference" title="Link to this definition"></a></dt>
+<dd><p>This represents the primary inference of the benchmark and is measured for
+latency and memory usage to add to the metrics.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.lowlight.LowLight.instances">
+<span class="sig-name descname"><span class="pre">instances</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/lowlight.html#LowLight.instances"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.lowlight.LowLight.instances" title="Link to this definition"></a></dt>
+<dd><p>This method should yield all instances in the dataset at least once.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.lowlight.LowLight.preprocess">
+<span class="sig-name descname"><span class="pre">preprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/lowlight.html#LowLight.preprocess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.lowlight.LowLight.preprocess" title="Link to this definition"></a></dt>
+<dd><p>Any preprocessing that must be performed on an instance is handled with this
+method. This method is measured for latency and memory usage as well.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.lowlight.LowLight.total">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/lowlight.html#LowLight.total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.lowlight.LowLight.total" title="Link to this definition"></a></dt>
+<dd><p>For progress bar purposes should report the total number of instances in one
+run of the Benchmark. Generally this should be hard-coded but can also be
+computed if necessary.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-construe.mobilenet">
+<span id="mobilenet-benchmark"></span><h2>MobileNet Benchmark<a class="headerlink" href="#module-construe.mobilenet" title="Link to this heading"></a></h2>
+<p>MobileNet benchmark runner</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="construe.mobilenet.MobileNet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">construe.mobilenet.</span></span><span class="sig-name descname"><span class="pre">MobileNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/mobilenet.html#MobileNet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.mobilenet.MobileNet" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="benchmark.html#construe.benchmark.base.Benchmark" title="construe.benchmark.base.Benchmark"><code class="xref py py-class docutils literal notranslate"><span class="pre">Benchmark</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data_home</strong></dt><dd></dd>
+<dt><strong>description</strong></dt><dd></dd>
+<dt><strong>metadata</strong></dt><dd></dd>
+<dt><strong>model_home</strong></dt><dd></dd>
+<dt><strong>options</strong></dt><dd></dd>
+<dt><strong>use_sample</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.mobilenet.MobileNet.after" title="construe.mobilenet.MobileNet.after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">after</span></code></a>([cleanup])</p></td>
+<td><p>This method is called after the benchamrk is run; if cleanup is True the class should delete any cached datasets or models.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.mobilenet.MobileNet.before" title="construe.mobilenet.MobileNet.before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">before</span></code></a>()</p></td>
+<td><p>This method is called before the benchmark runs and should cause it to setup any datasets and models needed for the benchmark to run.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.mobilenet.MobileNet.inference" title="construe.mobilenet.MobileNet.inference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inference</span></code></a>(instance)</p></td>
+<td><p>This represents the primary inference of the benchmark and is measured for latency and memory usage to add to the metrics.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.mobilenet.MobileNet.instances" title="construe.mobilenet.MobileNet.instances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">instances</span></code></a>([limit])</p></td>
+<td><p>This method should yield all instances in the dataset at least once.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.mobilenet.MobileNet.preprocess" title="construe.mobilenet.MobileNet.preprocess"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocess</span></code></a>(instance)</p></td>
+<td><p>Any preprocessing that must be performed on an instance is handled with this method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.mobilenet.MobileNet.total" title="construe.mobilenet.MobileNet.total"><code class="xref py py-obj docutils literal notranslate"><span class="pre">total</span></code></a>(**kwargs)</p></td>
+<td><p>For progress bar purposes should report the total number of instances in one run of the Benchmark.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.mobilenet.MobileNet.after">
+<span class="sig-name descname"><span class="pre">after</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cleanup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/mobilenet.html#MobileNet.after"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.mobilenet.MobileNet.after" title="Link to this definition"></a></dt>
+<dd><p>This method is called after the benchamrk is run; if cleanup is True the
+class should delete any cached datasets or models.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.mobilenet.MobileNet.before">
+<span class="sig-name descname"><span class="pre">before</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/mobilenet.html#MobileNet.before"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.mobilenet.MobileNet.before" title="Link to this definition"></a></dt>
+<dd><p>This method is called before the benchmark runs and should cause it to
+setup any datasets and models needed for the benchmark to run.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="construe.mobilenet.MobileNet.description">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#construe.mobilenet.MobileNet.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.mobilenet.MobileNet.inference">
+<span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/mobilenet.html#MobileNet.inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.mobilenet.MobileNet.inference" title="Link to this definition"></a></dt>
+<dd><p>This represents the primary inference of the benchmark and is measured for
+latency and memory usage to add to the metrics.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.mobilenet.MobileNet.instances">
+<span class="sig-name descname"><span class="pre">instances</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/mobilenet.html#MobileNet.instances"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.mobilenet.MobileNet.instances" title="Link to this definition"></a></dt>
+<dd><p>This method should yield all instances in the dataset at least once.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.mobilenet.MobileNet.preprocess">
+<span class="sig-name descname"><span class="pre">preprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/mobilenet.html#MobileNet.preprocess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.mobilenet.MobileNet.preprocess" title="Link to this definition"></a></dt>
+<dd><p>Any preprocessing that must be performed on an instance is handled with this
+method. This method is measured for latency and memory usage as well.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.mobilenet.MobileNet.total">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/mobilenet.html#MobileNet.total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.mobilenet.MobileNet.total" title="Link to this definition"></a></dt>
+<dd><p>For progress bar purposes should report the total number of instances in one
+run of the Benchmark. Generally this should be hard-coded but can also be
+computed if necessary.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-construe.mobilevit">
+<span id="mobilevit-benchmark"></span><h2>MobileViT Benchmark<a class="headerlink" href="#module-construe.mobilevit" title="Link to this heading"></a></h2>
+<p>MobileViT benchmark runner</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="construe.mobilevit.MobileViT">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">construe.mobilevit.</span></span><span class="sig-name descname"><span class="pre">MobileViT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/mobilevit.html#MobileViT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.mobilevit.MobileViT" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="benchmark.html#construe.benchmark.base.Benchmark" title="construe.benchmark.base.Benchmark"><code class="xref py py-class docutils literal notranslate"><span class="pre">Benchmark</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data_home</strong></dt><dd></dd>
+<dt><strong>description</strong></dt><dd></dd>
+<dt><strong>metadata</strong></dt><dd></dd>
+<dt><strong>model_home</strong></dt><dd></dd>
+<dt><strong>options</strong></dt><dd></dd>
+<dt><strong>use_sample</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.mobilevit.MobileViT.after" title="construe.mobilevit.MobileViT.after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">after</span></code></a>([cleanup])</p></td>
+<td><p>This method is called after the benchamrk is run; if cleanup is True the class should delete any cached datasets or models.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.mobilevit.MobileViT.before" title="construe.mobilevit.MobileViT.before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">before</span></code></a>()</p></td>
+<td><p>This method is called before the benchmark runs and should cause it to setup any datasets and models needed for the benchmark to run.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.mobilevit.MobileViT.inference" title="construe.mobilevit.MobileViT.inference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inference</span></code></a>(instance)</p></td>
+<td><p>This represents the primary inference of the benchmark and is measured for latency and memory usage to add to the metrics.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.mobilevit.MobileViT.instances" title="construe.mobilevit.MobileViT.instances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">instances</span></code></a>([limit])</p></td>
+<td><p>This method should yield all instances in the dataset at least once.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.mobilevit.MobileViT.preprocess" title="construe.mobilevit.MobileViT.preprocess"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocess</span></code></a>(instance)</p></td>
+<td><p>Any preprocessing that must be performed on an instance is handled with this method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.mobilevit.MobileViT.total" title="construe.mobilevit.MobileViT.total"><code class="xref py py-obj docutils literal notranslate"><span class="pre">total</span></code></a>(**kwargs)</p></td>
+<td><p>For progress bar purposes should report the total number of instances in one run of the Benchmark.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.mobilevit.MobileViT.after">
+<span class="sig-name descname"><span class="pre">after</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cleanup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/mobilevit.html#MobileViT.after"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.mobilevit.MobileViT.after" title="Link to this definition"></a></dt>
+<dd><p>This method is called after the benchamrk is run; if cleanup is True the
+class should delete any cached datasets or models.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.mobilevit.MobileViT.before">
+<span class="sig-name descname"><span class="pre">before</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/mobilevit.html#MobileViT.before"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.mobilevit.MobileViT.before" title="Link to this definition"></a></dt>
+<dd><p>This method is called before the benchmark runs and should cause it to
+setup any datasets and models needed for the benchmark to run.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="construe.mobilevit.MobileViT.description">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#construe.mobilevit.MobileViT.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.mobilevit.MobileViT.inference">
+<span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/mobilevit.html#MobileViT.inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.mobilevit.MobileViT.inference" title="Link to this definition"></a></dt>
+<dd><p>This represents the primary inference of the benchmark and is measured for
+latency and memory usage to add to the metrics.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.mobilevit.MobileViT.instances">
+<span class="sig-name descname"><span class="pre">instances</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/mobilevit.html#MobileViT.instances"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.mobilevit.MobileViT.instances" title="Link to this definition"></a></dt>
+<dd><p>This method should yield all instances in the dataset at least once.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.mobilevit.MobileViT.preprocess">
+<span class="sig-name descname"><span class="pre">preprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/mobilevit.html#MobileViT.preprocess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.mobilevit.MobileViT.preprocess" title="Link to this definition"></a></dt>
+<dd><p>Any preprocessing that must be performed on an instance is handled with this
+method. This method is measured for latency and memory usage as well.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.mobilevit.MobileViT.total">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/mobilevit.html#MobileViT.total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.mobilevit.MobileViT.total" title="Link to this definition"></a></dt>
+<dd><p>For progress bar purposes should report the total number of instances in one
+run of the Benchmark. Generally this should be hard-coded but can also be
+computed if necessary.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-construe.moondream">
+<span id="moondream-benchmark"></span><h2>Moondream Benchmark<a class="headerlink" href="#module-construe.moondream" title="Link to this heading"></a></h2>
+<p>Moondream is a computer vision model (image to text) that is optimized for use
+on embedded devices and serves as an example model in content moderation use
+cases where the image is captioned and then the caption is moderated.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="construe.moondream.MoonDream">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">construe.moondream.</span></span><span class="sig-name descname"><span class="pre">MoonDream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/moondream.html#MoonDream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.moondream.MoonDream" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="benchmark.html#construe.benchmark.base.Benchmark" title="construe.benchmark.base.Benchmark"><code class="xref py py-class docutils literal notranslate"><span class="pre">Benchmark</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data_home</strong></dt><dd></dd>
+<dt><strong>description</strong></dt><dd></dd>
+<dt><strong>metadata</strong></dt><dd></dd>
+<dt><strong>model_home</strong></dt><dd></dd>
+<dt><strong>options</strong></dt><dd></dd>
+<dt><strong>use_sample</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.moondream.MoonDream.after" title="construe.moondream.MoonDream.after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">after</span></code></a>([cleanup])</p></td>
+<td><p>This method is called after the benchamrk is run; if cleanup is True the class should delete any cached datasets or models.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.moondream.MoonDream.before" title="construe.moondream.MoonDream.before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">before</span></code></a>()</p></td>
+<td><p>This method is called before the benchmark runs and should cause it to setup any datasets and models needed for the benchmark to run.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.moondream.MoonDream.inference" title="construe.moondream.MoonDream.inference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inference</span></code></a>(instance)</p></td>
+<td><p>This represents the primary inference of the benchmark and is measured for latency and memory usage to add to the metrics.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.moondream.MoonDream.instances" title="construe.moondream.MoonDream.instances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">instances</span></code></a>([limit])</p></td>
+<td><p>This method should yield all instances in the dataset at least once.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.moondream.MoonDream.preprocess" title="construe.moondream.MoonDream.preprocess"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocess</span></code></a>(instance)</p></td>
+<td><p>Any preprocessing that must be performed on an instance is handled with this method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.moondream.MoonDream.total" title="construe.moondream.MoonDream.total"><code class="xref py py-obj docutils literal notranslate"><span class="pre">total</span></code></a>(**kwargs)</p></td>
+<td><p>For progress bar purposes should report the total number of instances in one run of the Benchmark.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.moondream.MoonDream.after">
+<span class="sig-name descname"><span class="pre">after</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cleanup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/moondream.html#MoonDream.after"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.moondream.MoonDream.after" title="Link to this definition"></a></dt>
+<dd><p>This method is called after the benchamrk is run; if cleanup is True the
+class should delete any cached datasets or models.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.moondream.MoonDream.before">
+<span class="sig-name descname"><span class="pre">before</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/moondream.html#MoonDream.before"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.moondream.MoonDream.before" title="Link to this definition"></a></dt>
+<dd><p>This method is called before the benchmark runs and should cause it to
+setup any datasets and models needed for the benchmark to run.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="construe.moondream.MoonDream.description">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#construe.moondream.MoonDream.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.moondream.MoonDream.inference">
+<span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/moondream.html#MoonDream.inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.moondream.MoonDream.inference" title="Link to this definition"></a></dt>
+<dd><p>This represents the primary inference of the benchmark and is measured for
+latency and memory usage to add to the metrics.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.moondream.MoonDream.instances">
+<span class="sig-name descname"><span class="pre">instances</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/moondream.html#MoonDream.instances"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.moondream.MoonDream.instances" title="Link to this definition"></a></dt>
+<dd><p>This method should yield all instances in the dataset at least once.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.moondream.MoonDream.preprocess">
+<span class="sig-name descname"><span class="pre">preprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/moondream.html#MoonDream.preprocess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.moondream.MoonDream.preprocess" title="Link to this definition"></a></dt>
+<dd><p>Any preprocessing that must be performed on an instance is handled with this
+method. This method is measured for latency and memory usage as well.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.moondream.MoonDream.total">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/moondream.html#MoonDream.total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.moondream.MoonDream.total" title="Link to this definition"></a></dt>
+<dd><p>For progress bar purposes should report the total number of instances in one
+run of the Benchmark. Generally this should be hard-coded but can also be
+computed if necessary.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-construe.nsfw">
+<span id="nsfw-benchmark"></span><h2>NSFW Benchmark<a class="headerlink" href="#module-construe.nsfw" title="Link to this heading"></a></h2>
+<p>NSFW Image Classification benchmark runner</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="construe.nsfw.NSFW">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">construe.nsfw.</span></span><span class="sig-name descname"><span class="pre">NSFW</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/nsfw.html#NSFW"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.nsfw.NSFW" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="benchmark.html#construe.benchmark.base.Benchmark" title="construe.benchmark.base.Benchmark"><code class="xref py py-class docutils literal notranslate"><span class="pre">Benchmark</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data_home</strong></dt><dd></dd>
+<dt><strong>description</strong></dt><dd></dd>
+<dt><strong>metadata</strong></dt><dd></dd>
+<dt><strong>model_home</strong></dt><dd></dd>
+<dt><strong>options</strong></dt><dd></dd>
+<dt><strong>use_sample</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.nsfw.NSFW.after" title="construe.nsfw.NSFW.after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">after</span></code></a>([cleanup])</p></td>
+<td><p>This method is called after the benchamrk is run; if cleanup is True the class should delete any cached datasets or models.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.nsfw.NSFW.before" title="construe.nsfw.NSFW.before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">before</span></code></a>()</p></td>
+<td><p>This method is called before the benchmark runs and should cause it to setup any datasets and models needed for the benchmark to run.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.nsfw.NSFW.inference" title="construe.nsfw.NSFW.inference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inference</span></code></a>(instance)</p></td>
+<td><p>This represents the primary inference of the benchmark and is measured for latency and memory usage to add to the metrics.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.nsfw.NSFW.instances" title="construe.nsfw.NSFW.instances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">instances</span></code></a>([limit])</p></td>
+<td><p>This method should yield all instances in the dataset at least once.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.nsfw.NSFW.preprocess" title="construe.nsfw.NSFW.preprocess"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocess</span></code></a>(instance)</p></td>
+<td><p>Any preprocessing that must be performed on an instance is handled with this method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.nsfw.NSFW.total" title="construe.nsfw.NSFW.total"><code class="xref py py-obj docutils literal notranslate"><span class="pre">total</span></code></a>(**kwargs)</p></td>
+<td><p>For progress bar purposes should report the total number of instances in one run of the Benchmark.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.nsfw.NSFW.after">
+<span class="sig-name descname"><span class="pre">after</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cleanup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/nsfw.html#NSFW.after"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.nsfw.NSFW.after" title="Link to this definition"></a></dt>
+<dd><p>This method is called after the benchamrk is run; if cleanup is True the
+class should delete any cached datasets or models.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.nsfw.NSFW.before">
+<span class="sig-name descname"><span class="pre">before</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/nsfw.html#NSFW.before"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.nsfw.NSFW.before" title="Link to this definition"></a></dt>
+<dd><p>This method is called before the benchmark runs and should cause it to
+setup any datasets and models needed for the benchmark to run.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="construe.nsfw.NSFW.description">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#construe.nsfw.NSFW.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.nsfw.NSFW.inference">
+<span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/nsfw.html#NSFW.inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.nsfw.NSFW.inference" title="Link to this definition"></a></dt>
+<dd><p>This represents the primary inference of the benchmark and is measured for
+latency and memory usage to add to the metrics.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.nsfw.NSFW.instances">
+<span class="sig-name descname"><span class="pre">instances</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/nsfw.html#NSFW.instances"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.nsfw.NSFW.instances" title="Link to this definition"></a></dt>
+<dd><p>This method should yield all instances in the dataset at least once.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.nsfw.NSFW.preprocess">
+<span class="sig-name descname"><span class="pre">preprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/nsfw.html#NSFW.preprocess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.nsfw.NSFW.preprocess" title="Link to this definition"></a></dt>
+<dd><p>Any preprocessing that must be performed on an instance is handled with this
+method. This method is measured for latency and memory usage as well.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.nsfw.NSFW.total">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/nsfw.html#NSFW.total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.nsfw.NSFW.total" title="Link to this definition"></a></dt>
+<dd><p>For progress bar purposes should report the total number of instances in one
+run of the Benchmark. Generally this should be hard-coded but can also be
+computed if necessary.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-construe.offensive">
+<span id="offensive-benchmark"></span><h2>Offensive Benchmark<a class="headerlink" href="#module-construe.offensive" title="Link to this heading"></a></h2>
+<p>Offensive speech benchmark runner</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="construe.offensive.Offensive">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">construe.offensive.</span></span><span class="sig-name descname"><span class="pre">Offensive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/offensive.html#Offensive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.offensive.Offensive" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="benchmark.html#construe.benchmark.base.Benchmark" title="construe.benchmark.base.Benchmark"><code class="xref py py-class docutils literal notranslate"><span class="pre">Benchmark</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data_home</strong></dt><dd></dd>
+<dt><strong>description</strong></dt><dd></dd>
+<dt><strong>metadata</strong></dt><dd></dd>
+<dt><strong>model_home</strong></dt><dd></dd>
+<dt><strong>options</strong></dt><dd></dd>
+<dt><strong>use_sample</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.offensive.Offensive.after" title="construe.offensive.Offensive.after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">after</span></code></a>([cleanup])</p></td>
+<td><p>This method is called after the benchamrk is run; if cleanup is True the class should delete any cached datasets or models.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.offensive.Offensive.before" title="construe.offensive.Offensive.before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">before</span></code></a>()</p></td>
+<td><p>This method is called before the benchmark runs and should cause it to setup any datasets and models needed for the benchmark to run.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.offensive.Offensive.inference" title="construe.offensive.Offensive.inference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inference</span></code></a>(instance)</p></td>
+<td><p>This represents the primary inference of the benchmark and is measured for latency and memory usage to add to the metrics.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.offensive.Offensive.instances" title="construe.offensive.Offensive.instances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">instances</span></code></a>([limit])</p></td>
+<td><p>This method should yield all instances in the dataset at least once.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.offensive.Offensive.preprocess" title="construe.offensive.Offensive.preprocess"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocess</span></code></a>(instance)</p></td>
+<td><p>Any preprocessing that must be performed on an instance is handled with this method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.offensive.Offensive.total" title="construe.offensive.Offensive.total"><code class="xref py py-obj docutils literal notranslate"><span class="pre">total</span></code></a>(**kwargs)</p></td>
+<td><p>For progress bar purposes should report the total number of instances in one run of the Benchmark.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.offensive.Offensive.after">
+<span class="sig-name descname"><span class="pre">after</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cleanup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/offensive.html#Offensive.after"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.offensive.Offensive.after" title="Link to this definition"></a></dt>
+<dd><p>This method is called after the benchamrk is run; if cleanup is True the
+class should delete any cached datasets or models.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.offensive.Offensive.before">
+<span class="sig-name descname"><span class="pre">before</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/offensive.html#Offensive.before"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.offensive.Offensive.before" title="Link to this definition"></a></dt>
+<dd><p>This method is called before the benchmark runs and should cause it to
+setup any datasets and models needed for the benchmark to run.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="construe.offensive.Offensive.description">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#construe.offensive.Offensive.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.offensive.Offensive.inference">
+<span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/offensive.html#Offensive.inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.offensive.Offensive.inference" title="Link to this definition"></a></dt>
+<dd><p>This represents the primary inference of the benchmark and is measured for
+latency and memory usage to add to the metrics.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.offensive.Offensive.instances">
+<span class="sig-name descname"><span class="pre">instances</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/offensive.html#Offensive.instances"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.offensive.Offensive.instances" title="Link to this definition"></a></dt>
+<dd><p>This method should yield all instances in the dataset at least once.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.offensive.Offensive.preprocess">
+<span class="sig-name descname"><span class="pre">preprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/offensive.html#Offensive.preprocess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.offensive.Offensive.preprocess" title="Link to this definition"></a></dt>
+<dd><p>Any preprocessing that must be performed on an instance is handled with this
+method. This method is measured for latency and memory usage as well.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.offensive.Offensive.total">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/offensive.html#Offensive.total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.offensive.Offensive.total" title="Link to this definition"></a></dt>
+<dd><p>For progress bar purposes should report the total number of instances in one
+run of the Benchmark. Generally this should be hard-coded but can also be
+computed if necessary.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-construe.whisper">
+<span id="whisper-benchmark"></span><h2>Whisper Benchmark<a class="headerlink" href="#module-construe.whisper" title="Link to this heading"></a></h2>
+<p>Whisper benchmark runner</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="construe.whisper.Whisper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">construe.whisper.</span></span><span class="sig-name descname"><span class="pre">Whisper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/whisper.html#Whisper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.whisper.Whisper" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="benchmark.html#construe.benchmark.base.Benchmark" title="construe.benchmark.base.Benchmark"><code class="xref py py-class docutils literal notranslate"><span class="pre">Benchmark</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data_home</strong></dt><dd></dd>
+<dt><strong>description</strong></dt><dd></dd>
+<dt><strong>metadata</strong></dt><dd></dd>
+<dt><strong>model_home</strong></dt><dd></dd>
+<dt><strong>options</strong></dt><dd></dd>
+<dt><strong>use_sample</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.whisper.Whisper.after" title="construe.whisper.Whisper.after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">after</span></code></a>([cleanup])</p></td>
+<td><p>This method is called after the benchamrk is run; if cleanup is True the class should delete any cached datasets or models.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.whisper.Whisper.before" title="construe.whisper.Whisper.before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">before</span></code></a>()</p></td>
+<td><p>This method is called before the benchmark runs and should cause it to setup any datasets and models needed for the benchmark to run.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.whisper.Whisper.inference" title="construe.whisper.Whisper.inference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inference</span></code></a>(instance)</p></td>
+<td><p>This represents the primary inference of the benchmark and is measured for latency and memory usage to add to the metrics.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.whisper.Whisper.instances" title="construe.whisper.Whisper.instances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">instances</span></code></a>([limit])</p></td>
+<td><p>This method should yield all instances in the dataset at least once.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.whisper.Whisper.preprocess" title="construe.whisper.Whisper.preprocess"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocess</span></code></a>(instance)</p></td>
+<td><p>Any preprocessing that must be performed on an instance is handled with this method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.whisper.Whisper.total" title="construe.whisper.Whisper.total"><code class="xref py py-obj docutils literal notranslate"><span class="pre">total</span></code></a>(**kwargs)</p></td>
+<td><p>For progress bar purposes should report the total number of instances in one run of the Benchmark.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.whisper.Whisper.after">
+<span class="sig-name descname"><span class="pre">after</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cleanup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/whisper.html#Whisper.after"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.whisper.Whisper.after" title="Link to this definition"></a></dt>
+<dd><p>This method is called after the benchamrk is run; if cleanup is True the
+class should delete any cached datasets or models.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.whisper.Whisper.before">
+<span class="sig-name descname"><span class="pre">before</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/whisper.html#Whisper.before"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.whisper.Whisper.before" title="Link to this definition"></a></dt>
+<dd><p>This method is called before the benchmark runs and should cause it to
+setup any datasets and models needed for the benchmark to run.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="construe.whisper.Whisper.description">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#construe.whisper.Whisper.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.whisper.Whisper.inference">
+<span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/whisper.html#Whisper.inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.whisper.Whisper.inference" title="Link to this definition"></a></dt>
+<dd><p>This represents the primary inference of the benchmark and is measured for
+latency and memory usage to add to the metrics.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.whisper.Whisper.instances">
+<span class="sig-name descname"><span class="pre">instances</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/whisper.html#Whisper.instances"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.whisper.Whisper.instances" title="Link to this definition"></a></dt>
+<dd><p>This method should yield all instances in the dataset at least once.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.whisper.Whisper.preprocess">
+<span class="sig-name descname"><span class="pre">preprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/whisper.html#Whisper.preprocess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.whisper.Whisper.preprocess" title="Link to this definition"></a></dt>
+<dd><p>Any preprocessing that must be performed on an instance is handled with this
+method. This method is measured for latency and memory usage as well.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.whisper.Whisper.total">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/whisper.html#Whisper.total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.whisper.Whisper.total" title="Link to this definition"></a></dt>
+<dd><p>For progress bar purposes should report the total number of instances in one
+run of the Benchmark. Generally this should be hard-coded but can also be
+computed if necessary.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="benchmark.html" class="btn btn-neutral float-right" title="Benchmark Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rotational Labs.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

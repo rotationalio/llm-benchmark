@@ -1,0 +1,443 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Benchmark Library &mdash; Construe v0.4.0-beta.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="https://construe.rotational.dev/api/benchmark.html" />
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=24bb955b"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Metrics" href="metrics.html" />
+    <link rel="prev" title="Benchmarks Reference" href="construe.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Construe
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developers.html">Development Guidelines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="construe.html">Benchmarks Reference</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Benchmark Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-construe.benchmark.runner">Runner</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#construe.benchmark.runner.BenchmarkRunner"><code class="docutils literal notranslate"><span class="pre">BenchmarkRunner</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#construe.benchmark.runner.Results"><code class="docutils literal notranslate"><span class="pre">Results</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-construe.benchmark.base">Benchmark ABC</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#construe.benchmark.base.Benchmark"><code class="docutils literal notranslate"><span class="pre">Benchmark</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-construe.benchmark.limit">Limit Utility</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#construe.benchmark.limit.limit_generator"><code class="docutils literal notranslate"><span class="pre">limit_generator()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html">Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud.html">Cloud Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Construe</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Benchmark Library</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/benchmark.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="benchmark-library">
+<h1>Benchmark Library<a class="headerlink" href="#benchmark-library" title="Link to this heading"></a></h1>
+<p>The benchmark library contains the runner for executing benchmarks and the abstract base class that all benchmarks must inherit from (as well as some other helper functionality).</p>
+<section id="module-construe.benchmark.runner">
+<span id="runner"></span><h2>Runner<a class="headerlink" href="#module-construe.benchmark.runner" title="Link to this heading"></a></h2>
+<p>Benchmark ABC and global benchmark runner.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="construe.benchmark.runner.BenchmarkRunner">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">construe.benchmark.runner.</span></span><span class="sig-name descname"><span class="pre">BenchmarkRunner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">benchmarks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_runs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_sample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cleanup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/benchmark/runner.html#BenchmarkRunner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.benchmark.runner.BenchmarkRunner" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Executes one or more benchmarks, configuring them with a top-level config and
+collecting all measurements, merging as necessary and outputing them to a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>is_complete</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>execute</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>run</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>run_benchmark</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>save</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py property">
+<dt class="sig sig-object py" id="construe.benchmark.runner.BenchmarkRunner.is_complete">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_complete</span></span><a class="headerlink" href="#construe.benchmark.runner.BenchmarkRunner.is_complete" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.benchmark.runner.BenchmarkRunner.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/benchmark/runner.html#BenchmarkRunner.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.benchmark.runner.BenchmarkRunner.run" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.benchmark.runner.BenchmarkRunner.run_benchmark">
+<span class="sig-name descname"><span class="pre">run_benchmark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Runner</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/benchmark/runner.html#BenchmarkRunner.run_benchmark"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.benchmark.runner.BenchmarkRunner.run_benchmark" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.benchmark.runner.BenchmarkRunner.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmark</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/benchmark/runner.html#BenchmarkRunner.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.benchmark.runner.BenchmarkRunner.execute" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code>[<a class="reference internal" href="metrics.html#construe.metrics.metrics.Measurement" title="construe.metrics.metrics.Measurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measurement</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.benchmark.runner.BenchmarkRunner.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/benchmark/runner.html#BenchmarkRunner.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.benchmark.runner.BenchmarkRunner.save" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="construe.benchmark.runner.Results">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">construe.benchmark.runner.</span></span><span class="sig-name descname"><span class="pre">Results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_runs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmarks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">started</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errors=&lt;class</span> <span class="pre">'list'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">successes=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">failures=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measurements=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/benchmark/runner.html#Results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.benchmark.runner.Results" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A result of all runs of a Benchmark including benchmarking information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>device</strong></dt><dd></dd>
+<dt><strong>duration</strong></dt><dd></dd>
+<dt><strong>env</strong></dt><dd></dd>
+<dt><strong>limit</strong></dt><dd></dd>
+<dt><strong>measurements</strong></dt><dd></dd>
+<dt><strong>options</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.benchmark.runner.Results.errors" title="construe.benchmark.runner.Results.errors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">errors</span></code></a></p></td>
+<td><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="construe.benchmark.runner.Results.n_runs">
+<span class="sig-name descname"><span class="pre">n_runs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#construe.benchmark.runner.Results.n_runs" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="construe.benchmark.runner.Results.benchmarks">
+<span class="sig-name descname"><span class="pre">benchmarks</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">]</span></em><a class="headerlink" href="#construe.benchmark.runner.Results.benchmarks" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="construe.benchmark.runner.Results.started">
+<span class="sig-name descname"><span class="pre">started</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></em><a class="headerlink" href="#construe.benchmark.runner.Results.started" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="construe.benchmark.runner.Results.errors">
+<span class="sig-name descname"><span class="pre">errors</span></span><a class="headerlink" href="#construe.benchmark.runner.Results.errors" title="Link to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="construe.benchmark.runner.Results.limit">
+<span class="sig-name descname"><span class="pre">limit</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#construe.benchmark.runner.Results.limit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="construe.benchmark.runner.Results.duration">
+<span class="sig-name descname"><span class="pre">duration</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#construe.benchmark.runner.Results.duration" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="construe.benchmark.runner.Results.env">
+<span class="sig-name descname"><span class="pre">env</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#construe.benchmark.runner.Results.env" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="construe.benchmark.runner.Results.device">
+<span class="sig-name descname"><span class="pre">device</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#construe.benchmark.runner.Results.device" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="construe.benchmark.runner.Results.options">
+<span class="sig-name descname"><span class="pre">options</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#construe.benchmark.runner.Results.options" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="construe.benchmark.runner.Results.successes">
+<span class="sig-name descname"><span class="pre">successes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#construe.benchmark.runner.Results.successes" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="construe.benchmark.runner.Results.failures">
+<span class="sig-name descname"><span class="pre">failures</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#construe.benchmark.runner.Results.failures" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="construe.benchmark.runner.Results.measurements">
+<span class="sig-name descname"><span class="pre">measurements</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code><span class="pre">[</span><a class="reference internal" href="metrics.html#construe.metrics.metrics.Measurement" title="construe.metrics.metrics.Measurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measurement</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#construe.benchmark.runner.Results.measurements" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-construe.benchmark.base">
+<span id="benchmark-abc"></span><h2>Benchmark ABC<a class="headerlink" href="#module-construe.benchmark.base" title="Link to this heading"></a></h2>
+<p>Defines the base class for all Benchmarks.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="construe.benchmark.base.Benchmark">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">construe.benchmark.base.</span></span><span class="sig-name descname"><span class="pre">Benchmark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/benchmark/base.html#Benchmark"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.benchmark.base.Benchmark" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>All benchmarks must subclass this class to ensure all properties and methods are
+correctly set for generic benchmarks to be run correctly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data_home</strong></dt><dd></dd>
+<dt><strong>description</strong></dt><dd></dd>
+<dt><strong>metadata</strong></dt><dd></dd>
+<dt><strong>model_home</strong></dt><dd></dd>
+<dt><strong>options</strong></dt><dd></dd>
+<dt><strong>use_sample</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.benchmark.base.Benchmark.after" title="construe.benchmark.base.Benchmark.after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">after</span></code></a>([cleanup])</p></td>
+<td><p>This method is called after the benchamrk is run; if cleanup is True the class should delete any cached datasets or models.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.benchmark.base.Benchmark.before" title="construe.benchmark.base.Benchmark.before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">before</span></code></a>()</p></td>
+<td><p>This method is called before the benchmark runs and should cause it to setup any datasets and models needed for the benchmark to run.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.benchmark.base.Benchmark.inference" title="construe.benchmark.base.Benchmark.inference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inference</span></code></a>(instance)</p></td>
+<td><p>This represents the primary inference of the benchmark and is measured for latency and memory usage to add to the metrics.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.benchmark.base.Benchmark.instances" title="construe.benchmark.base.Benchmark.instances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">instances</span></code></a>([limit])</p></td>
+<td><p>This method should yield all instances in the dataset at least once.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#construe.benchmark.base.Benchmark.preprocess" title="construe.benchmark.base.Benchmark.preprocess"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocess</span></code></a>(instance)</p></td>
+<td><p>Any preprocessing that must be performed on an instance is handled with this method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#construe.benchmark.base.Benchmark.total" title="construe.benchmark.base.Benchmark.total"><code class="xref py py-obj docutils literal notranslate"><span class="pre">total</span></code></a>(**kwargs)</p></td>
+<td><p>For progress bar purposes should report the total number of instances in one run of the Benchmark.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.benchmark.base.Benchmark.total">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/benchmark/base.html#Benchmark.total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.benchmark.base.Benchmark.total" title="Link to this definition"></a></dt>
+<dd><p>For progress bar purposes should report the total number of instances in one
+run of the Benchmark. Generally this should be hard-coded but can also be
+computed if necessary.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="construe.benchmark.base.Benchmark.data_home">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_home</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#construe.benchmark.base.Benchmark.data_home" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="construe.benchmark.base.Benchmark.model_home">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_home</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#construe.benchmark.base.Benchmark.model_home" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="construe.benchmark.base.Benchmark.use_sample">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">use_sample</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#construe.benchmark.base.Benchmark.use_sample" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="construe.benchmark.base.Benchmark.metadata">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">metadata</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span></em><a class="headerlink" href="#construe.benchmark.base.Benchmark.metadata" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="construe.benchmark.base.Benchmark.options">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">options</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#construe.benchmark.base.Benchmark.options" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="construe.benchmark.base.Benchmark.description">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#construe.benchmark.base.Benchmark.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.benchmark.base.Benchmark.before">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">before</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/benchmark/base.html#Benchmark.before"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.benchmark.base.Benchmark.before" title="Link to this definition"></a></dt>
+<dd><p>This method is called before the benchmark runs and should cause it to
+setup any datasets and models needed for the benchmark to run.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.benchmark.base.Benchmark.after">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">after</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cleanup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/benchmark/base.html#Benchmark.after"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.benchmark.base.Benchmark.after" title="Link to this definition"></a></dt>
+<dd><p>This method is called after the benchamrk is run; if cleanup is True the
+class should delete any cached datasets or models.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.benchmark.base.Benchmark.instances">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">instances</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/benchmark/base.html#Benchmark.instances"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.benchmark.base.Benchmark.instances" title="Link to this definition"></a></dt>
+<dd><p>This method should yield all instances in the dataset at least once.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.benchmark.base.Benchmark.preprocess">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">preprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/benchmark/base.html#Benchmark.preprocess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.benchmark.base.Benchmark.preprocess" title="Link to this definition"></a></dt>
+<dd><p>Any preprocessing that must be performed on an instance is handled with this
+method. This method is measured for latency and memory usage as well.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="construe.benchmark.base.Benchmark.inference">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/benchmark/base.html#Benchmark.inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.benchmark.base.Benchmark.inference" title="Link to this definition"></a></dt>
+<dd><p>This represents the primary inference of the benchmark and is measured for
+latency and memory usage to add to the metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-construe.benchmark.limit">
+<span id="limit-utility"></span><h2>Limit Utility<a class="headerlink" href="#module-construe.benchmark.limit" title="Link to this heading"></a></h2>
+<p>Handles limiting the output of generators.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.benchmark.limit.limit_generator">
+<span class="sig-prename descclassname"><span class="pre">construe.benchmark.limit.</span></span><span class="sig-name descname"><span class="pre">limit_generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/benchmark/limit.html#limit_generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.benchmark.limit.limit_generator" title="Link to this definition"></a></dt>
+<dd><p>Limit the output of a generator to a certain number of items.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="construe.html" class="btn btn-neutral float-left" title="Benchmarks Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="metrics.html" class="btn btn-neutral float-right" title="Metrics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rotational Labs.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

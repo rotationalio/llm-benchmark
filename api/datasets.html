@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Datasets &mdash; Construe v0.4.0-beta.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="https://construe.rotational.dev/api/datasets.html" />
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=24bb955b"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Models" href="models.html" />
+    <link rel="prev" title="Metrics" href="metrics.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Construe
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developers.html">Development Guidelines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="construe.html">Benchmarks Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html">Benchmark Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html">Metrics</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Datasets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#construe.datasets.loaders.load_all_datasets"><code class="docutils literal notranslate"><span class="pre">load_all_datasets()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.datasets.loaders.cleanup_all_datasets"><code class="docutils literal notranslate"><span class="pre">cleanup_all_datasets()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.datasets.loaders.load_dialects"><code class="docutils literal notranslate"><span class="pre">load_dialects()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.datasets.loaders.cleanup_dialects"><code class="docutils literal notranslate"><span class="pre">cleanup_dialects()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.datasets.loaders.load_lowlight"><code class="docutils literal notranslate"><span class="pre">load_lowlight()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.datasets.loaders.cleanup_lowlight"><code class="docutils literal notranslate"><span class="pre">cleanup_lowlight()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.datasets.loaders.load_reddit"><code class="docutils literal notranslate"><span class="pre">load_reddit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.datasets.loaders.cleanup_reddit"><code class="docutils literal notranslate"><span class="pre">cleanup_reddit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.datasets.loaders.load_movies"><code class="docutils literal notranslate"><span class="pre">load_movies()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.datasets.loaders.cleanup_movies"><code class="docutils literal notranslate"><span class="pre">cleanup_movies()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.datasets.loaders.load_essays"><code class="docutils literal notranslate"><span class="pre">load_essays()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.datasets.loaders.cleanup_essays"><code class="docutils literal notranslate"><span class="pre">cleanup_essays()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.datasets.loaders.load_aegis"><code class="docutils literal notranslate"><span class="pre">load_aegis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.datasets.loaders.cleanup_aegis"><code class="docutils literal notranslate"><span class="pre">cleanup_aegis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.datasets.loaders.load_nsfw"><code class="docutils literal notranslate"><span class="pre">load_nsfw()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#construe.datasets.loaders.cleanup_nsfw"><code class="docutils literal notranslate"><span class="pre">cleanup_nsfw()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-construe.datasets.manifest">Manifest</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#construe.datasets.manifest.load_manifest"><code class="docutils literal notranslate"><span class="pre">load_manifest()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#construe.datasets.manifest.generate_manifest"><code class="docutils literal notranslate"><span class="pre">generate_manifest()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#construe.datasets.manifest.dataset_extra"><code class="docutils literal notranslate"><span class="pre">dataset_extra()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-construe.datasets.path">Path Helpers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#construe.datasets.path.get_data_home"><code class="docutils literal notranslate"><span class="pre">get_data_home()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#construe.datasets.path.find_dataset_path"><code class="docutils literal notranslate"><span class="pre">find_dataset_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#construe.datasets.path.dataset_exists"><code class="docutils literal notranslate"><span class="pre">dataset_exists()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#construe.datasets.path.dataset_archive"><code class="docutils literal notranslate"><span class="pre">dataset_archive()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#construe.datasets.path.cleanup_dataset"><code class="docutils literal notranslate"><span class="pre">cleanup_dataset()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud.html">Cloud Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Construe</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Datasets</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/datasets.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-construe.datasets.loaders">
+<span id="datasets"></span><h1>Datasets<a class="headerlink" href="#module-construe.datasets.loaders" title="Link to this heading"></a></h1>
+<p>Managers for loading datasets</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.loaders.load_all_datasets">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.loaders.</span></span><span class="sig-name descname"><span class="pre">load_all_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/datasets/loaders.html#load_all_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.datasets.loaders.load_all_datasets" title="Link to this definition"></a></dt>
+<dd><p>Load all available datasets as defined by __all__</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.loaders.cleanup_all_datasets">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.loaders.</span></span><span class="sig-name descname"><span class="pre">cleanup_all_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/datasets/loaders.html#cleanup_all_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.datasets.loaders.cleanup_all_datasets" title="Link to this definition"></a></dt>
+<dd><p>Delete everything in the data home directory</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.loaders.load_dialects">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.loaders.</span></span><span class="sig-name descname"><span class="pre">load_dialects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_dirs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.datasets.loaders.load_dialects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.loaders.cleanup_dialects">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.loaders.</span></span><span class="sig-name descname"><span class="pre">cleanup_dialects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.datasets.loaders.cleanup_dialects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.loaders.load_lowlight">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.loaders.</span></span><span class="sig-name descname"><span class="pre">load_lowlight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_dirs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lowlight/**/*.png'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.datasets.loaders.load_lowlight" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.loaders.cleanup_lowlight">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.loaders.</span></span><span class="sig-name descname"><span class="pre">cleanup_lowlight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.datasets.loaders.cleanup_lowlight" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.loaders.load_reddit">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.loaders.</span></span><span class="sig-name descname"><span class="pre">load_reddit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.datasets.loaders.load_reddit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.loaders.cleanup_reddit">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.loaders.</span></span><span class="sig-name descname"><span class="pre">cleanup_reddit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.datasets.loaders.cleanup_reddit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.loaders.load_movies">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.loaders.</span></span><span class="sig-name descname"><span class="pre">load_movies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_dirs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.datasets.loaders.load_movies" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.loaders.cleanup_movies">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.loaders.</span></span><span class="sig-name descname"><span class="pre">cleanup_movies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.datasets.loaders.cleanup_movies" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.loaders.load_essays">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.loaders.</span></span><span class="sig-name descname"><span class="pre">load_essays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.datasets.loaders.load_essays" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.loaders.cleanup_essays">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.loaders.</span></span><span class="sig-name descname"><span class="pre">cleanup_essays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.datasets.loaders.cleanup_essays" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.loaders.load_aegis">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.loaders.</span></span><span class="sig-name descname"><span class="pre">load_aegis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.datasets.loaders.load_aegis" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.loaders.cleanup_aegis">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.loaders.</span></span><span class="sig-name descname"><span class="pre">cleanup_aegis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.datasets.loaders.cleanup_aegis" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.loaders.load_nsfw">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.loaders.</span></span><span class="sig-name descname"><span class="pre">load_nsfw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_dirs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nsfw/**/*.jpg'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.datasets.loaders.load_nsfw" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.loaders.cleanup_nsfw">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.loaders.</span></span><span class="sig-name descname"><span class="pre">cleanup_nsfw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#construe.datasets.loaders.cleanup_nsfw" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<section id="module-construe.datasets.manifest">
+<span id="manifest"></span><h2>Manifest<a class="headerlink" href="#module-construe.datasets.manifest" title="Link to this heading"></a></h2>
+<p>Manifest handlers for datasets</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.manifest.load_manifest">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.manifest.</span></span><span class="sig-name descname"><span class="pre">load_manifest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/home/runner/work/llm-benchmark/llm-benchmark/llm-benchmark/construe/datasets/manifest.json'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/datasets/manifest.html#load_manifest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.datasets.manifest.load_manifest" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.manifest.generate_manifest">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.manifest.</span></span><span class="sig-name descname"><span class="pre">generate_manifest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fixtures</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/home/runner/work/llm-benchmark/llm-benchmark/llm-benchmark/construe/datasets/fixtures'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/home/runner/work/llm-benchmark/llm-benchmark/llm-benchmark/construe/datasets/manifest.json'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/datasets/manifest.html#generate_manifest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.datasets.manifest.generate_manifest" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.manifest.dataset_extra">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.manifest.</span></span><span class="sig-name descname"><span class="pre">dataset_extra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/datasets/manifest.html#dataset_extra"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.datasets.manifest.dataset_extra" title="Link to this definition"></a></dt>
+<dd><p>Count the number of instances in each class in the dataset</p>
+</dd></dl>
+
+</section>
+<section id="module-construe.datasets.path">
+<span id="path-helpers"></span><h2>Path Helpers<a class="headerlink" href="#module-construe.datasets.path" title="Link to this heading"></a></h2>
+<p>Path handling for downloads</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.path.get_data_home">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.path.</span></span><span class="sig-name descname"><span class="pre">get_data_home</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/datasets/path.html#get_data_home"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.datasets.path.get_data_home" title="Link to this definition"></a></dt>
+<dd><p>Return the path of the Construe data directory. This folder is used by
+dataset loaders to avoid downloading data several times.</p>
+<p>By default, this folder is colocated with the code in the install directory
+so that data shipped with the package can be easily located. Alternatively
+it can be set by the <code class="docutils literal notranslate"><span class="pre">$CONSTRUE_DATA</span></code> environment variable, or
+programmatically by giving a folder path. Note that the <code class="docutils literal notranslate"><span class="pre">'~'</span></code> symbol is
+expanded to the user home directory, and environment variables are also
+expanded when resolving the path.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.path.find_dataset_path">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.path.</span></span><span class="sig-name descname"><span class="pre">find_dataset_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ext</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raises</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/datasets/path.html#find_dataset_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.datasets.path.find_dataset_path" title="Link to this definition"></a></dt>
+<dd><p>Looks up the path to the dataset specified in the data home directory,
+which is found using the <code class="docutils literal notranslate"><span class="pre">get_data_home</span></code> function. By default data home
+is in a config directory in the user’s home folder, but can be modified with the
+$CONSTRUE_DATA environment variable, or passing in a different directory.</p>
+<p>If the dataset is not found a <code class="docutils literal notranslate"><span class="pre">DatasetsError</span></code> is raised by default.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.path.dataset_exists">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.path.</span></span><span class="sig-name descname"><span class="pre">dataset_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/datasets/path.html#dataset_exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.datasets.path.dataset_exists" title="Link to this definition"></a></dt>
+<dd><p>Checks to see if a directory with the name of the specified dataset exists
+in the data home directory, found with <code class="docutils literal notranslate"><span class="pre">get_data_home</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.path.dataset_archive">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.path.</span></span><span class="sig-name descname"><span class="pre">dataset_archive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ext</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.zip'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/datasets/path.html#dataset_archive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.datasets.path.dataset_archive" title="Link to this definition"></a></dt>
+<dd><p>Checks to see if the dataset archive file exists in the data home directory,
+found with <code class="docutils literal notranslate"><span class="pre">get_data_home</span></code>. By specifying the signature, this function
+also checks to see if the archive is the latest version by comparing the
+sha256sum of the local archive with the specified signature.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="construe.datasets.path.cleanup_dataset">
+<span class="sig-prename descclassname"><span class="pre">construe.datasets.path.</span></span><span class="sig-name descname"><span class="pre">cleanup_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_home</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ext</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.zip'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/construe/datasets/path.html#cleanup_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#construe.datasets.path.cleanup_dataset" title="Link to this definition"></a></dt>
+<dd><p>Removes the dataset directory and archive file from the data home directory.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="metrics.html" class="btn btn-neutral float-left" title="Metrics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="models.html" class="btn btn-neutral float-right" title="Models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rotational Labs.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

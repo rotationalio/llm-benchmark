@@ -1,0 +1,253 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>construe.models.path &mdash; Construe v0.4.0-beta.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="canonical" href="https://construe.rotational.dev/_modules/construe/models/path.html" />
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=24bb955b"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Construe
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../benchmarks.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developers.html">Development Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Construe</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">construe.models.path</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for construe.models.path</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Path handling for model downloads</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..cloud.signature</span><span class="w"> </span><span class="kn">import</span> <span class="n">sha256sum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">construe.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelsError</span>
+
+
+<span class="c1"># Fixtures is where model data being prepared is stored</span>
+<span class="n">FIXTURES</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;fixtures&quot;</span><span class="p">)</span>
+<span class="n">MANIFEST</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;manifest.json&quot;</span><span class="p">)</span>
+
+<span class="c1"># Models dir is the location of downloaded model files</span>
+<span class="n">MODELSDIR</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;.construe&quot;</span> <span class="o">/</span> <span class="s2">&quot;models&quot;</span>
+
+<span class="c1"># Names of the models</span>
+<span class="n">MOONDREAM</span> <span class="o">=</span> <span class="s2">&quot;moondream&quot;</span>
+<span class="n">WHISPER</span> <span class="o">=</span> <span class="s2">&quot;whisper&quot;</span>
+<span class="n">MOBILENET</span> <span class="o">=</span> <span class="s2">&quot;mobilenet&quot;</span>
+<span class="n">MOBILEVIT</span> <span class="o">=</span> <span class="s2">&quot;mobilevit&quot;</span>
+<span class="n">NSFW</span> <span class="o">=</span> <span class="s2">&quot;nsfw&quot;</span>
+<span class="n">LOWLIGHT</span> <span class="o">=</span> <span class="s2">&quot;lowlight&quot;</span>
+<span class="n">OFFENSIVE</span> <span class="o">=</span> <span class="s2">&quot;offensive&quot;</span>
+<span class="n">GLINER</span> <span class="o">=</span> <span class="s2">&quot;gliner&quot;</span>
+
+
+<div class="viewcode-block" id="get_model_home">
+<a class="viewcode-back" href="../../../api/models.html#construe.models.path.get_model_home">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_model_home</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the path of the Construe models directory. This folder is used by</span>
+<span class="sd">    model loaders to avoid downloading model parameters several times.</span>
+
+<span class="sd">    By default, this folder is in a config directory in the users home folderso the</span>
+<span class="sd">    model can be can be easily located. Alternatively it can be set by the</span>
+<span class="sd">    ``$CONSTRUE_MODELS`` environment variable, or programmatically by giving a folder</span>
+<span class="sd">    path. Note that the ``&#39;~&#39;`` symbol is expanded to the user home directory, and</span>
+<span class="sd">    environment variables are also expanded when resolving the path.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;CONSTRUE_MODELS&quot;</span><span class="p">,</span> <span class="n">MODELSDIR</span><span class="p">)</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expandvars</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">path</span></div>
+
+
+
+<div class="viewcode-block" id="find_model_path">
+<a class="viewcode-back" href="../../../api/models.html#construe.models.path.find_model_path">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_model_path</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">model_home</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">raises</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Looks up the path to the model specified in the models home directory. The storage</span>
+<span class="sd">    location of the models can be set with the $CONSTRUE_MODELS environment variable.</span>
+
+<span class="sd">    If the model is not found a ``ModelsError`` is raised by default.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Resolve the root directory that stores the models</span>
+    <span class="n">model_home</span> <span class="o">=</span> <span class="n">get_model_home</span><span class="p">(</span><span class="n">model_home</span><span class="p">)</span>
+
+    <span class="c1"># Determine the path to the model</span>
+    <span class="k">if</span> <span class="n">fname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ext</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">model_home</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">model_home</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ext</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">model_home</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">raises</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">raise</span> <span class="n">ModelsError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;could not find model at </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2"> - does it need to be downloaded?&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">path</span></div>
+
+
+
+<div class="viewcode-block" id="model_exists">
+<a class="viewcode-back" href="../../../api/models.html#construe.models.path.model_exists">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">model_exists</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">model_home</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks to see if the specified model exists in the model home directory.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">find_model_path</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">model_home</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">ext</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+
+<div class="viewcode-block" id="model_tflite_exists">
+<a class="viewcode-back" href="../../../api/models.html#construe.models.path.model_tflite_exists">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">model_tflite_exists</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">model_home</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks to see if the model .tflite file exists or not.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">model_exists</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">model_home</span><span class="o">=</span><span class="n">model_home</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="s2">&quot;.tflite&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="model_archive">
+<a class="viewcode-back" href="../../../api/models.html#construe.models.path.model_archive">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">model_archive</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">signature</span><span class="p">,</span> <span class="n">model_home</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="s2">&quot;.zip&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks to see if the model archive file exists and determines if it is the latest</span>
+<span class="sd">    version by comparing the signature specified with the archive signature.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_home</span> <span class="o">=</span> <span class="n">get_model_home</span><span class="p">(</span><span class="n">model_home</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">model_home</span><span class="p">,</span> <span class="n">model</span><span class="o">+</span><span class="n">ext</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">sha256sum</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">==</span> <span class="n">signature</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+
+<div class="viewcode-block" id="cleanup_model">
+<a class="viewcode-back" href="../../../api/models.html#construe.models.path.cleanup_model">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">cleanup_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">model_home</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">archive</span><span class="o">=</span><span class="s2">&quot;.zip&quot;</span><span class="p">):</span>
+    <span class="n">removed</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">model_home</span> <span class="o">=</span> <span class="n">get_model_home</span><span class="p">(</span><span class="n">model_home</span><span class="p">)</span>
+
+    <span class="c1"># Paths to remove</span>
+    <span class="n">datadir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">model_home</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+    <span class="n">archive</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">model_home</span><span class="p">,</span> <span class="n">model</span><span class="o">+</span><span class="n">archive</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">datadir</span><span class="p">):</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">datadir</span><span class="p">)</span>
+        <span class="n">removed</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">archive</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">archive</span><span class="p">)</span>
+        <span class="n">removed</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">removed</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rotational Labs.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
